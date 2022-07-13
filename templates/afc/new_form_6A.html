@@ -1,0 +1,270 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block page_title %} Alternative Care Forms - {{ form_name }}{% endblock %}
+
+{% load app_filters %}
+
+{% load crispy_forms_tags %}
+
+{% block style_code %}
+<link href="{% static 'plugins/parsley/src/parsley.css' %}" rel="stylesheet" />
+<link href="{% static 'plugins/bootstrap-datepicker/css/datepicker3.css' %}" rel="stylesheet" />
+<link href="{% static 'plugins/bootstrap-wizard/css/bwizard.min.css' %}" rel="stylesheet" />
+<style type="text/css">
+form#new-form-b ul {
+      list-style-type: none;
+    }
+  form#new-form-b li {
+      padding-left: 1em;
+      text-indent: -2em;
+  }
+</style>
+{% endblock %}
+
+{% block primary %}
+<!-- begin breadcrumb -->
+<ol class="breadcrumb pull-right">
+	<li><a href="#">Home</a></li>
+	<li class="active">Alternative Care - Forms </li>
+</ol>
+<!-- end breadcrumb -->
+<!-- begin page-header -->
+<h1 class="page-header"> Form {{ form_id }} - {{ form_name }} <small>Home</small></h1>
+<!-- end page-header -->
+{% if messages %}
+<div id="messages" class="alert alert-suc{{ form_name }}cess fade in">
+    <span class="close" data-dismiss="alert">×</span>
+    <i class="fa fa-check fa-2x pull-left"></i>
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.info %} class="{{ message.info }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+<!-- begin row -->
+<div class="row">
+   <div class="col-md-12">
+        <!-- begin panel -->
+        <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
+            <div class="panel-heading">
+                <div class="panel-heading-btn">
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
+                </div>
+                <h4 class="panel-title">{{ case.care_type|gen_value:vals }} - {{ form_name }}</h4>
+            </div>
+            <div class="cinvoice">
+                <div class="invoice-company">
+                    <span class="pull-right hidden-print">
+                    <a href="javascript:;" class="btn btn-sm btn-danger m-b-10"><i class="fa fa-download m-r-5"></i> Export as PDF</a>
+                    <a href="{% url 'view_alt_care' case_id=case.case_id|stringformat:'s' %}" class="btn btn-sm btn-success m-b-10"><i class="fa fa-mail-reply-all m-r-5"></i> Back to Care details</a>
+                    </span>
+                    Case No: {{ case.case.case_serial }}
+                </div>
+            </div>
+            <div class="panel-body">
+                <form class="form-horizontal" method="POST" id="new-form-a" action="." data-parsley-validate="true">
+                    {% csrf_token %}
+                    <input type="hidden" name="form_id" value="{{ form_id }}">
+                    <input type="hidden" name="case_id" value="{{ case.case_id }}">
+                    <input type="hidden" name="person_id" value="{{ case.person.id }}">
+                    <input type="hidden" name="care_id" value="{{ case.care_id }}">
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">Child Names</label>
+                        <div class="col-md-3">
+                            {{ case.person.first_name }} {{ case.person.surname }}
+                        </div>
+                        <label class="col-md-2 control-label">Sex</label>
+                        <div class="col-md-3">{{ case.person.sex_id|gen_value:vals }}</div>
+                        <div class="col-md-1"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="col-md-2 control-label"> Date of Birth</label>
+                        <div class="col-md-3">
+                            {{ case.person.date_of_birth }}
+                        </div>
+                        <label class="col-md-2 control-label">Age</label>
+                        <div class="col-md-3">{{ case.person.age }}</div>
+                        <div class="col-md-1"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">Number of visit</label>
+                        <div class="col-md-2">
+                            {{ form.qf6A1_txt }}
+                        </div>
+                        <div class="col-md-4">
+                        </div>
+                    </div>
+
+                    <div id="wizard">
+                        <ol>
+                            <li>
+                                A. CHILD'S WELL-BEING AND PROGRESS
+                                <small>Child's well-being and progress.</small>
+                            </li>
+                            <li>
+                                A.&nbsp;FAMILY'S WELL-BEING AND PROGRESS
+                                <small>Famil's well-being and progress.</small>
+                            </li>
+                        </ol>
+                        <!-- begin wizard step-1 -->
+                        <div>
+                            <fieldset>
+                                <legend>A. CHILD'S WELL-BEING AND PROGRESS</legend>
+                                <div class="form-group">
+                                    <label class="col-md-5 control-label">Since our last visit, is there anything that you would like to share with me? Please describe</label>
+                                    <div class="col-md-6">{{ form.qf6A2_txt }}</div>
+                                    <div class="col-md-1"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-5 control-label">Any major changes in your life? Please describe below <small>(Hint: Look for both positive and negative changes.)</small></label>
+                                    <div class="col-md-6">{{ form.qf6A3_txt }}</div>
+                                    <div class="col-md-1"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-5 control-label">How have these changes affected you (e.g., how is the child currently coping)?</label>
+                                    <div class="col-md-6">{{ form.qf6A4_txt }}</div>
+                                    <div class="col-md-1"></div>
+                                </div>
+                                <p><b>Caseworker comments on the child’s overall well-being and progress made toward reintegration</b></p>
+                                <hr>
+
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Health and development</label>
+                                    <div class="col-md-7">{{ form.qf6A5_txt }}</div>
+                                    <div class="col-md-1"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Psychosocial health and emotional well-being</label>
+                                    <div class="col-md-7">{{ form.qf6A6_txt }}</div>
+                                    <div class="col-md-1"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Education</label>
+                                    <div class="col-md-7">{{ form.qf6A7_txt }}</div>
+                                    <div class="col-md-1"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Protection and safety</label>
+                                    <div class="col-md-7">{{ form.qf6A8_txt }}</div>
+                                    <div class="col-md-1"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Child–caregiver/young adult–mentor relationship and attachment</label>
+                                    <div class="col-md-7">{{ form.qf6A9_txt }}</div>
+                                    <div class="col-md-1"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Social well-being and community belonging</label>
+                                    <div class="col-md-7">{{ form.qf6A10_txt }}</div>
+                                    <div class="col-md-1"></div>
+                                </div>
+                            </fieldset>
+                        </div>
+                        <div>
+                            <fieldset>
+                                <legend>B. FAMILY'S WELL-BEING AND PROGRESS</legend>
+                                <div class="form-group">
+                                    <label class="col-md-5 control-label">Since our last visit, is there anything that you would like to share with me? Please describe below</label>
+                                    <div class="col-md-6">{{ form.qf6A11_txt }}</div>
+                                    <div class="col-md-1"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-5 control-label">Any major changes in your life? Please describe below (Hint: Look for both positive and negative changes.)</label>
+                                    <div class="col-md-6">{{ form.qf6A12_txt }}</div>
+                                    <div class="col-md-1"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-5 control-label">How have these changes affected your family/life</label>
+                                    <div class="col-md-6">{{ form.qf6A13_txt }}</div>
+                                    <div class="col-md-1"></div>
+                                </div>
+                                <p>Caseworker comments on the child’s overall well-being and progress made toward reintegration</p>
+
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Health and development</label>
+                                    <div class="col-md-7">{{ form.qf6A14_txt }}</div>
+                                    <div class="col-md-1"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Psychosocial health and emotional well-being</label>
+                                    <div class="col-md-7">{{ form.qf6A15_txt }}</div>
+                                    <div class="col-md-1"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Education</label>
+                                    <div class="col-md-7">{{ form.qf6A16_txt }}</div>
+                                    <div class="col-md-1"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Protection and safety</label>
+                                    <div class="col-md-7">{{ form.qf6A17_txt }}</div>
+                                    <div class="col-md-1"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Child–caregiver/young adult–mentor relationship and attachment</label>
+                                    <div class="col-md-7">{{ form.qf6A18_txt }}</div>
+                                    <div class="col-md-1"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Social well-being and community belonging</label>
+                                    <div class="col-md-7">{{ form.qf6A19_txt }}</div>
+                                    <div class="col-md-1"></div>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Proposed date of next monitoring visit</label>
+                        <div class="col-md-2">
+                            {{ form.qf6A20_txt }}
+                        </div>
+                        <div class="col-md-4">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Date of monitoring visit</label>
+                        <div class="col-md-2">
+                            {{ form.event_date }}
+                        </div>
+                        <div class="col-md-4">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="col-md-4 control-label"></label>
+                        <div class="col-md-3">
+                            <button type="submit" class="btn btn-sm btn-success">Submit Form {{ form_id }} details</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- end panel -->
+    </div>
+    
+</div>
+<!-- end row -->
+
+{% endblock %}
+
+{% block lazy_javascript_code %}
+
+
+<script src="{% static 'plugins/bootstrap-wizard/js/bwizard.js' %}"></script>
+<script>
+
+$(document).ready(function() {
+    $('#event_date, .event_date').datepicker({ endDate: '0y', format: 'dd-M-yyyy' });
+
+    $("#wizard").bwizard();
+});
+
+</script>
+{% endblock %}
