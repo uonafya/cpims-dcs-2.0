@@ -80,8 +80,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'cpims_ctip',
-        'USER': 'cpimsdbuser',
-        'PASSWORD': 'Xaen!ee8',
+        'USER': 'username',
+        'PASSWORD': '123456',
         'HOST': '127.0.0.1',
         'PORT': '5432', }
 }
