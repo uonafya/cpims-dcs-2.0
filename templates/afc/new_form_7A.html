@@ -726,9 +726,14 @@ $(document).ready(function() {
 
         $("#new-form-a input[type=radio]:checked").each(function(event) {
             if(this.value == "AYES" && this.checked == true){
+                console.log('Yes option '+ this.name + ' >> ' +this.value)
                  bmarks = 1;
             }else if(this.value == "ANNA" && this.checked == true){
+                console.log('Not Applicable'+ this.name + ' >> ' +this.value)
                  bmarks = 1;
+            }else if (this.value == "ANNO" && this.checked == true){
+                console.log('No option '+ this.name + ' >> ' +this.value)
+                bmarks = 0
             }
 
             var qid = this.id.split('_')[1];
@@ -745,22 +750,22 @@ $(document).ready(function() {
             }else if (es.includes(qid)){
                 es_marks += bmarks;
             }
-            console.log(qid + ":" + bmarks);
+            console.log('Benchmark Score' + qid + ":" + bmarks);
         });
 
-        var ed_grad = (ed_marks < 10) ? "Not Ready for Graduation" :"Ready for Graduation";
-        var pr_grad = (pr_marks < 7) ? "Not Ready for Graduation" :"Ready for Graduation";
-        var ps_grad = (ps_marks < 14) ? "Not Ready for Graduation" :"Ready for Graduation";
-        var hd_grad = (hd_marks < 10) ? "Not Ready for Graduation" :"Ready for Graduation";
-        var ra_grad = (ra_marks < 11) ? "Not Ready for Graduation" :"Ready for Graduation";
-        var es_grad = (es_marks < 6) ? "Not Ready for Graduation" :"Ready for Graduation";
+        var ed_grad = (ed_marks < 10) ? " Not Ready for Graduation" :" Ready for Graduation";
+        var pr_grad = (pr_marks < 7) ? " Not Ready for Graduation" :" Ready for Graduation";
+        var ps_grad = (ps_marks < 14) ? " Not Ready for Graduation" :" Ready for Graduation";
+        var hd_grad = (hd_marks < 5) ? " Not Ready for Graduation" :" Ready for Graduation";
+        var ra_grad = (ra_marks < 6) ? " Not Ready for Graduation" :" Ready for Graduation";
+        var es_grad = (es_marks < 7) ? " Not Ready for Graduation" :" Ready for Graduation";
 
-        $("#ed-totals").html("<b>" + ed_marks + " : " + ed_grad + "<b>");         
-        $("#pr-totals").html("<b>" + pr_marks + " : " + pr_grad + "<b>");         
-        $("#ps-totals").html("<b>" + ps_marks + " : " + ps_grad + "<b>");         
-        $("#hd-totals").html("<b>" + hd_marks + " : " + hd_grad + "<b>");         
-        $("#ra-totals").html("<b>" + ra_marks + " : " + ra_grad + "<b>");         
-        $("#es-totals").html("<b>" + es_marks + " : " + es_grad + "<b>");
+        $("#ed-totals").html("<b>" + ed_marks + " / 11 : " + ed_grad + "<b>");         
+        $("#pr-totals").html("<b>" + pr_marks + " / 8 : " + pr_grad + "<b>");         
+        $("#ps-totals").html("<b>" + ps_marks + " / 14 : " + ps_grad + "<b>");         
+        $("#hd-totals").html("<b>" + hd_marks + " / 5 : " + hd_grad + "<b>");         
+        $("#ra-totals").html("<b>" + ra_marks + " / 6 : " + ra_grad + "<b>");         
+        $("#es-totals").html("<b>" + es_marks + " / 7 : " + es_grad + "<b>");
     }
 
 });

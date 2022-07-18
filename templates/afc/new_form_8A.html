@@ -18,6 +18,17 @@ form#new-form-b ul {
       padding-left: 1em;
       text-indent: -2em;
   }
+  table th {
+    border: 2px solid black;
+    padding: 5px;
+    align-items: center;
+    font-size: bold;
+  }
+  table td {
+    border: 1px solid black;
+    padding: 5px;
+    
+  }
 </style>
 {% endblock %}
 
@@ -197,6 +208,11 @@ form#new-form-b ul {
                                 <div class="col-md-2"><span id="qf8A24_rdo_error"></span></div>
                                 <div class="col-md-1"></div>
                             </div>
+                            <div class="form-group">
+                                <label class="col-md-8"><b>Total score for Education domain</b></label>
+                                <div class="col-md-3" id="ed-totals"></div>
+                                <div class="col-md-1"></div>
+                            </div>
                         </fieldset>
                     </div>
                     <!-- end wizard step-1 -->
@@ -243,6 +259,11 @@ form#new-form-b ul {
                             <label class="col-md-8">3.6 When there has been violence, the case plan and referral documentation confirm services have been accessed and met the intended purpose.</label>
                             <div class="col-md-1">{{ form.qf8A36_rdo }}</div>
                             <div class="col-md-2"><span id="qf8A36_rdo_error"></span></div>
+                            <div class="col-md-1"></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-8"><b>Total score for Protection and Safety domain</b></label>
+                            <div class="col-md-3" id="pr-totals"></div>
                             <div class="col-md-1"></div>
                         </div>
                     </fieldset>
@@ -351,6 +372,11 @@ form#new-form-b ul {
                             <div class="col-md-2"><span id="qf8A64_rdo_error"></span></div>
                             <div class="col-md-1"></div>
                         </div>
+                        <div class="form-group">
+                            <label class="col-md-8"><b>Total score for Psychosocial Well-Being domain</b></label>
+                            <div class="col-md-3" id="ps-totals"></div>
+                            <div class="col-md-1"></div>
+                        </div>
                     </fieldset>
                     </div>
                     <!-- end wizard step-3 -->
@@ -398,6 +424,11 @@ form#new-form-b ul {
                             <label class="col-md-8">9.2 If the young adult has a chronic illness or disability, he/she is conversant in her/his treatment regimen, as necessary.</label>
                             <div class="col-md-1">{{ form.qf8A92_rdo }}</div>
                             <div class="col-md-2"><span id="qf8A92_rdo_error"></span></div>
+                            <div class="col-md-1"></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-8"><b>Total score for Health and Development domain</b></label>
+                            <div class="col-md-3" id="hd-totals"></div>
                             <div class="col-md-1"></div>
                         </div>
                     </fieldset>
@@ -450,6 +481,11 @@ form#new-form-b ul {
                             <label class="col-md-8">11.4 The young adult feels that rules and consequences are applied consistently.</label>
                             <div class="col-md-1">{{ form.qf8A114_rdo }}</div>
                             <div class="col-md-2"><span id="qf8A114_rdo_error"></span></div>
+                            <div class="col-md-1"></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-8"><b>Total score for Relationship and Attachment domain</b></label>
+                            <div class="col-md-3" id="ra-totals"></div>
                             <div class="col-md-1"></div>
                         </div>
                     </fieldset>
@@ -506,10 +542,88 @@ form#new-form-b ul {
                             <div class="col-md-2"><span id="qf8A127_rdo_error"></span></div>
                             <div class="col-md-1"></div>
                         </div>
+                        <div class="form-group">
+                            <label class="col-md-8"><b>Total score for Economic Stability domain</b></label>
+                            <div class="col-md-3" id="es-totals"></div>
+                            <div class="col-md-1"></div>
+                        </div>
                     </fieldset>
                     </div>
                 </div>
                     <!-- end wizard step-6 -->
+                    <div class="form-group">
+                        
+                        <label class="col-md-2 control-label">Total Benchmark Scores</label>
+                        <div class="col-md-8">
+                            <table class="tg">
+                                <thead>
+                                  <tr>
+                                    <th class="">#</th>
+                                    <th class="">Domain</th>
+                                    <th class="">Total Score</th>
+                                    <th class="">Scored</th>
+                                    <th class="">Status</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <td class="1">1</td>
+                                    <td class="">Education</td>
+                                    <td class="">11</td>
+                                    <td class="ed-totals-table"></td>
+                                    <td class="" rowspan="7">
+                                        <span class="not_ready_to_grad">Not Ready to Graduate</span> <br>
+                                        <span class="ready_to_grad">Ready to Graduate</span>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td class="2">2</td>
+                                    <td class="">Protection & Safety</td>
+                                    <td class="6">6</td>
+                                    <td class="pr-totals-table"></td>
+                                    <!-- <td class=""></td> -->
+                                  </tr>
+                                  <tr>
+                                    <td class="3">3</td>
+                                    <td class="">Psychosocial Well-Being</td>
+                                    <td class="14">14</td>
+                                    <td class="ps-totals-table"></td>
+                                    <!-- <td class=""></td> -->
+                                  </tr>
+                                  <tr>
+                                    <td class="4">4</td>
+                                    <td class="">Health and Development</td>
+                                    <td class="5">5</td>
+                                    <td class="hd-totals-table"></td>
+                                    <!-- <td class=""></td> -->
+                                  </tr>
+                                  <tr>
+                                    <td class="5">5</td>
+                                    <td class="">Relationship and Attachment</td>
+                                    <td class="6">6</td>
+                                    <td class="ra-totals-table"></td>
+                                    <!-- <td class=""></td> -->
+                                  </tr>
+                                  <tr>
+                                    <td class="6">6</td>
+                                    <td class="">Economic Stability</td>
+                                    <td class="7">7</td>
+                                    <td class="es-totals-table"></td>
+                                    <!-- <td class=""></td> -->
+                                  </tr>
+                                  <tr>
+                                    <!-- <td class=""></td> -->
+                                    <td class="TotalScore" colspan="2">Total Score</td>
+                                    <td class="">59</td>
+                                    <td class="totals-table"></td>
+                                    <!-- <td class=""></td> -->
+                                  </tr>                                
+                                </tbody>
+                                </table>
+                        </div>
+                        <div class="col-md-2">
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label class="col-md-4 control-label">Date review completed</label>
                         <div class="col-md-2">
@@ -545,7 +659,91 @@ $(document).ready(function() {
     $('#event_date').datepicker({ endDate: '0y', format: 'dd-M-yyyy' });
 
     $("#wizard").bwizard();
+
+
+    benchmarks();
+
+    $("form input:radio").change(function (event) {
+        benchmarks();
+        console.log(event.target.id);
+   });
+
+    
+    function benchmarks(){
+
+        var bmarks = 0;
+        var ed_marks = 0;
+        var pr_marks = 0;
+        var ps_marks = 0;
+        var hd_marks = 0;
+        var ra_marks = 0;
+        var es_marks = 0;
+
+        var ed = ['qf8A11', 'qf8A12', 'qf8A13', 'qf8A14', 'qf8A15', 'qf8A16', 
+                    'qf8A17', 'qf8A21', 'qf8A22', 'qf8A23', 'qf8A24' ];
+        var pr = ['qf8A31', 'qf8A32', 'qf8A33', 'qf8A34', 'qf8A35', 'qf8A36' ];
+        var ps = ['qf8A41','qf8A42','qf8A43','qf8A44','qf8A45','qf8A51',
+                    'qf8A52','qf8A53','qf8A54','qf8A55','qf8A61','qf8A62','qf8A63','qf8A64' ];
+        var hd = ['f8A71','f8A81','f8A82','f8A91','f8A92'];
+        var ra = ['qf8A101', 'qf8A102', 'qf8A111', 'qf8A112', 'qf8A113', 'qf8A114' ];
+        var es = ['qf8A121', 'qf8A122', 'qf8A123', 'qf8A124', 'qf8A125', 'qf8A126', 'qf8A127'];
+
+        $("#new-form-8A input[type=radio]:checked").each(function(event) {
+            if(this.value == "AYES" && this.checked == true){
+                console.log('Yes option '+ this.name + ' >> ' +this.value)
+                 bmarks = 1;
+            }else if(this.value == "ANNA" && this.checked == true){
+                console.log('Not Applicable'+ this.name + ' >> ' +this.value)
+                 bmarks = 1;
+            }else if (this.value == "ANNO" && this.checked == true){
+                console.log('No option '+ this.name + ' >> ' +this.value)
+                bmarks = 0
+            }
+
+            var qid = this.id.split('_')[1];
+            if (ed.includes(qid)){
+                ed_marks += bmarks;
+            }else if (pr.includes(qid)){
+                pr_marks += bmarks;
+            }else if (ps.includes(qid)){
+                ps_marks += bmarks;
+            }else if (hd.includes(qid)){
+                hd_marks += bmarks;
+            }else if (ra.includes(qid)){
+                ra_marks += bmarks;
+            }else if (es.includes(qid)){
+                es_marks += bmarks;
+            }
+            console.log('Benchmark Score' + qid + ":" + bmarks);
+        });
+
+        var ed_grad = (ed_marks < 10) ? " Not Ready for Graduation" :" Ready for Graduation";
+        var pr_grad = (pr_marks < 6) ? " Not Ready for Graduation" :" Ready for Graduation";
+        var ps_grad = (ps_marks < 14) ? " Not Ready for Graduation" :" Ready for Graduation";
+        var hd_grad = (hd_marks < 5) ? " Not Ready for Graduation" :" Ready for Graduation";
+        var ra_grad = (ra_marks < 6) ? " Not Ready for Graduation" :" Ready for Graduation";
+        var es_grad = (es_marks < 7) ? " Not Ready for Graduation" :" Ready for Graduation";
+
+        $("#ed-totals").html("<b>" + ed_marks + " / 11 : " + ed_grad + "<b>");         
+        $("#pr-totals").html("<b>" + pr_marks + " / 6 : " + pr_grad + "<b>");         
+        $("#ps-totals").html("<b>" + ps_marks + " / 14 : " + ps_grad + "<b>");         
+        $("#hd-totals").html("<b>" + hd_marks + " / 5 : " + hd_grad + "<b>");         
+        $("#ra-totals").html("<b>" + ra_marks + " / 6 : " + ra_grad + "<b>");         
+        $("#es-totals").html("<b>" + es_marks + " / 7 : " + es_grad + "<b>");
+
+        $(".ed-totals-table").html(ed_marks);
+        $(".pr-totals-table").html(pr_marks);         
+        $(".ps-totals-table").html(ps_marks);         
+        $(".hd-totals-table").html(hd_marks);         
+        $(".ra-totals-table").html(ra_marks);
+        $(".es-totals-table").html(es_marks);
+        
+        $('.totals-table').html(ed_marks + pr_marks + ps_marks + hd_marks + ra_marks + es_marks)
+
+
+        }
 });
+
 
 </script>
 {% endblock %}
