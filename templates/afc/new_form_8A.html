@@ -21,13 +21,27 @@ form#new-form-b ul {
   table th {
     border: 2px solid black;
     padding: 5px;
-    align-items: center;
+    text-align: center;
     font-size: bold;
   }
   table td {
     border: 1px solid black;
     padding: 5px;
     
+  }
+  #not_ready_to_grad, #ready_to_grad {
+    padding: 10px;
+    border-radius: 30px;
+    line-height: 40px;
+  }
+  .bench_status{
+    background-color: aqua;
+    font-size: 16px;
+    transform: 0.90;
+  }
+  .control-labels{
+    font-size: 20px;
+    text-decoration: underline;
   }
 </style>
 {% endblock %}
@@ -552,11 +566,14 @@ form#new-form-b ul {
                 </div>
                     <!-- end wizard step-6 -->
                     <div class="form-group">
+                        <div class="col-md-1"></div>
                         
-                        <label class="col-md-2 control-label">Total Benchmark Scores</label>
-                        <div class="col-md-8">
+                        <div class="col-md-5">
                             <table class="tg">
                                 <thead>
+                                <tr>
+                                    <th colspan="5"><label class="control-labels">Total Benchmark Scores</label><br></th>
+                                </tr>
                                   <tr>
                                     <th class="">#</th>
                                     <th class="">Domain</th>
@@ -572,8 +589,8 @@ form#new-form-b ul {
                                     <td class="">11</td>
                                     <td class="ed-totals-table"></td>
                                     <td class="" rowspan="7">
-                                        <span class="not_ready_to_grad">Not Ready to Graduate</span> <br>
-                                        <span class="ready_to_grad">Ready to Graduate</span>
+                                        <span id="not_ready_to_grad">Not Ready to Graduate</span> <br>
+                                        <span id="ready_to_grad">Ready to Graduate</span>
                                     </td>
                                   </tr>
                                   <tr>
@@ -614,18 +631,18 @@ form#new-form-b ul {
                                   <tr>
                                     <!-- <td class=""></td> -->
                                     <td class="TotalScore" colspan="2">Total Score</td>
-                                    <td class="">59</td>
+                                    <td class="">49</td>
                                     <td class="totals-table"></td>
                                     <!-- <td class=""></td> -->
                                   </tr>                                
                                 </tbody>
                                 </table>
                         </div>
-                        <div class="col-md-2">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-4 control-label">Date review completed</label>
+                        <!-- <div class="col-md-2">
+                        </div> -->
+                    <!-- </div>
+                    <div class="form-group"> -->
+                        <label class="col-md-2 control-label">Date review completed</label>
                         <div class="col-md-2">
                             {{ form.event_date }}
                         </div>
@@ -635,7 +652,7 @@ form#new-form-b ul {
                     
                     
                     <div class="form-group">
-                        <label class="col-md-4"></label>
+                        <label class="col-md-5"></label>
                         <div class="col-md-4">
                             <button type="submit" class="btn btn-sm btn-success">Submit Form {{ form_id }} details</button>
                         </div>
@@ -684,7 +701,7 @@ $(document).ready(function() {
         var pr = ['qf8A31', 'qf8A32', 'qf8A33', 'qf8A34', 'qf8A35', 'qf8A36' ];
         var ps = ['qf8A41','qf8A42','qf8A43','qf8A44','qf8A45','qf8A51',
                     'qf8A52','qf8A53','qf8A54','qf8A55','qf8A61','qf8A62','qf8A63','qf8A64' ];
-        var hd = ['f8A71','f8A81','f8A82','f8A91','f8A92'];
+        var hd = ['qf8A71','qf8A81','qf8A82','qf8A91','qf8A92'];
         var ra = ['qf8A101', 'qf8A102', 'qf8A111', 'qf8A112', 'qf8A113', 'qf8A114' ];
         var es = ['qf8A121', 'qf8A122', 'qf8A123', 'qf8A124', 'qf8A125', 'qf8A126', 'qf8A127'];
 
@@ -724,6 +741,16 @@ $(document).ready(function() {
         var ra_grad = (ra_marks < 6) ? " Not Ready for Graduation" :" Ready for Graduation";
         var es_grad = (es_marks < 7) ? " Not Ready for Graduation" :" Ready for Graduation";
 
+        var total_score = (ed_marks + pr_marks + ps_marks + hd_marks + ra_marks + es_marks)
+
+        if (total_score >= 5){
+            $('#ready_to_grad').addClass('bench_status');
+            $('#not_ready_to_grad').removeClass();
+        }else {
+            $('#not_ready_to_grad').addClass('bench_status');
+            $('#ready_to_grad').removeClass();
+        }
+
         $("#ed-totals").html("<b>" + ed_marks + " / 11 : " + ed_grad + "<b>");         
         $("#pr-totals").html("<b>" + pr_marks + " / 6 : " + pr_grad + "<b>");         
         $("#ps-totals").html("<b>" + ps_marks + " / 14 : " + ps_grad + "<b>");         
@@ -738,7 +765,7 @@ $(document).ready(function() {
         $(".ra-totals-table").html(ra_marks);
         $(".es-totals-table").html(es_marks);
         
-        $('.totals-table').html(ed_marks + pr_marks + ps_marks + hd_marks + ra_marks + es_marks)
+        $('.totals-table').html(total_score)
 
 
         }

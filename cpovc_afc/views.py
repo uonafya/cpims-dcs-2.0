@@ -237,6 +237,7 @@ def alt_care_form(request, cid, form_id, case_id, ev_id=0):
         for extid in extids:
             ext_ids[str(extid.identifier_type_id)] = extid.identifier
         # Save submitted records
+        url = ""
         if request.method == 'POST':
             res = save_altcare_form(request, form_id)
             if res:
