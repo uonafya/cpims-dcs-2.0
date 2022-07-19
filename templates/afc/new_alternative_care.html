@@ -45,14 +45,6 @@
     <div class="col-md-2">
         <div class="m-b-10 text-inverse f-s-10"><b>AVAILABLE FORMS</b></div>
         <table class="text-inverse m-b-20 width-full">
-            <tr>
-                <td>
-                    <a href="{% url 'view_ctip_form' form_id='A' case_id=case_id|stringformat:'s' %}">
-                    <i class="fa fa-pencil fa-2x pull-left fa-fw"></i>
-                    <span class="badge pull-right">{% if case.has_consent %}Y{% else %}N{% endif %}</span>
-                    <div class="m-t-4">Child Assessment Form</div></a>
-                </td>
-            </tr>
             {% if case.has_consent %}
             <tr>
                 <td class="p-t-10">
@@ -188,7 +180,7 @@
                             <td>{{ form.AFC_FM_Q1 }}</td>
                         </tr>
                         <tr>
-                            <td class="field">Date of admission</td>
+                            <td class="field">Date of admission / Initiation to care</td>
                             <td>{{ form.case_date }}</td>
                         </tr>
                         <tr class="divider">

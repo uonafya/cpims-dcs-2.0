@@ -157,7 +157,6 @@ def save_form_data(request, form_id, event_id):
                 print('itm after', itms, itm, itdl)
                 obj, created = AFCForms.objects.update_or_create(
                     event_id=event_id, question_id=itms,
-                    item_value=itdm,
                     defaults={'item_value': itdm, 'item_detail': itdl},
                 )
     except Exception as e:

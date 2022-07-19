@@ -15,7 +15,9 @@ severity_list = get_list('severity_level_id', 'Please Select one')
 admission_type_list = get_list('admission_type_id', 'Please Select')
 admission_reason_list = get_list('care_admission_reason_id')
 domain_list = get_list('olmis_domain_id', 'Please Select')
-#
+list_sex_id = get_list('sex_id')
+consent_forms_list = get_list('consent_forms', 'Please Select')
+# new listings
 list_other_adms = get_list('other_form_admission', 'Please Select')
 list_other_vulnerability = get_list(
     'vulnerability_at_admission', 'Please Select')
@@ -24,6 +26,18 @@ list_education_perf = get_list('education_performance')
 list_marriage_type = get_list('parents_marriage_type')
 list_items_count = get_list('items_count_id', 'Please Select')
 list_special_support = get_list('special_support')
+list_community_services = get_list('community_services')
+list_school_category = get_list('school_category_id', 'Please Select')
+list_range_level = get_list('attachment_level', 'Please Select')
+list_child_exhibits = get_list('child_exhibits')
+list_income_range = get_list('income_range', 'Please Select')
+list_employment_type = get_list('employment_type', 'Please Select')
+list_closure_reasons = get_list('case_closure_reasons', 'Please Select')
+list_case_transfer_ids = get_list('case_transfer_ids', 'Please Select')
+list_satisfied_level = get_list('satisfied_level_ids')
+list_feeling_level = get_list('feeling_level_ids')
+list_referral_reasons = get_list('referral_reasons_ids', 'Please Select')
+list_referral_documents = get_list('referral_documents_ids')
 
 
 YESNO_CHOICES = get_list('yesno_id')
@@ -93,6 +107,13 @@ class AltCareForm(forms.Form):
             attrs={'id': 'qf3A1_rdo',
                    'data-parsley-required': 'true',
                    'data-parsley-errors-container': "#qf3A1_rdo_error"}))
+
+    qf3A2_sdd = forms.ChoiceField(
+        choices=consent_forms_list,
+        initial='0',
+        widget=forms.Select(
+            attrs={'class': 'form-control', 'id': 'care_option',
+                   'data-parsley-required': "true"}))
 
     qf3B1_rdo = forms.ChoiceField(
         choices=YESNO_CHOICES,
@@ -506,7 +527,7 @@ class AFCForm1B(forms.Form):
                'class': 'form-control', 'rows': '2'}))
 
     qf1B18A_rdo = forms.ChoiceField(
-        choices=(),
+        choices=list_range_level,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-required': 'true',
@@ -517,7 +538,7 @@ class AFCForm1B(forms.Form):
                'class': 'form-control', 'rows': '2'}))
 
     qf1B19A_rdo = forms.ChoiceField(
-        choices=(),
+        choices=list_range_level,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-required': 'true',
@@ -528,7 +549,7 @@ class AFCForm1B(forms.Form):
                'class': 'form-control', 'rows': '2'}))
 
     qf1B20 = forms.MultipleChoiceField(
-        choices=(),
+        choices=list_child_exhibits,
         widget=forms.CheckboxSelectMultiple(
             attrs={'data-parsley-required': 'true'}))
 
@@ -754,7 +775,7 @@ class AFCForm2A(forms.Form):
                    'class': 'form-control', 'rows': '2'}))
 
     qf2A20 = forms.MultipleChoiceField(
-        choices=(('', 'Please Select'),),
+        choices=list_community_services,
         required=False,
         widget=forms.CheckboxSelectMultiple(
             attrs={'class': ''}))
@@ -796,7 +817,7 @@ class AFCForm2A(forms.Form):
             attrs={'class': 'form-control'}))
 
     qf2A24_sdd = forms.ChoiceField(
-        choices=(),
+        choices=list_school_category,
         required=False,
         widget=forms.Select(
             attrs={'class': 'form-control'}))
@@ -846,13 +867,13 @@ class AFCForm2A(forms.Form):
                    'class': 'form-control', 'rows': '2'}))
 
     qf2A29_sdd = forms.ChoiceField(
-        choices=(),
+        choices=list_employment_type,
         required=False,
         widget=forms.Select(
             attrs={'class': 'form-control'}))
 
     qf2A30_sdd = forms.ChoiceField(
-        choices=(),
+        choices=list_income_range,
         required=False,
         widget=forms.Select(
             attrs={'class': 'form-control'}))
@@ -1130,7 +1151,7 @@ class AFCForm2A(forms.Form):
                    'class': 'form-control', 'rows': '3'}))
 
     qf2A64_sdd = forms.ChoiceField(
-        choices=(),
+        choices=list_range_level,
         required=True,
         widget=forms.Select(
             attrs={'class': 'form-control'}))
@@ -1382,7 +1403,7 @@ class AFCForm5A(forms.Form):
             attrs={'class': 'form-control'}))
 
     qf5A13_sdd = forms.ChoiceField(
-        choices=(),
+        choices=care_option_list,
         required=True,
         widget=forms.Select(
             attrs={'class': 'form-control'}))
@@ -1401,7 +1422,7 @@ class AFCForm5A(forms.Form):
             attrs={'class': 'form-control'}))
 
     qf5A15B_sdd = forms.ChoiceField(
-        choices=(),
+        choices=list_sex_id,
         required=True,
         widget=forms.Select(
             attrs={'class': 'form-control'}))
@@ -1418,7 +1439,7 @@ class AFCForm5A(forms.Form):
 
     qf5A17 = forms.MultipleChoiceField(
         required=True,
-        choices=(('', 'A parent unable to provide care due to the death of the other parent.'), ),
+        choices=admission_reason_list,
         widget=forms.CheckboxSelectMultiple(
             attrs={'data-parsley-required': 'true',
                    'data-parsley-errors-container': "#qf5A17_error"}))
@@ -1437,7 +1458,7 @@ class AFCForm6A(forms.Form):
     qf6A1_txt = forms.CharField(
         required=False,
         widget=forms.NumberInput(
-            attrs={'class': 'form-control'}))
+            attrs={'class': 'form-control', 'min': '1'}))
 
     qf6A2_txt = forms.CharField(
         required=False,
@@ -1570,350 +1591,448 @@ class AFCForm7A(forms.Form):
             attrs={'data-parsley-errors-container': "#qf7A11_rdo_error"}))
 
     qf7A12_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf7A12_rdo_error"}))
 
     qf7A13_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf7A13_rdo_error"}))
 
     qf7A14_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf7A14_rdo_error"}))
 
     qf7A15_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf7A15_rdo_error"}))
 
     qf7A16_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf7A16_rdo_error"}))
 
     qf7A17_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf7A17_rdo_error"}))
 
     qf7A21_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf7A21_rdo_error"}))
 
     qf7A22_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf7A22_rdo_error"}))
 
     qf7A23_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf7A23_rdo_error"}))
 
     qf7A24_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf7A24_rdo_error"}))
 
     qf7A31_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf7A31_rdo_error"}))
 
     qf7A32_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf7A32_rdo_error"}))
 
     qf7A33_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf7A33_rdo_error"}))
 
     qf7A34_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf7A34_rdo_error"}))
 
     qf7A35_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf7A35_rdo_error"}))
 
     qf7A36_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf7A36_rdo_error"}))
 
     qf7A37_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf7A37_rdo_error"}))
 
     qf7A38_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf7A38_rdo_error"}))
 
     qf7A41_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf7A41_rdo_error"}))
 
     qf7A42_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf7A42_rdo_error"}))
 
     qf7A43_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf7A43_rdo_error"}))
 
     qf7A44_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf7A44_rdo_error"}))
 
     qf7A45_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf7A45_rdo_error"}))
 
+    qf7A46_rdo = forms.ChoiceField(
+        choices=YESNONA_choices,
+        required=True,
+        widget=forms.RadioSelect(
+            renderer=RadioCustomRenderer,
+            attrs={'data-parsley-errors-container': "#qf7A46_rdo_error"}))
+
     qf7A51_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf7A51_rdo_error"}))
 
     qf7A52_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf7A52_rdo_error"}))
 
     qf7A53_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf7A53_rdo_error"}))
 
     qf7A54_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf7A54_rdo_error"}))
 
     qf7A55_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf7A55_rdo_error"}))
 
     qf7A61_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf7A61_rdo_error"}))
 
     qf7A62_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf7A62_rdo_error"}))
 
     qf7A63_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf7A63_rdo_error"}))
 
     qf7A64_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf7A64_rdo_error"}))
 
+    qf7A65_rdo = forms.ChoiceField(
+        choices=YESNONA_choices,
+        required=False,
+        widget=forms.RadioSelect(
+            renderer=RadioCustomRenderer,
+            attrs={'data-parsley-errors-container': "#qf7A65_rdo_error"}))
+
     qf7A71_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf7A71_rdo_error"}))
 
+    qf7A72_rdo = forms.ChoiceField(
+        choices=YESNONA_choices,
+        required=False,
+        widget=forms.RadioSelect(
+            renderer=RadioCustomRenderer,
+            attrs={'data-parsley-errors-container': "#qf7A72_rdo_error"}))
+
     qf7A81_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf7A81_rdo_error"}))
 
     qf7A82_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf7A82_rdo_error"}))
 
+    qf7A83_rdo = forms.ChoiceField(
+        choices=YESNONA_choices,
+        required=False,
+        widget=forms.RadioSelect(
+            renderer=RadioCustomRenderer,
+            attrs={'data-parsley-errors-container': "#qf7A83_rdo_error"}))
+
+    qf7A84_rdo = forms.ChoiceField(
+        choices=YESNONA_choices,
+        required=False,
+        widget=forms.RadioSelect(
+            renderer=RadioCustomRenderer,
+            attrs={'data-parsley-errors-container': "#qf7A84_rdo_error"}))
+
     qf7A91_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf7A91_rdo_error"}))
 
     qf7A92_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf7A92_rdo_error"}))
 
+    qf7A93_rdo = forms.ChoiceField(
+        choices=YESNONA_choices,
+        required=False,
+        widget=forms.RadioSelect(
+            renderer=RadioCustomRenderer,
+            attrs={'data-parsley-errors-container': "#qf7A93_rdo_error"}))
+
+    qf7A94_rdo = forms.ChoiceField(
+        choices=YESNONA_choices,
+        required=False,
+        widget=forms.RadioSelect(
+            renderer=RadioCustomRenderer,
+            attrs={'data-parsley-errors-container': "#qf7A94_rdo_error"}))
+
+    qf7A95_rdo = forms.ChoiceField(
+        choices=YESNONA_choices,
+        required=False,
+        widget=forms.RadioSelect(
+            renderer=RadioCustomRenderer,
+            attrs={'data-parsley-errors-container': "#qf7A95_rdo_error"}))
+
     qf7A101_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf7A101_rdo_error"}))
 
     qf7A102_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf7A102_rdo_error"}))
 
+    qf7A103_rdo = forms.ChoiceField(
+        choices=YESNONA_choices,
+        required=False,
+        widget=forms.RadioSelect(
+            renderer=RadioCustomRenderer,
+            attrs={'data-parsley-errors-container': "#qf7A103_rdo_error"}))
+
+    qf7A104_rdo = forms.ChoiceField(
+        choices=YESNONA_choices,
+        required=False,
+        widget=forms.RadioSelect(
+            renderer=RadioCustomRenderer,
+            attrs={'data-parsley-errors-container': "#qf7A104_rdo_error"}))
+
+    qf7A105_rdo = forms.ChoiceField(
+        choices=YESNONA_choices,
+        required=False,
+        widget=forms.RadioSelect(
+            renderer=RadioCustomRenderer,
+            attrs={'data-parsley-errors-container': "#qf7A105_rdo_error"}))
+
     qf7A111_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf7A111_rdo_error"}))
 
     qf7A112_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf7A112_rdo_error"}))
 
     qf7A113_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf7A113_rdo_error"}))
 
     qf7A114_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf7A114_rdo_error"}))
 
+    qf7A115_rdo = forms.ChoiceField(
+        choices=YESNONA_choices,
+        required=False,
+        widget=forms.RadioSelect(
+            renderer=RadioCustomRenderer,
+            attrs={'data-parsley-errors-container': "#qf7A115_rdo_error"}))
+
+    qf7A116_rdo = forms.ChoiceField(
+        choices=YESNONA_choices,
+        required=False,
+        widget=forms.RadioSelect(
+            renderer=RadioCustomRenderer,
+            attrs={'data-parsley-errors-container': "#qf7A116_rdo_error"}))
+
+    qf7A117_rdo = forms.ChoiceField(
+        choices=YESNONA_choices,
+        required=False,
+        widget=forms.RadioSelect(
+            renderer=RadioCustomRenderer,
+            attrs={'data-parsley-errors-container': "#qf7A117_rdo_error"}))
+
     qf7A121_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf7A121_rdo_error"}))
 
     qf7A122_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf7A122_rdo_error"}))
 
     qf7A123_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf7A123_rdo_error"}))
 
     qf7A124_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf7A124_rdo_error"}))
 
     qf7A125_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf7A125_rdo_error"}))
 
     qf7A126_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf7A126_rdo_error"}))
 
     qf7A127_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
@@ -1931,343 +2050,343 @@ class AFCForm8A(forms.Form):
                }))
 
     qf8A11_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf8A11_rdo_error"}))
 
     qf8A12_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf8A12_rdo_error"}))
 
     qf8A13_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf8A13_rdo_error"}))
 
     qf8A14_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf8A14_rdo_error"}))
 
     qf8A15_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf8A15_rdo_error"}))
 
     qf8A16_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf8A16_rdo_error"}))
 
     qf8A17_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf8A17_rdo_error"}))
 
     qf8A21_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf8A21_rdo_error"}))
 
     qf8A22_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf8A22_rdo_error"}))
 
     qf8A23_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf8A23_rdo_error"}))
 
     qf8A24_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf8A24_rdo_error"}))
 
     qf8A31_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf8A31_rdo_error"}))
 
     qf8A32_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf8A32_rdo_error"}))
 
     qf8A33_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf8A33_rdo_error"}))
 
     qf8A34_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf8A34_rdo_error"}))
 
     qf8A35_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf8A35_rdo_error"}))
 
     qf8A36_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf8A36_rdo_error"}))
 
     qf8A41_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf8A41_rdo_error"}))
 
     qf8A42_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf8A42_rdo_error"}))
 
     qf8A43_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf8A43_rdo_error"}))
 
     qf8A44_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf8A44_rdo_error"}))
 
     qf8A45_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf8A45_rdo_error"}))
 
     qf8A51_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf8A51_rdo_error"}))
 
     qf8A52_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf8A52_rdo_error"}))
 
     qf8A53_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf8A53_rdo_error"}))
 
     qf8A54_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf8A54_rdo_error"}))
 
     qf8A55_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf8A55_rdo_error"}))
 
     qf8A61_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf8A61_rdo_error"}))
 
     qf8A62_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf8A62_rdo_error"}))
 
     qf8A63_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf8A63_rdo_error"}))
 
     qf8A64_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf8A64_rdo_error"}))
 
     qf8A71_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf8A71_rdo_error"}))
 
     qf8A81_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf8A81_rdo_error"}))
 
     qf8A82_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf8A82_rdo_error"}))
 
     qf8A91_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf8A91_rdo_error"}))
 
     qf8A92_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf8A92_rdo_error"}))
 
     qf8A101_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf8A101_rdo_error"}))
 
     qf8A102_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf8A102_rdo_error"}))
 
     qf8A111_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf8A111_rdo_error"}))
 
     qf8A112_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf8A112_rdo_error"}))
 
     qf8A113_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf8A113_rdo_error"}))
 
     qf8A114_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf8A114_rdo_error"}))
 
     qf8A121_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf8A121_rdo_error"}))
 
     qf8A122_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf8A122_rdo_error"}))
 
     qf8A123_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf8A123_rdo_error"}))
 
     qf8A124_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf8A124_rdo_error"}))
 
     qf8A125_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf8A125_rdo_error"}))
 
     qf8A126_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
             attrs={'data-parsley-errors-container': "#qf8A126_rdo_error"}))
 
     qf8A127_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+        choices=YESNONA_choices,
         required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
@@ -2285,7 +2404,7 @@ class AFCForm9A(forms.Form):
                }))
 
     qf9AA_sdd = forms.ChoiceField(
-        choices=(),
+        choices=list_closure_reasons,
         initial='0',
         required=True,
         widget=forms.Select(
@@ -2390,7 +2509,7 @@ class AFCForm10A(forms.Form):
                    }))
 
     qf10A1A_sdd = forms.ChoiceField(
-        choices=(),
+        choices=list_case_transfer_ids,
         initial='0',
         required=True,
         widget=forms.Select(
@@ -2467,7 +2586,7 @@ class AFCForm12A(forms.Form):
                }))
 
     qf12A1_sdd = forms.ChoiceField(
-        choices=(),
+        choices=list_referral_reasons,
         initial='0',
         required=True,
         widget=forms.Select(
@@ -2486,7 +2605,7 @@ class AFCForm12A(forms.Form):
             attrs={'class': 'form-control'}))
 
     qf12A4 = forms.MultipleChoiceField(
-        choices=(('A', 'Case record sheet'), ),
+        choices=list_referral_documents,
         widget=forms.CheckboxSelectMultiple(
             attrs={'data-parsley-required': 'true',
                    'data-parsley-errors-container': "#id_qf12A4"}))
@@ -2553,6 +2672,152 @@ class AFCForm14A(forms.Form):
         widget=forms.TextInput(
             attrs={'class': 'form-control'}))
 
+    qf14A3A_rdo = forms.ChoiceField(
+        choices=YESNO_CHOICES,
+        required=True,
+        widget=forms.RadioSelect(
+            renderer=RadioCustomRenderer,
+            attrs={'id': 'qf14A3A_rdo',
+                   'data-parsley-required': 'true',
+                   'data-parsley-errors-container': "#qf14A3A_rdo_error"}))
+
+    qf14A4A_rdo = forms.ChoiceField(
+        choices=YESNO_CHOICES,
+        required=True,
+        widget=forms.RadioSelect(
+            renderer=RadioCustomRenderer,
+            attrs={'id': 'qf14A4A_rdo',
+                   'data-parsley-required': 'true',
+                   'data-parsley-errors-container': "#qf14A4A_rdo_error"}))
+
+    qf14A5A_rdo = forms.ChoiceField(
+        choices=YESNO_CHOICES,
+        required=True,
+        widget=forms.RadioSelect(
+            renderer=RadioCustomRenderer,
+            attrs={'id': 'qf14A5A_rdo',
+                   'data-parsley-required': 'true',
+                   'data-parsley-errors-container': "#qf14A5A_rdo_error"}))
+
+    qf14A6A_rdo = forms.ChoiceField(
+        choices=YESNO_CHOICES,
+        required=True,
+        widget=forms.RadioSelect(
+            renderer=RadioCustomRenderer,
+            attrs={'id': 'qf14A6A_rdo',
+                   'data-parsley-required': 'true',
+                   'data-parsley-errors-container': "#qf14A6A_rdo_error"}))
+
+    qf14A7A_rdo = forms.ChoiceField(
+        choices=YESNO_CHOICES,
+        required=True,
+        widget=forms.RadioSelect(
+            renderer=RadioCustomRenderer,
+            attrs={'id': 'qf14A7A_rdo',
+                   'data-parsley-required': 'true',
+                   'data-parsley-errors-container': "#qf14A7A_rdo_error"}))
+
+    qf14A8A_rdo = forms.ChoiceField(
+        choices=YESNO_CHOICES,
+        required=True,
+        widget=forms.RadioSelect(
+            renderer=RadioCustomRenderer,
+            attrs={'id': 'qf14A8A_rdo',
+                   'data-parsley-required': 'true',
+                   'data-parsley-errors-container': "#qf14A8A_rdo_error"}))
+
+    qf14A9A_rdo = forms.ChoiceField(
+        choices=YESNO_CHOICES,
+        required=True,
+        widget=forms.RadioSelect(
+            renderer=RadioCustomRenderer,
+            attrs={'id': 'qf14A9A_rdo',
+                   'data-parsley-required': 'true',
+                   'data-parsley-errors-container': "#qf14A9A_rdo_error"}))
+
+    qf14A10A_rdo = forms.ChoiceField(
+        choices=YESNO_CHOICES,
+        required=True,
+        widget=forms.RadioSelect(
+            renderer=RadioCustomRenderer,
+            attrs={'id': 'qf14A10A_rdo',
+                   'data-parsley-required': 'true',
+                   'data-parsley-errors-container': "#qf14A10A_rdo_error"}))
+
+    qf14A11A_rdo = forms.ChoiceField(
+        choices=YESNO_CHOICES,
+        required=True,
+        widget=forms.RadioSelect(
+            renderer=RadioCustomRenderer,
+            attrs={'id': 'qf14A11A_rdo',
+                   'data-parsley-required': 'true',
+                   'data-parsley-errors-container': "#qf14A11A_rdo_error"}))
+
+    qf14A12A_rdo = forms.ChoiceField(
+        choices=YESNO_CHOICES,
+        required=True,
+        widget=forms.RadioSelect(
+            renderer=RadioCustomRenderer,
+            attrs={'id': 'qf14A12A_rdo',
+                   'data-parsley-required': 'true',
+                   'data-parsley-errors-container': "#qf14A12A_rdo_error"}))
+
+    qf14A13A_rdo = forms.ChoiceField(
+        choices=YESNO_CHOICES,
+        required=True,
+        widget=forms.RadioSelect(
+            renderer=RadioCustomRenderer,
+            attrs={'id': 'qf14A13A_rdo',
+                   'data-parsley-required': 'true',
+                   'data-parsley-errors-container': "#qf14A13A_rdo_error"}))
+
+    qf14A14A_rdo = forms.ChoiceField(
+        choices=YESNO_CHOICES,
+        required=True,
+        widget=forms.RadioSelect(
+            renderer=RadioCustomRenderer,
+            attrs={'id': 'qf14A14A_rdo',
+                   'data-parsley-required': 'true',
+                   'data-parsley-errors-container': "#qf14A14A_rdo_error"}))
+
+    qf14A15A_rdo = forms.ChoiceField(
+        choices=YESNO_CHOICES,
+        required=True,
+        widget=forms.RadioSelect(
+            renderer=RadioCustomRenderer,
+            attrs={'id': 'qf14A15A_rdo',
+                   'data-parsley-required': 'true',
+                   'data-parsley-errors-container': "#qf14A15A_rdo_error"}))
+
+    qf14A16A_rdo = forms.ChoiceField(
+        choices=YESNO_CHOICES,
+        required=True,
+        widget=forms.RadioSelect(
+            renderer=RadioCustomRenderer,
+            attrs={'id': 'qf14A16A_rdo',
+                   'data-parsley-required': 'true',
+                   'data-parsley-errors-container': "#qf14A16A_rdo_error"}))
+
+    qf14A17A_txt = forms.CharField(
+        required=False,
+        widget=forms.Textarea(
+            attrs={'placeholder': _("Details"),
+                   'class': 'form-control', 'rows': '3'}))
+
+    qf14A18A_txt = forms.CharField(
+        required=False,
+        widget=forms.Textarea(
+            attrs={'placeholder': _("Details"),
+                   'class': 'form-control', 'rows': '3'}))
+
+    qf14A19_rdo = forms.ChoiceField(
+        choices=(('', 'Please Select'), ),
+        required=True,
+        widget=forms.RadioSelect(
+            renderer=RadioCustomRenderer,
+            attrs={'id': 'qf14A19_rdo',
+                   'data-parsley-errors-container': "#qf14A19_rdo_error"}))
+
 
 class AFCForm15A(forms.Form):
     """AFC Form 15A."""
@@ -2564,14 +2829,26 @@ class AFCForm15A(forms.Form):
                'data-parsley-required': "true"
                }))
 
-    qf15A1A_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+    qf15A1_rdo = forms.ChoiceField(
+        choices=list_satisfied_level,
         required=True,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
-            attrs={'id': 'qf9A1_rdo',
+            attrs={'id': 'qf15A1_rdo',
                    'data-parsley-required': 'true',
-                   'data-parsley-errors-container': "#qf16A1A_rdo_error"}))
+                   'data-parsley-errors-container': "#qf15A1_rdo_error"}))
+
+    qf15A3_txt = forms.CharField(
+        required=False,
+        widget=forms.Textarea(
+            attrs={'placeholder': _("Details"),
+                   'class': 'form-control', 'rows': '3'}))
+
+    qf15A4_txt = forms.CharField(
+        required=False,
+        widget=forms.Textarea(
+            attrs={'placeholder': _("Details"),
+                   'class': 'form-control', 'rows': '3'}))
 
 
 class AFCForm16A(forms.Form):
@@ -2584,11 +2861,38 @@ class AFCForm16A(forms.Form):
                'data-parsley-required': "true"
                }))
 
-    qf16A1A_rdo = forms.ChoiceField(
-        choices=YESNO_CHOICES,
+    qf16A1_rdo = forms.ChoiceField(
+        choices=list_feeling_level,
         required=True,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
-            attrs={'id': 'qf9A1_rdo',
+            attrs={'id': 'qf16A1_rdo',
                    'data-parsley-required': 'true',
-                   'data-parsley-errors-container': "#qf16A1A_rdo_error"}))
+                   'data-parsley-errors-container': "#qf16A1_rdo_error"}))
+
+    qf16A2_rdo = forms.ChoiceField(
+        choices=list_satisfied_level,
+        required=True,
+        widget=forms.RadioSelect(
+            renderer=RadioCustomRenderer,
+            attrs={'id': 'qf16A2_rdo',
+                   'data-parsley-required': 'true',
+                   'data-parsley-errors-container': "#qf16A2_rdo_error"}))
+
+    qf16A3_txt = forms.CharField(
+        required=False,
+        widget=forms.Textarea(
+            attrs={'placeholder': _("Details"),
+                   'class': 'form-control', 'rows': '3'}))
+
+    qf16A4_txt = forms.CharField(
+        required=False,
+        widget=forms.Textarea(
+            attrs={'placeholder': _("Details"),
+                   'class': 'form-control', 'rows': '3'}))
+
+    qf16A5_txt = forms.CharField(
+        required=False,
+        widget=forms.Textarea(
+            attrs={'placeholder': _("Details"),
+                   'class': 'form-control', 'rows': '3'}))

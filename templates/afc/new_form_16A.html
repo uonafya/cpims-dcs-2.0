@@ -92,8 +92,8 @@ form#new-form-b ul {
                     </div>
                     <hr>
                     <div class="form-group">
-                        <label class="col-md-2 control-label"></label>
-                        <div class="col-md-9">
+                        <label class="col-md-1 control-label"></label>
+                        <div class="col-md-10">
                             <p>"<b><u>{{ case.person.first_name }} {{ case.person.surname }}</u></b>, as we have talked about, our time to work together has
 come to an end. During this time, you have gone through many changes, and I am very proud of all that you have done for yourself. You are a special person and deserve to be safe and happy. I am so happy that I was able to be a part of helping you during this time. My hope is that you will continue to get close to your family and friends, and feel comfortable in the community, and reach the goals that you set for yourself. At this time, there is a chance for you to give your opinion about the services I have provided to you as your caseworker, using this form. It is very important that we know your true feelings, and that is why I will not be the one you will tell your opinions to. [Introduce third party by name] is someone who will get your opinion and make sure it is delivered without telling me what you said. I have a form here that needs to be filled out by [third-party person’s name]. I would like you to be very honest and give your true opinion.”
 </p>
@@ -106,53 +106,45 @@ help.
                     </div>
                     
                     <div class="form-group">
-                        <label class="col-md-3 control-label">Right now, in my home and community, I feel:</label>
-                        <div class="col-md-2">
-                            {{ form.qf14A1A_rdo }}
-                            <span id="qf2A1_rdo_error"></span>
+                        <label class="col-md-4 control-label">Right now, in my home and community, I feel:</label>
+                        <div class="col-md-6">
+                            {{ form.qf16A1_rdo }}
+                            <span id="qf16A1_rdo_error"></span>
                         </div>
-                        <div class="col-md-2">{{ form.qf14A1B_rdo }}</div>
-                        <div class="col-md-2">{{ form.qf14A1C_rdo }}</div>
+                        <div class="col-md-2"></div>
                     </div>
                     <div class="form-group">
-                        <label class="col-md-3 control-label">Child’s feedback for the case management services:</label>
-                        <div class="col-md-2">
-                            {{ form.qf14A1A_rdo }}
-                            <span id="qf2A1_rdo_error"></span>
+                        <label class="col-md-4 control-label">Child’s feedback for the case management services:</label>
+                        <div class="col-md-6">
+                            {{ form.qf16A2_rdo }}
+                            <span id="qf16A2_rdo_error"></span>
                         </div>
-                        <div class="col-md-2">{{ form.qf14A1B_rdo }}</div>
-                        <div class="col-md-2">{{ form.qf14A1C_rdo }}</div>
+                        <div class="col-md-2"></div>
                     </div>
                     <div class="form-group">
-                        <label class="col-md-3 control-label">I liked working with my caseworker because:</label>
-                        <div class="col-md-2">
-                            {{ form.qf14A1A_rdo }}
-                            <span id="qf2A1_rdo_error"></span>
+                        <label class="col-md-4 control-label">I liked working with my caseworker because:</label>
+                        <div class="col-md-6">
+                            {{ form.qf16A3_txt }}
                         </div>
-                        <div class="col-md-2">{{ form.qf14A1B_rdo }}</div>
-                        <div class="col-md-2">{{ form.qf14A1C_rdo }}</div>
+                        <div class="col-md-2"></div>
                     </div>
                     <div class="form-group">
-                        <label class="col-md-3 control-label">I wish working with my caseworker was different in this way:</label>
-                        <div class="col-md-2">
-                            {{ form.qf14A1A_rdo }}
-                            <span id="qf2A1_rdo_error"></span>
+                        <label class="col-md-4 control-label">I wish working with my caseworker was different in this way:</label>
+                        <div class="col-md-6">
+                            {{ form.qf16A4_txt }}
                         </div>
-                        <div class="col-md-2">{{ form.qf14A1B_rdo }}</div>
-                        <div class="col-md-2">{{ form.qf14A1C_rdo }}</div>
+                        <div class="col-md-2"></div>
                     </div>
                     <div class="form-group">
-                        <label class="col-md-3 control-label">Any other comments:</label>
-                        <div class="col-md-2">
-                            {{ form.qf14A1A_rdo }}
-                            <span id="qf2A1_rdo_error"></span>
+                        <label class="col-md-4 control-label">Any other comments:</label>
+                        <div class="col-md-6">
+                            {{ form.qf16A5_txt }}
                         </div>
-                        <div class="col-md-2">{{ form.qf14A1B_rdo }}</div>
-                        <div class="col-md-2">{{ form.qf14A1C_rdo }}</div>
+                        <div class="col-md-2"></div>
                     </div>           
                     
                     <div class="form-group">
-                        <label class="col-md-3 control-label"><b>Date of Feedback</b></label>
+                        <label class="col-md-4 control-label"><b>Date of Feedback</b></label>
                         <div class="col-md-2">
                             {{ form.event_date }}
                         </div>
@@ -160,7 +152,7 @@ help.
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-md-3 control-label"></label>
+                        <label class="col-md-4 control-label"></label>
                         <div class="col-md-3">
                             <button type="submit" class="btn btn-sm btn-success">Submit Form {{ form_id }} details</button>
                         </div>

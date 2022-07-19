@@ -18,31 +18,6 @@ form#new-form-b ul {
       padding-left: 1em;
       text-indent: -2em;
   }
-  table th {
-    border: 2px solid black;
-    padding: 5px;
-    text-align: center;
-    font-size: bold;
-  }
-  table td {
-    border: 1px solid black;
-    padding: 5px;
-    
-  }
-  #not_ready_to_grad, #ready_to_grad {
-    padding: 10px;
-    border-radius: 30px;
-    line-height: 40px;
-  }
-  .bench_status{
-    background-color: aqua;
-    font-size: 16px;
-    transform: 0.90;
-  }
-  .control-labels{
-    font-size: 20px;
-    text-decoration: underline;
-  }
 </style>
 {% endblock %}
 
@@ -154,45 +129,38 @@ form#new-form-b ul {
                             </div>
                             <div class="form-group">
                                 <label class="col-md-8 pull-left"> 1.1 The young adult can move safely to education facility/school. (Note. If child cannot move safely, then case cannot be closed.)</label>
-                                <div class="col-md-1">{{ form.qf8A11_rdo }}</div>
+                                <div class="col-md-2">{{ form.qf8A11_rdo }}</div>
                                 <div class="col-md-2"><span id="qf8A11_rdo_error"></span></div>
-                                <div class="col-md-1"></div>
                             </div>
                             <div class="form-group">
                                 <label class="col-md-8"> 1.2 There is evidence of education program enrolment (i.e., receipt)</label>
-                                <div class="col-md-1">{{ form.qf8A12_rdo }}</div>
+                                <div class="col-md-2">{{ form.qf8A12_rdo }}</div>
                                 <div class="col-md-2"><span id="qf8A12_rdo_error"></span></div>
-                                <div class="col-md-1"></div>
                             </div>
                             <div class="form-group">
                                 <label class="col-md-8"> 1.3 The young adult’s report card confirms regular attendance (i.e., not missing more than 5 days per month) and shows appropriate progression.</label>
-                                <div class="col-md-1">{{ form.qf8A13_rdo }}</div>
+                                <div class="col-md-2">{{ form.qf8A13_rdo }}</div>
                                 <div class="col-md-2"><span id="qf8A13_rdo_error"></span></div>
-                                <div class="col-md-1"></div>
                             </div>
                             <div class="form-group">
                                 <label class="col-md-8"> 1.4 The young adult has all the required education materials (e.g., uniform, shoes, books, toolkits).</label>
-                                <div class="col-md-1">{{ form.qf8A14_rdo }}</div>
+                                <div class="col-md-2">{{ form.qf8A14_rdo }}</div>
                                 <div class="col-md-2"><span id="qf8A14_rdo_error"></span></div>
-                                <div class="col-md-1"></div>
                             </div>
                             <div class="form-group">
                                 <label class="col-md-8"> 1.5 The young adult reports feeling positive about his/her school or college performance.</label>
-                                <div class="col-md-1">{{ form.qf8A15_rdo }}</div>
+                                <div class="col-md-2">{{ form.qf8A15_rdo }}</div>
                                 <div class="col-md-2"><span id="qf8A15_rdo_error"></span></div>
-                                <div class="col-md-1"></div>
                             </div>
                             <div class="form-group">
                                 <label class="col-md-8"> 1.6 The young adult reports enjoying education.</label>
-                                <div class="col-md-1">{{ form.qf8A16_rdo }}</div>
+                                <div class="col-md-2">{{ form.qf8A16_rdo }}</div>
                                 <div class="col-md-2"><span id="qf8A16_rdo_error"></span></div>
-                                <div class="col-md-1"></div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-8"> 1.7 The school has hygiene facilities inclusive for adolescent girls. (Hint: Observe and ask young adult directly to confirm that menstruation does not present a barrier to attendance. This question is not applicable to boys; therefore, score 1.)</label>
-                                <div class="col-md-1">{{ form.qf8A17_rdo }}</div>
+                                <label class="col-md-8"> 1.7 The school has hygiene facilities inclusive for adolescent girls. <small>(Hint: Observe and ask young adult directly to confirm that menstruation does not present a barrier to attendance. This question is not applicable to boys; therefore, score 1.)</small></label>
+                                <div class="col-md-2">{{ form.qf8A17_rdo }}</div>
                                 <div class="col-md-2"><span id="qf8A17_rdo_error"></span></div>
-                                <div class="col-md-1"></div>
                             </div>
 
                             <div class="note note-info">
@@ -200,32 +168,29 @@ form#new-form-b ul {
                             </div>
                             <div class="form-group">
                                 <label class="col-md-8"> 2.1 The school is physically accessible for the child (including classrooms, washrooms, recreational areas, and so forth).</label>
-                                <div class="col-md-1">{{ form.qf8A21_rdo }}</div>
+                                <div class="col-md-2">{{ form.qf8A21_rdo }}</div>
                                 <div class="col-md-2"><span id="qf8A21_rdo_error"></span></div>
-                                <div class="col-md-1"></div>
                             </div>
                             <div class="form-group">
                                 <label class="col-md-8"> 2.2 The teacher is aware of young adult’s special needs and/or circumstances.</label>
-                                <div class="col-md-1">{{ form.qf8A22_rdo }}</div>
+                                <div class="col-md-2">{{ form.qf8A22_rdo }}</div>
                                 <div class="col-md-2"><span id="qf8A22_rdo_error"></span></div>
-                                <div class="col-md-1"></div>
                             </div>
                             <div class="form-group">
                                 <label class="col-md-8"> 2.3 The teachers are using inclusive teaching practices to meet the young adult’s specific needs or circumstances.</label>
-                                <div class="col-md-1">{{ form.qf8A23_rdo }}</div>
+                                <div class="col-md-2">{{ form.qf8A23_rdo }}</div>
                                 <div class="col-md-2"><span id="qf8A23_rdo_error"></span></div>
-                                <div class="col-md-1"></div>
                             </div>
                             <div class="form-group">
                                 <label class="col-md-8">2.4 Stigma is not a barrier to young adult attending school.</label>
-                                <div class="col-md-1">{{ form.qf8A24_rdo }}</div>
+                                <div class="col-md-2">{{ form.qf8A24_rdo }}</div>
                                 <div class="col-md-2"><span id="qf8A24_rdo_error"></span></div>
-                                <div class="col-md-1"></div>
                             </div>
+                            <hr>
                             <div class="form-group">
                                 <label class="col-md-8"><b>Total score for Education domain</b></label>
                                 <div class="col-md-3" id="ed-totals"></div>
-                                <div class="col-md-1"></div>
+                                <div class="col-md-1" id="ids"></div>
                             </div>
                         </fieldset>
                     </div>
@@ -241,42 +206,37 @@ form#new-form-b ul {
 
                         <div class="form-group">
                             <label class="col-md-8">3.1 The young adult is currently free of violence, exploitation or exposure to violence at home, at school, in the community, and online. <small>(Note. If there is presence of violence, initiate child protection reporting protocol.)</small></label>
-                            <div class="col-md-1">{{ form.qf8A31_rdo }}</div>
+                            <div class="col-md-2">{{ form.qf8A31_rdo }}</div>
                             <div class="col-md-2"><span id="qf8A31_rdo_error"></span></div>
-                            <div class="col-md-1"></div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-8">3.2 The young adult can articulate appropriate ways to report and respond to violence.</label>
-                            <div class="col-md-1">{{ form.qf8A32_rdo }}</div>
+                            <div class="col-md-2">{{ form.qf8A32_rdo }}</div>
                             <div class="col-md-2"><span id="qf8A32_rdo_error"></span></div>
-                            <div class="col-md-1"></div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-8">3.3 The young adult can clearly articulate and give examples of how to manage stress in nonviolent manner.</label>
-                            <div class="col-md-1">{{ form.qf8A33_rdo }}</div>
+                            <div class="col-md-2">{{ form.qf8A33_rdo }}</div>
                             <div class="col-md-2"><span id="qf8A33_rdo_error"></span></div>
-                            <div class="col-md-1"></div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-8">3.4 The young adult can articulate appropriate ways to keep himself/herself safe.</label>
-                            <div class="col-md-1">{{ form.qf8A34_rdo }}</div>
+                            <div class="col-md-2">{{ form.qf8A34_rdo }}</div>
                             <div class="col-md-2"><span id="qf8A34_rdo_error"></span></div>
-                            <div class="col-md-1"></div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-8">3.5 The young adult can report an absence of violent discipline.</label>
-                            <div class="col-md-1">{{ form.qf8A35_rdo }}</div>
+                            <div class="col-md-2">{{ form.qf8A35_rdo }}</div>
                             <div class="col-md-2"><span id="qf8A35_rdo_error"></span></div>
-                            <div class="col-md-1"></div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-8">3.6 When there has been violence, the case plan and referral documentation confirm services have been accessed and met the intended purpose.</label>
-                            <div class="col-md-1">{{ form.qf8A36_rdo }}</div>
+                            <div class="col-md-2">{{ form.qf8A36_rdo }}</div>
                             <div class="col-md-2"><span id="qf8A36_rdo_error"></span></div>
-                            <div class="col-md-1"></div>
                         </div>
+                        <hr>
                         <div class="form-group">
-                            <label class="col-md-8"><b>Total score for Protection and Safety domain</b></label>
+                            <label class="col-md-8"><b>Total score for Safe domain</b></label>
                             <div class="col-md-3" id="pr-totals"></div>
                             <div class="col-md-1"></div>
                         </div>
@@ -293,34 +253,29 @@ form#new-form-b ul {
                         </div>
                         <div class="form-group">
                             <label class="col-md-8">4.1 The young adult can provide examples of how he/she problem solves in constructive ways.</label>
-                            <div class="col-md-1">{{ form.qf8A41_rdo }}</div>
+                            <div class="col-md-2">{{ form.qf8A41_rdo }}</div>
                             <div class="col-md-2"><span id="qf8A41_rdo_error"></span></div>
-                            <div class="col-md-1"></div>
                         </div>
 
                         <div class="form-group">
                             <label class="col-md-8">4.2 The young adult is able to provide examples of how he/she independently solved challenges in his/her life in the past 3 months.</label>
-                            <div class="col-md-1">{{ form.qf8A42_rdo }}</div>
+                            <div class="col-md-2">{{ form.qf8A42_rdo }}</div>
                             <div class="col-md-2"><span id="qf8A42_rdo_error"></span></div>
-                            <div class="col-md-1"></div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-8">4.3 The young adult displays an overall positive demeanor.</label>
-                            <div class="col-md-1">{{ form.qf8A43_rdo }}</div>
+                            <div class="col-md-2">{{ form.qf8A43_rdo }}</div>
                             <div class="col-md-2"><span id="qf8A43_rdo_error"></span></div>
-                            <div class="col-md-1"></div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-8">4.4 The young adult expresses a vision and his/her hopes for his/her family’s future life.</label>
-                            <div class="col-md-1">{{ form.qf8A44_rdo }}</div>
+                            <div class="col-md-2">{{ form.qf8A44_rdo }}</div>
                             <div class="col-md-2"><span id="qf8A44_rdo_error"></span></div>
-                            <div class="col-md-1"></div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-8">4.5 There is an absence of (a) extreme sadness all the time, (b) no interest in enjoyable activities, (c) change of appetite for food.</label>
-                            <div class="col-md-1">{{ form.qf8A45_rdo }}</div>
+                            <div class="col-md-2">{{ form.qf8A45_rdo }}</div>
                             <div class="col-md-2"><span id="qf8A45_rdo_error"></span></div>
-                            <div class="col-md-1"></div>
                         </div>
                         <div class="note note-info">
                             <h4 class="block">Psychosocial Well-Being and Community Belonging: Accessing social support services.</h4>
@@ -328,35 +283,30 @@ form#new-form-b ul {
 
                         <div class="form-group">
                             <label class="col-md-8">5.1 The young adult is able to articulate where to access support services for himself/herself.</label>
-                            <div class="col-md-1">{{ form.qf8A51_rdo }}</div>
+                            <div class="col-md-2">{{ form.qf8A51_rdo }}</div>
                             <div class="col-md-2"><span id="qf8A51_rdo_error"></span></div>
-                            <div class="col-md-1"></div>
                         </div>
 
                         <div class="form-group">
                             <label class="col-md-8">5.2 Where services were needed, the young adult is able to access them.</label>
-                            <div class="col-md-1">{{ form.qf8A52_rdo }}</div>
+                            <div class="col-md-2">{{ form.qf8A52_rdo }}</div>
                             <div class="col-md-2"><span id="qf8A52_rdo_error"></span></div>
-                            <div class="col-md-1"></div>
                         </div>
 
                         <div class="form-group">
                             <label class="col-md-8">5.3 The case plan and referral documentation confirm services have been accessed and met for the intended purpose.</label>
-                            <div class="col-md-1">{{ form.qf8A53_rdo }}</div>
+                            <div class="col-md-2">{{ form.qf8A53_rdo }}</div>
                             <div class="col-md-2"><span id="qf8A53_rdo_error"></span></div>
-                            <div class="col-md-1"></div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-8">5.4 The young adult has a national identification card (ID), where necessary.</label>
-                            <div class="col-md-1">{{ form.qf8A54_rdo }}</div>
+                            <div class="col-md-2">{{ form.qf8A54_rdo }}</div>
                             <div class="col-md-2"><span id="qf8A54_rdo_error"></span></div>
-                            <div class="col-md-1"></div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-8">5.5 The young adult has a birth certificate.</label>
-                            <div class="col-md-1">{{ form.qf8A55_rdo }}</div>
+                            <div class="col-md-2">{{ form.qf8A55_rdo }}</div>
                             <div class="col-md-2"><span id="qf8A55_rdo_error"></span></div>
-                            <div class="col-md-1"></div>
                         </div>
 
                         <div class="note note-info">
@@ -364,30 +314,27 @@ form#new-form-b ul {
                         </div>
                         <div class="form-group">
                             <label class="col-md-8">6.1 The young adult participated in a community activity in the past 3 months (e.g., extended family, football matches, fundraising, wedding, funeral).</label>
-                            <div class="col-md-1">{{ form.qf8A61_rdo }}</div>
+                            <div class="col-md-2">{{ form.qf8A61_rdo }}</div>
                             <div class="col-md-2"><span id="qf8A61_rdo_error"></span></div>
-                            <div class="col-md-1"></div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-8">6.2 The young adult is able to participate in daily activities in the community (e.g., playing or talking with other family members or friends).</label>
-                            <div class="col-md-1">{{ form.qf8A62_rdo }}</div>
+                            <div class="col-md-2">{{ form.qf8A62_rdo }}</div>
                             <div class="col-md-2"><span id="qf8A62_rdo_error"></span></div>
-                            <div class="col-md-1"></div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-8">6.3 The young adult is a member of a community group (e.g., church, mosque, peer support group, adolescent club, adolescent savings group).</label>
-                            <div class="col-md-1">{{ form.qf8A63_rdo }}</div>
+                            <div class="col-md-2">{{ form.qf8A63_rdo }}</div>
                             <div class="col-md-2"><span id="qf8A63_rdo_error"></span></div>
-                            <div class="col-md-1"></div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-8">6.4 The young adult can identify people in his/her community that he/she can talk to and/or seek help from.</label>
-                            <div class="col-md-1">{{ form.qf8A64_rdo }}</div>
+                            <div class="col-md-2">{{ form.qf8A64_rdo }}</div>
                             <div class="col-md-2"><span id="qf8A64_rdo_error"></span></div>
-                            <div class="col-md-1"></div>
                         </div>
+                        <hr>
                         <div class="form-group">
-                            <label class="col-md-8"><b>Total score for Psychosocial Well-Being domain</b></label>
+                            <label class="col-md-8"><b>Total score for Psychosocial domain</b></label>
                             <div class="col-md-3" id="ps-totals"></div>
                             <div class="col-md-1"></div>
                         </div>
@@ -404,9 +351,8 @@ form#new-form-b ul {
                         </div>
                         <div class="form-group">
                             <label class="col-md-8">7.1 The young adult eats a balanced meal (must have proteins, carbohydrates and vitamins) at least twice per day.</label>
-                            <div class="col-md-1">{{ form.qf8A71_rdo }}</div>
+                            <div class="col-md-2">{{ form.qf8A71_rdo }}</div>
                             <div class="col-md-2"><span id="qf8A61_rdo_error"></span></div>
-                            <div class="col-md-1"></div>
                         </div>
                         <div class="note note-info">
                             <h4 class="block">Health and Development: Developing.</h4>
@@ -414,15 +360,13 @@ form#new-form-b ul {
 
                         <div class="form-group">
                             <label class="col-md-8">8.1 The young adult is aware of and able to articulate adolescent development changes (e.g., physical, emotional, identity).</label>
-                            <div class="col-md-1">{{ form.qf8A81_rdo }}</div>
+                            <div class="col-md-2">{{ form.qf8A81_rdo }}</div>
                             <div class="col-md-2"><span id="qf8A81_rdo_error"></span></div>
-                            <div class="col-md-1"></div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-8">8.2 If young adult has a developmental delay, the case plan and referral documentation confirm that services have been accessed and have met the intended purpose.</label>
-                            <div class="col-md-1">{{ form.qf8A82_rdo }}</div>
+                            <div class="col-md-2">{{ form.qf8A82_rdo }}</div>
                             <div class="col-md-2"><span id="qf8A82_rdo_error"></span></div>
-                            <div class="col-md-1"></div>
                         </div>
 
                         <div class="note note-info">
@@ -430,18 +374,17 @@ form#new-form-b ul {
                         </div>
                         <div class="form-group">
                             <label class="col-md-8">9.1 If the young adult was referred for treatment, services were accessed and met the intended purpose. (Hint: Look for evidence of complete referral, such as returned referral slips, report from caregiver/mentor/service providers.)</label>
-                            <div class="col-md-1">{{ form.qf8A91_rdo }}</div>
+                            <div class="col-md-2">{{ form.qf8A91_rdo }}</div>
                             <div class="col-md-2"><span id="qf8A91_rdo_error"></span></div>
-                            <div class="col-md-1"></div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-8">9.2 If the young adult has a chronic illness or disability, he/she is conversant in her/his treatment regimen, as necessary.</label>
-                            <div class="col-md-1">{{ form.qf8A92_rdo }}</div>
+                            <div class="col-md-2">{{ form.qf8A92_rdo }}</div>
                             <div class="col-md-2"><span id="qf8A92_rdo_error"></span></div>
-                            <div class="col-md-1"></div>
                         </div>
+                        <hr>
                         <div class="form-group">
-                            <label class="col-md-8"><b>Total score for Health and Development domain</b></label>
+                            <label class="col-md-8"><b>Total score for Health domain</b></label>
                             <div class="col-md-3" id="hd-totals"></div>
                             <div class="col-md-1"></div>
                         </div>
@@ -459,15 +402,13 @@ form#new-form-b ul {
 
                         <div class="form-group">
                             <label class="col-md-8">10.1 The young adult feels his/her mentor know his/her likes, dislikes and what makes him/her happy or sad.</label>
-                            <div class="col-md-1">{{ form.qf8A101_rdo }}</div>
+                            <div class="col-md-2">{{ form.qf8A101_rdo }}</div>
                             <div class="col-md-2"><span id="qf8A101_rdo_error"></span></div>
-                            <div class="col-md-1"></div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-8">10.2 The young adult expresses that he/she spends time with his/her caregiver/mentor and enjoys this time. <small>(Hint: Probe into what kind of activities they do together and how frequently, and observe the young adult’s nonverbal cues.).</small></label>
-                            <div class="col-md-1">{{ form.qf8A102_rdo }}</div>
+                            <div class="col-md-2">{{ form.qf8A102_rdo }}</div>
                             <div class="col-md-2"><span id="qf8A102_rdo_error"></span></div>
-                            <div class="col-md-1"></div>
                         </div>
 
                         <div class="note note-info">
@@ -475,30 +416,27 @@ form#new-form-b ul {
                         </div>
                         <div class="form-group">
                             <label class="col-md-8">11.1 If the young adult was sick in the past 3 months, he/she confirms that his/her caregiver/mentor took care of him/her.</label>
-                            <div class="col-md-1">{{ form.qf8A111_rdo }}</div>
+                            <div class="col-md-2">{{ form.qf8A111_rdo }}</div>
                             <div class="col-md-2"><span id="qf8A111_rdo_error"></span></div>
-                            <div class="col-md-1"></div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-8">11.2 The young adult seeks support and comfort from the caregiver/mentor in response to stressors.</label>
-                            <div class="col-md-1">{{ form.qf8A112_rdo }}</div>
+                            <div class="col-md-2">{{ form.qf8A112_rdo }}</div>
                             <div class="col-md-2"><span id="qf8A112_rdo_error"></span></div>
-                            <div class="col-md-1"></div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-8">11.3 The young adult easily articulates the rules of the house and the consequences should the rules be broken.</label>
-                            <div class="col-md-1">{{ form.qf8A113_rdo }}</div>
+                            <div class="col-md-2">{{ form.qf8A113_rdo }}</div>
                             <div class="col-md-2"><span id="qf8A113_rdo_error"></span></div>
-                            <div class="col-md-1"></div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-8">11.4 The young adult feels that rules and consequences are applied consistently.</label>
-                            <div class="col-md-1">{{ form.qf8A114_rdo }}</div>
+                            <div class="col-md-2">{{ form.qf8A114_rdo }}</div>
                             <div class="col-md-2"><span id="qf8A114_rdo_error"></span></div>
-                            <div class="col-md-1"></div>
                         </div>
+                        <hr>
                         <div class="form-group">
-                            <label class="col-md-8"><b>Total score for Relationship and Attachment domain</b></label>
+                            <label class="col-md-8"><b>Total score for Relationship & Attachment domain</b></label>
                             <div class="col-md-3" id="ra-totals"></div>
                             <div class="col-md-1"></div>
                         </div>
@@ -516,48 +454,42 @@ form#new-form-b ul {
 
                         <div class="form-group">
                             <label class="col-md-8">12.1 The young adult has a stable source of income (e.g., business, formal employment, cash transfer) and/or productive assets (e.g. livestock, poultry).<br> <small>(Note. This is not applicable for young adult younger than age 18 years.)</small></label>
-                            <div class="col-md-1">{{ form.qf8A121_rdo }}</div>
+                            <div class="col-md-2">{{ form.qf8A121_rdo }}</div>
                             <div class="col-md-2"><span id="qf8A121_rdo_error"></span></div>
-                            <div class="col-md-1"></div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-8">12.2 The young adult has regular savings (e.g., active participation in a village savings and loan association or Savings and Internal Lending Community).</label>
-                            <div class="col-md-1">{{ form.qf8A122_rdo }}</div>
+                            <div class="col-md-2">{{ form.qf8A122_rdo }}</div>
                             <div class="col-md-2"><span id="qf8A122_rdo_error"></span></div>
-                            <div class="col-md-1"></div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-8">12.3 The young adult can provide examples of how he/she met regular and planned expenses (e.g., food, clothing, shelter, school) in the past 3 months.</label>
-                            <div class="col-md-1">{{ form.qf8A123_rdo }}</div>
+                            <div class="col-md-2">{{ form.qf8A123_rdo }}</div>
                             <div class="col-md-2"><span id="qf8A123_rdo_error"></span></div>
-                            <div class="col-md-1"></div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-8">12.4 The young adult can provide examples of how he/she met emergency expenses in the past 3 months.</label>
-                            <div class="col-md-1">{{ form.qf8A124_rdo }}</div>
+                            <div class="col-md-2">{{ form.qf8A124_rdo }}</div>
                             <div class="col-md-2"><span id="qf8A124_rdo_error"></span></div>
-                            <div class="col-md-1"></div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-8">12.5 The young adult was able to pay all the required medical expenses in the past 3 months.</label>
-                            <div class="col-md-1">{{ form.qf8A125_rdo }}</div>
+                            <div class="col-md-2">{{ form.qf8A125_rdo }}</div>
                             <div class="col-md-2"><span id="qf8A125_rdo_error"></span></div>
-                            <div class="col-md-1"></div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-8">12.6 The young adult can articulate plans to meet emergency expenses for the household.</label>
-                            <div class="col-md-1">{{ form.qf8A126_rdo }}</div>
+                            <div class="col-md-2">{{ form.qf8A126_rdo }}</div>
                             <div class="col-md-2"><span id="qf8A126_rdo_error"></span></div>
-                            <div class="col-md-1"></div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-8">12.7 The young adult can articulate plans for regular (e.g., food) and periodic (e.g., school fees) expenses.</label>
-                            <div class="col-md-1">{{ form.qf8A127_rdo }}</div>
+                            <div class="col-md-2">{{ form.qf8A127_rdo }}</div>
                             <div class="col-md-2"><span id="qf8A127_rdo_error"></span></div>
-                            <div class="col-md-1"></div>
                         </div>
+                        <hr>
                         <div class="form-group">
-                            <label class="col-md-8"><b>Total score for Economic Stability domain</b></label>
+                            <label class="col-md-8"><b>Total score for Stable domain</b></label>
                             <div class="col-md-3" id="es-totals"></div>
                             <div class="col-md-1"></div>
                         </div>
@@ -568,81 +500,78 @@ form#new-form-b ul {
                     <div class="form-group">
                         <div class="col-md-1"></div>
                         
-                        <div class="col-md-5">
-                            <table class="tg">
+                        <div class="col-md-10">
+                            <table class="table">
                                 <thead>
                                 <tr>
                                     <th colspan="5"><label class="control-labels">Total Benchmark Scores</label><br></th>
                                 </tr>
                                   <tr>
-                                    <th class="">#</th>
-                                    <th class="">Domain</th>
-                                    <th class="">Total Score</th>
-                                    <th class="">Scored</th>
-                                    <th class="">Status</th>
+                                    <th>#</th>
+                                    <th>Domain</th>
+                                    <th>Total Score</th>
+                                    <th>Scored</th>
+                                    <th>Status</th>
                                   </tr>
                                 </thead>
                                 <tbody>
                                   <tr>
-                                    <td class="1">1</td>
-                                    <td class="">Education</td>
-                                    <td class="">11</td>
+                                    <td>1</td>
+                                    <td>Education</td>
+                                    <td>11</td>
                                     <td class="ed-totals-table"></td>
-                                    <td class="" rowspan="7">
-                                        <span id="not_ready_to_grad">Not Ready to Graduate</span> <br>
-                                        <span id="ready_to_grad">Ready to Graduate</span>
-                                    </td>
+                                    <td class="ed-totals-status"></td>
                                   </tr>
                                   <tr>
-                                    <td class="2">2</td>
-                                    <td class="">Protection & Safety</td>
-                                    <td class="6">6</td>
+                                    <td>2</td>
+                                    <td>Protection & Safety</td>
+                                    <td>6</td>
                                     <td class="pr-totals-table"></td>
-                                    <!-- <td class=""></td> -->
+                                    <td class="pr-totals-status"></td>
                                   </tr>
                                   <tr>
-                                    <td class="3">3</td>
-                                    <td class="">Psychosocial Well-Being</td>
-                                    <td class="14">14</td>
+                                    <td>3</td>
+                                    <td>Psychosocial Well-Being</td>
+                                    <td>14</td>
                                     <td class="ps-totals-table"></td>
-                                    <!-- <td class=""></td> -->
+                                    <td class="ps-totals-status"></td>
                                   </tr>
                                   <tr>
-                                    <td class="4">4</td>
-                                    <td class="">Health and Development</td>
-                                    <td class="5">5</td>
+                                    <td>4</td>
+                                    <td>Health and Development</td>
+                                    <td>5</td>
                                     <td class="hd-totals-table"></td>
-                                    <!-- <td class=""></td> -->
+                                    <td class="hd-totals-status"></td>
                                   </tr>
                                   <tr>
-                                    <td class="5">5</td>
-                                    <td class="">Relationship and Attachment</td>
-                                    <td class="6">6</td>
+                                    <td>5</td>
+                                    <td>Relationship and Attachment</td>
+                                    <td>6</td>
                                     <td class="ra-totals-table"></td>
-                                    <!-- <td class=""></td> -->
+                                    <td class="ra-totals-status"></td>
                                   </tr>
                                   <tr>
-                                    <td class="6">6</td>
-                                    <td class="">Economic Stability</td>
-                                    <td class="7">7</td>
+                                    <td>6</td>
+                                    <td>Economic Stability</td>
+                                    <td>7</td>
                                     <td class="es-totals-table"></td>
-                                    <!-- <td class=""></td> -->
+                                    <td class="es-totals-status"></td>
                                   </tr>
                                   <tr>
-                                    <!-- <td class=""></td> -->
-                                    <td class="TotalScore" colspan="2">Total Score</td>
-                                    <td class="">49</td>
-                                    <td class="totals-table"></td>
-                                    <!-- <td class=""></td> -->
+                                    <th></th>
+                                    <th>Total Score</th>
+                                    <th>49</th>
+                                    <th class="totals-table"></th>
+                                    <th class="totals-status"></th>
                                   </tr>                                
                                 </tbody>
                                 </table>
+                            <hr>
                         </div>
-                        <!-- <div class="col-md-2">
-                        </div> -->
-                    <!-- </div>
-                    <div class="form-group"> -->
-                        <label class="col-md-2 control-label">Date review completed</label>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Date review completed</label>
                         <div class="col-md-2">
                             {{ form.event_date }}
                         </div>
@@ -652,7 +581,7 @@ form#new-form-b ul {
                     
                     
                     <div class="form-group">
-                        <label class="col-md-5"></label>
+                        <label class="col-md-4"></label>
                         <div class="col-md-4">
                             <button type="submit" class="btn btn-sm btn-success">Submit Form {{ form_id }} details</button>
                         </div>
@@ -735,20 +664,18 @@ $(document).ready(function() {
         });
 
         var ed_grad = (ed_marks < 10) ? " Not Ready for Graduation" :" Ready for Graduation";
-        var pr_grad = (pr_marks < 6) ? " Not Ready for Graduation" :" Ready for Graduation";
-        var ps_grad = (ps_marks < 14) ? " Not Ready for Graduation" :" Ready for Graduation";
+        var pr_grad = (pr_marks < 5) ? " Not Ready for Graduation" :" Ready for Graduation";
+        var ps_grad = (ps_marks < 13) ? " Not Ready for Graduation" :" Ready for Graduation";
         var hd_grad = (hd_marks < 5) ? " Not Ready for Graduation" :" Ready for Graduation";
-        var ra_grad = (ra_marks < 6) ? " Not Ready for Graduation" :" Ready for Graduation";
-        var es_grad = (es_marks < 7) ? " Not Ready for Graduation" :" Ready for Graduation";
+        var ra_grad = (ra_marks < 5) ? " Not Ready for Graduation" :" Ready for Graduation";
+        var es_grad = (es_marks < 6) ? " Not Ready for Graduation" :" Ready for Graduation";
 
         var total_score = (ed_marks + pr_marks + ps_marks + hd_marks + ra_marks + es_marks)
 
         if (total_score >= 5){
-            $('#ready_to_grad').addClass('bench_status');
-            $('#not_ready_to_grad').removeClass();
+            var total_status = 'Ready for Graduation';
         }else {
-            $('#not_ready_to_grad').addClass('bench_status');
-            $('#ready_to_grad').removeClass();
+            var total_status = 'Not Ready for Graduation';
         }
 
         $("#ed-totals").html("<b>" + ed_marks + " / 11 : " + ed_grad + "<b>");         
@@ -759,18 +686,23 @@ $(document).ready(function() {
         $("#es-totals").html("<b>" + es_marks + " / 7 : " + es_grad + "<b>");
 
         $(".ed-totals-table").html(ed_marks);
-        $(".pr-totals-table").html(pr_marks);         
+        $(".pr-totals-table").html(pr_marks);        
         $(".ps-totals-table").html(ps_marks);         
         $(".hd-totals-table").html(hd_marks);         
         $(".ra-totals-table").html(ra_marks);
-        $(".es-totals-table").html(es_marks);
-        
-        $('.totals-table').html(total_score)
-
+        $(".es-totals-table").html(es_marks);        
+        $('.totals-table').html(total_score);
+        //Status
+        $(".ed-totals-status").html(ed_grad);
+        $(".pr-totals-status").html(pr_grad);        
+        $(".ps-totals-status").html(ps_grad);         
+        $(".hd-totals-status").html(hd_grad);         
+        $(".ra-totals-status").html(ra_grad);
+        $(".es-totals-status").html(es_grad);        
+        $('.totals-status').html(total_status);
 
         }
 });
-
 
 </script>
 {% endblock %}
