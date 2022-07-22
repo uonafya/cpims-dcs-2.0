@@ -881,16 +881,18 @@ $(document).ready(function() {
             console.log('Benchmark Score' + qid + ":" + bmarks);
         });
 
-        var ed_grad = (ed_marks < 10) ? " Not Ready for Graduation" :" Ready for Graduation";
-        var pr_grad = (pr_marks < 7) ? " Not Ready for Graduation" :" Ready for Graduation";
-        var ps_grad = (ps_marks < 14) ? " Not Ready for Graduation" :" Ready for Graduation";
-        var hd_grad = (hd_marks < 10) ? " Not Ready for Graduation" :" Ready for Graduation";
-        var ra_grad = (ra_marks < 11) ? " Not Ready for Graduation" :" Ready for Graduation";
-        var es_grad = (es_marks < 6) ? " Not Ready for Graduation" :" Ready for Graduation";
+        var ed_grad = (ed_marks < 10) ? " Not Ready for Graduation" :"Ready for Graduation";
+        var pr_grad = (pr_marks < 7) ? " Not Ready for Graduation" :"Ready for Graduation";
+        var ps_grad = (ps_marks < 14) ? " Not Ready for Graduation" :"Ready for Graduation";
+        var hd_grad = (hd_marks < 10) ? " Not Ready for Graduation" :"Ready for Graduation";
+        var ra_grad = (ra_marks < 11) ? " Not Ready for Graduation" :"Ready for Graduation";
+        var es_grad = (es_marks < 6) ? " Not Ready for Graduation" :"Ready for Graduation";
 
         var total_score = (ed_marks + pr_marks + ps_marks + hd_marks + ra_marks + es_marks)
 
-        if (total_score >= 5){
+        if (ed_grad === 'Ready for Graduation' && pr_grad === 'Ready for Graduation' 
+        && ps_grad === 'Ready for Graduation' && hd_grad === 'Ready for Graduation' 
+        && ra_grad === 'Ready for Graduation' && es_grad === 'Ready for Graduation'){
             var total_status = 'Ready for Graduation';
         }else {
             var total_status = 'Not Ready for Graduation';
