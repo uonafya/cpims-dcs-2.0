@@ -1,17 +1,42 @@
 from django.shortcuts import get_object_or_404
-from cpovc_main.functions import get_dict, convert_date
+from cpovc_main.functions import convert_date
 from .models import CTIPMain, CTIPEvents, CTIPForms
+from cpovc_forms.functions import save_case_info
+from cpovc_forms.models import OvcCaseInformation
 
 
 def handle_ctip(request, action, params={}):
     """Method to handle CTiP"""
     try:
         if action == 0:
-            save_case(request, params)
+            tr_case = request.POST.get('is_trafficking')
+            if tr_case == 'AYES':
+                save_case(request, params)
+            else:
+                # This is to handle edits / deletion
+                case_id = params['case_id']
+                case = get_object_or_404(CTIPMain, case_id=case_id)
+                if case:
+                    # Void this record and delete case_info data
+                    case.is_void = True
+                    case.save(update_fields=["is_void"])
+                    case_info = OvcCaseInformation.objects.filter(
+                        case_id=case_id)
+                    case_info.delete()
     except Exception as e:
         print('Error saving TIP Action %s' % (str(e)))
     else:
         return True
+
+
+def get_ctip(request, case_id):
+    """Method to get ctip case."""
+    try:
+        case = CTIPMain.objects.get(case_id=case_id, is_void=False)
+    except Exception:
+        return False
+    else:
+        return case
 
 
 def save_case(request, params):
@@ -22,21 +47,37 @@ def save_case(request, params):
         case_date = params['case_date']
         obj, created = CTIPMain.objects.update_or_create(
             case_id=case_id,
-            defaults={'case_date': case_date, 'person_id': person_id},
+            defaults={'case_date': case_date,
+                      'person_id': person_id, 'is_void': False},
         )
+        # Save the activity, means and purpose
+        activity_list = request.POST.getlist('ctip_activity')
+        means_list = request.POST.getlist('ctip_means')
+        purpose_list = request.POST.getlist('ctip_purpose')
+        case = obj.case
+        print('case', case)
+        print('Activity', activity_list)
+        for activity in activity_list:
+            save_case_info(request, case, 'TACT', activity, '')
+        for means in means_list:
+            save_case_info(request, case, 'TMNS', means, '')
+        for purpose in purpose_list:
+            save_case_info(request, case, 'TPPS', purpose, '')
     except Exception as e:
         print('Error saving TIP %s' % (str(e)))
     else:
         return True
 
 
-def save_ctip_form(request, form_id):
+def save_ctip_form(request, form_id, ev_id=0):
     """Method to save forms."""
     try:
         response = True
         case_id = request.POST.get('case_id')
         person_id = request.POST.get('person_id')
         event_date = request.POST.get('event_date')
+        lid = get_last_form(request, form_id)
+        print('Last ID', lid)
         if form_id == 'A':
             consent_date = request.POST.get('consent_date')
             has_consent = request.POST.get('has_consent')
@@ -45,6 +86,14 @@ def save_ctip_form(request, form_id):
             case.has_consent = True if has_consent == 'AYES' else False
             case.consent_date = convert_date(consent_date)
             case.save(update_fields=["consent_date", "has_consent"])
+        elif form_id == 'C':
+            nev_id = lid + 1 if ev_id == 0 else ev_id
+            obj, created = CTIPEvents.objects.update_or_create(
+                case_id=case_id, form_id=form_id, event_count=nev_id,
+                defaults={'event_date': convert_date(event_date),
+                          'person_id': person_id})
+            event_id = obj.pk
+            save_form_data(request, form_id, event_id)
         else:
             obj, created = CTIPEvents.objects.update_or_create(
                 case_id=case_id, form_id=form_id,
@@ -59,6 +108,18 @@ def save_ctip_form(request, form_id):
         return False
     else:
         return response
+
+
+def get_last_form(request, form_id):
+    """Method to get the last form."""
+    try:
+        last_form = CTIPEvents.objects.filter(
+            form_id=form_id).latest('event_count').event_count
+    except Exception as e:
+        print('Error querying last form ID - %s' % (str(e)))
+        return 0
+    else:
+        return last_form
 
 
 def save_form_data(request, form_id, event_id):

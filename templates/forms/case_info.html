@@ -6,6 +6,17 @@
 
 {% block style_code %}
 <link href="{% static 'plugins/parsley/src/parsley.css' %}" rel="stylesheet" />
+<style type="text/css">
+.tab-content ul {
+  list-style-type: none;
+  margin-left: 0px;
+}
+.tab-content li {
+    padding-left: 1em;
+    text-indent: -2em;
+    margin-right: 2em;
+}
+</style>
 {% endblock %}
 {% load app_filters %}
 
@@ -47,7 +58,7 @@
                 <div class="invoice-company">
                     <span class="pull-right hidden-print"> 
                         <a href="/" class="btn btn-sm btn-primary m-r-5 m-b-5"><i class="fa fa-arrow-left m-r-5"></i> To Dashboard</a>                  
-                        <a href="{% url 'cpims_document' doc_id='CRS' case_id=case.case_id %}" class="btn btn-sm btn-danger m-r-5 m-b-5"><i class="fa fa-file-pdf-o m-r-5"></i> Export as PDF</a>
+                        <a href="{% url 'cpims_document' doc_id='CRS' case_id=case.case_id %}" class="btn btn-sm btn-danger m-r-5 m-b-5"><i class="fa fa-file-pdf-o m-r-5"></i> Case Record Sheet as PDF</a>
                         <div class="btn-group m-r-5 m-b-5">
                             <a href="#" class="btn btn-success">Case Actions</a>
                             <a href="javascript:;" data-toggle="dropdown" class="btn btn-success dropdown-toggle">
@@ -84,18 +95,20 @@
                                         <td class="field">Sex</td><td>{{ case.person.sex_id|gen_value:vals }}</td>
                                         <td class="field">DOB</td><td>{{ case.person.date_of_birth }}</td>
                                     </tr>
-                                    <tr>
+                                    <tr class="highlight">
                                         <td class="field">Case Date</td><td>{{ case.date_case_opened }}</td>
                                         <td class="field">Case Reporter</td><td>{{ case.case_reporter|gen_value:vals }}</td>
                                         <td></td><td></td>
                                     </tr>
                                     <tr class="highlight">
                                         <td class="field">Case Category</td>
-                                        <td colspan="5">
+                                        <td>
                                             {% for cat in cats %}
-                                                {{ cat.case_category }}
+                                                {{ cat.case_category|gen_value:vals }}
                                             {% endfor %}
                                         </td>
+                                        <td class="field">Sub Category</td>
+                                        <td></td><td></td>
                                     </tr>
                                     {% if tr_case %}
                                     <tr class="highlight">
@@ -108,33 +121,31 @@
                                 </tbody>
                             </table>
                             <div class="form-group">
-                                <label class="col-md-2 control-label">Is this a Trafficking Case</label>
-                                <div class="col-md-10">
+                                <label class="col-md-3 control-label">Is this a Trafficking Case</label>
+                                <div class="col-md-9">
                                     {{ tr_form.is_trafficking }}
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label class="col-md-2 control-label">Activity</label>
-                                <div class="col-md-10">
+                            <div class="form-group" id="amp_div">
+                                <label class="col-md-3 control-label">Activity, Means and Purpose</label>
+                                <div class="col-md-3"><label class="control-label"><strong>Activity</strong></label>
                                     {{ tr_form.ctip_activity }}
+                                    <span id="activity_error"></span>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-2 control-label">Means</label>
-                                <div class="col-md-10">
+                                <div class="col-md-3"><label class="control-label"><strong>Means</strong></label>
                                     {{ tr_form.ctip_means }}
+                                    <span id="means_error"></span>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-2 control-label">Purpose</label>
-                                <div class="col-md-10">
+                                <div class="col-md-3"><label class="control-label"><strong>Purpose</strong></label>
                                     {{ tr_form.ctip_purpose }}
+                                    <span id="purpose_error"></span>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-2 control-label"></label>
-                                <div class="col-md-10">
+                                <label class="col-md-3 control-label"></label>
+                                <div class="col-md-9">
                                     <button type="button" id="tab-1" class="btn btn-sm btn-success btnCaseinfo">Update Extra Information</button>
+                                    <a id="ctip_forms" href="/forms/ctip/case/{{ case_id }}/" class="btn btn-sm btn-primary"> CTiP Detailed Forms</a>
                                 </div>
                             </div>                           
                             
@@ -240,6 +251,28 @@
                 console.log('Not Valid');
             }
         });
+        var aval = $("input[name='is_trafficking']:checked").val();
+        handle_amp(aval);
+
+        // Purpose means logic
+        $('input[type=radio][name=is_trafficking]').change(function() {
+            handle_amp(this.value);
+        });
+
+        function handle_amp(aval){
+            console.log('AVAL', aval);
+            if (aval == 'AYES') {
+                $('#amp_div').show();
+                $('#ctip_forms').show();
+                $('input[type=checkbox][name=ctip_activity]').attr('data-parsley-required', 'true');
+                $('input[type=checkbox][name=ctip_purpose]').attr('data-parsley-required', 'true');
+            }else{
+                $('#amp_div').hide();
+                $('#ctip_forms').hide();
+                $('input[type=checkbox][name=ctip_activity]').attr('data-parsley-required', 'false');
+                $('input[type=checkbox][name=ctip_purpose]').attr('data-parsley-required', 'false');
+            }
+        }
     });
 </script>
 {% endblock %}

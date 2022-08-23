@@ -60,7 +60,7 @@ from notifications.functions import send_notification
 # For CTiP
 from cpovc_ctip.settings import CATS
 from cpovc_ctip.forms import CTIPForm
-from cpovc_ctip.functions import handle_ctip
+from cpovc_ctip.functions import handle_ctip, get_ctip
 
 
 def validate_serialnumber(person_id, subcounty, serial_number):
@@ -854,6 +854,78 @@ def forms_registry(request):
         messages.add_message(request, messages.ERROR, msg)
 
     form = SearchForm()
+    cpims_id = request.GET.get('cpims_id', False)
+    if cpims_id:
+        resultsets, rs_sets = [], []
+        form_type = 'FTPC'
+        check_fields = ['sex_id', 'case_category_id']
+        vals = get_dict(field_name=check_fields)
+        form = SearchForm(initial={'form_type': form_type})
+        results = OVCCaseRecord.objects.filter(person_id=cpims_id)
+        case_ids = results.values_list('case_id')
+        creators = results.values_list('created_by')
+        # Related
+        case_cats = {}
+        case_locs = {}
+        case_orgs = {}
+        all_users = {}
+        app_users = AppUser.objects.filter(id__in=creators)
+        for app_user in app_users:
+            fname = app_user.reg_person.first_name
+            sname = app_user.reg_person.surname
+            onames = app_user.reg_person.other_names
+            oname = onames if onames else ''
+            names = '%s %s %s' % (fname, sname, oname)
+            all_users[app_user.id] = names
+        case_cats_qs = OVCCaseCategory.objects.filter(
+            case_id_id__in=case_ids)
+        case_locs_qs = OVCCaseGeo.objects.filter(
+            case_id_id__in=case_ids)
+        # print 'categories', vals
+        for ccat in case_cats_qs:
+            cc_id = ccat.case_id_id
+            cat_id = ccat.case_category
+            case_cat = vals[cat_id] if cat_id in vals else cat_id
+            if cc_id in case_cats:
+                case_cats[cc_id].append(case_cat)
+            else:
+                case_cats[cc_id] = [case_cat]
+        for cloc in case_locs_qs:
+            cc_id = cloc.case_id_id
+            sc = cloc.occurence_subcounty
+            case_orgs[cc_id] = cloc.report_orgunit.org_unit_name
+            case_locs[cc_id] = sc.area_name if sc else None
+        print('case ids', case_ids)
+        for result in results:
+            # Add Person Attributes ###
+            rp = result.person
+            setattr(result, 'id', str(rp.id))
+            setattr(result, 'first_name', str(rp.first_name))
+            setattr(result, 'surname', str(rp.surname))
+            setattr(result, 'sex_id', str(rp.sex_id))
+            setattr(result, 'dob', rp.date_of_birth)
+            setattr(result, 'age', str(rp.age))
+            setattr(result, 'form_id', str(result.pk).replace('-', ''))
+            resultsets.append(result)
+
+        # Add dependencies
+        for rs in resultsets:
+            cid = rs.case_id
+            uid = rs.created_by
+            case_cat = case_cats[cid] if cid in case_cats else []
+            case_org = case_orgs[cid] if cid in case_orgs else 'BLANK'
+            case_loc = case_locs[cid] if cid in case_locs else 'BLANK'
+            case_user = all_users[uid] if uid in all_users else uid
+            cases_cat = ' ,'.join(case_cat)
+            setattr(rs, 'case_category', cases_cat)
+            setattr(rs, 'org_unit', case_org)
+            setattr(rs, 'case_location', case_loc)
+            setattr(rs, 'case_creator', case_user)
+        # resultsets.append(rs)
+        return render(
+            request, 'forms/forms_registry.html',
+            {'form': form, 'resultsets': [resultsets],
+             'vals': vals, 'form_type': form_type})
     return render(request, 'forms/forms_registry.html', {'form': form})
 
 
@@ -992,32 +1064,18 @@ def documents_manager(request):
     return render(request, 'forms/documents_manager.html', {'status': 200, 'form': form})
 
 
-# def new_case_record_sheet(request, id):
-#    return HttpResponseRedirect(reverse(ovc_search))
+
 @login_required
-# @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @is_allowed_groups(['RGM', 'RGU', 'DSU', 'STD'])
 def case_record_sheet(request):
-    """
-    if request.session.get('is_national', True):
-        page_info = (' - National Level persons can not access Case Record Sheet. '
-                         'Contact your supervisor.')
-        return render(request, 'registry/roles_none.html',
-                      {'page': page_info})
-    """
-
+    form = OVCSearchForm(data=request.POST, initial={'person_type': 'TBVC'})
+    check_fields = ['sex_id', 'person_type_id', 'identifier_type_id']
+    vals = get_dict(field_name=check_fields)
     if request.method == 'POST':
         resultsets = None
         person_type = None
 
         try:
-            form = OVCSearchForm(
-                data=request.POST, initial={'person_type': 'TBVC'})
-            check_fields = ['sex_id',
-                            'person_type_id',
-                            'identifier_type_id']
-            vals = get_dict(field_name=check_fields)
-
             person_type = 'TBVC'
             search_string = request.POST.get('search_name')
             search_criteria = request.POST.get('search_criteria')
@@ -1041,8 +1099,9 @@ def case_record_sheet(request):
                     setattr(result, 'case_count', case_count)
 
                     # Add child_geo to result <object>
-                    ovc_persongeos = RegPersonsGeo.objects.filter(person=int(
-                        result.id)).values_list('area_id', flat=True).order_by('area_id')
+                    ovc_persongeos = RegPersonsGeo.objects.filter(
+                        person=int(result.id)).values_list(
+                        'area_id', flat=True).order_by('area_id')
                     geo_locs = []
                     for ovc_persongeo in ovc_persongeos:
                         area_id = str(ovc_persongeo)
@@ -1060,13 +1119,22 @@ def case_record_sheet(request):
                                'vals': vals,
                                'person_type': person_type})
             else:
-                msg = 'No results for (%s).Name does not exist in database.' % search_string
+                msg = 'No results for (%s).' % (search_string)
+                msg += 'Name does not exist in database.'
                 messages.add_message(request, messages.ERROR, msg)
         except Exception, e:
             msg = 'OVC search error - %s' % (str(e))
             messages.add_message(request, messages.INFO, msg)
         return HttpResponseRedirect(reverse(case_record_sheet))
     else:
+        cpims_id = request.GET.get('cpims_id', False)
+        form = OVCSearchForm(initial={'search_criteria': 'NAME'})
+        if cpims_id:
+            resultsets = RegPerson.objects.filter(id=cpims_id)
+            return render(
+                request, 'forms/case_record_sheet.html',
+                {'form': form, 'resultsets': resultsets,
+                 'vals': vals, 'person_type': person_type})
         form = OVCSearchForm(initial={'search_criteria': 'NAME'})
         return render(request, 'forms/case_record_sheet.html',
                       {'form': form})
@@ -2007,14 +2075,13 @@ def view_case_record_sheet(request, id):
 
         vals = get_dict(field_name=check_fields)
 
-        ovcd = OVCEconomicStatus.objects.filter(
-            case_id=id, is_void=False).first()
+        ovcd = OVCEconomicStatus.objects.get(case_id=id, is_void=False)
         ovcfam = OVCFamilyStatus.objects.filter(case_id=id, is_void=False)
         ovccr = OVCCaseRecord.objects.get(case_id=id, is_void=False)
-        ovcgeo = OVCCaseGeo.objects.filter(case_id=id, is_void=False).first()
+        ovcgeo = OVCCaseGeo.objects.get(case_id=id, is_void=False)
         ovcfrnds = OVCFriends.objects.filter(case_id=id, is_void=False)
         ovchobs = OVCHobbies.objects.filter(case_id=id, is_void=False)
-        ovcmed = OVCMedical.objects.filter(case_id=id, is_void=False).first()
+        ovcmed = OVCMedical.objects.get(case_id=id, is_void=False)
         ovcccats = OVCCaseCategory.objects.filter(case_id=id, is_void=False)
         ovcneeds = OVCNeeds.objects.filter(case_id=id, is_void=False)
         ovcrefa = OVCReferral.objects.filter(case_id=id, is_void=False)
@@ -2204,6 +2271,7 @@ def new_case_record_sheet(request, id):
     # Get Time
     now = timezone.now()
     msg = ''
+    cpims_id = int(id)
 
     # Get logged in user
     username = request.user.get_username()
@@ -2709,7 +2777,7 @@ def new_case_record_sheet(request, id):
     msg = 'Case Record Sheet (%s %s) Save Succesfull' % (
         init_data.first_name, init_data.surname)
     messages.add_message(request, messages.INFO, msg)
-    redirect_url = reverse(forms_registry)
+    redirect_url = '%s?cpims_id=%s' % (reverse(forms_registry), cpims_id)
     return HttpResponseRedirect(redirect_url)
 
 
@@ -8551,14 +8619,14 @@ def new_bursary(request, id):
 def case_info(request, case_id):
     """Method to save case information."""
     try:
-        check_fields = ['sex_id', 'case_reporter_id']
+        check_fields = ['sex_id', 'case_reporter_id',
+                        'case_category_id']
         tids = {0: "Case Details"}
         tids[2] = "Case Emergency Details"
         tids[5] = "Other Case Details"
         # Trafficking cases
         tr_case = False
-        tr_form = CTIPForm()
-        # End trafficking
+        #  End trafficking
         vals = get_dict(field_name=check_fields)
         case = OVCCaseRecord.objects.get(case_id=case_id)
         person_id = case.person_id
@@ -8591,13 +8659,31 @@ def case_info(request, case_id):
             return JsonResponse(result, content_type='application/json',
                                 safe=False)
         initial_info = {'case_narration': case.case_remarks}
+        tr_initial_info = {}
         case_infos = get_case_info(request, case_id)
+        activities, means, purposes = [], [], []
         for cinfo in case_infos:
             info_type = cinfo.info_type
             if info_type == 'OIEM':
                 initial_info['emergency'] = cinfo.info_item
                 initial_info['emergency_detail'] = cinfo.info_detail
+            elif info_type == 'TACT':
+                activities.append(str(cinfo.info_item))
+            elif info_type == 'TMNS':
+                means.append(str(cinfo.info_item))
+            elif info_type == 'TPPS':
+                purposes.append(str(cinfo.info_item))
+        # Check if in CTiP DB
+        ctip_case = get_ctip(request, case_id)
+        is_traffick = 'AYES' if ctip_case else 'ANNO'
+        tr_initial_info['ctip_activity'] = activities
+        tr_initial_info['ctip_means'] = means
+        tr_initial_info['ctip_purpose'] = purposes
+        tr_initial_info['is_trafficking'] = is_traffick
+
+        print('init info', initial_info)
         form = CaseInfoForm(initial=initial_info)
+        tr_form = CTIPForm(initial=tr_initial_info)
         case_id = str(case.case_id).replace('-', '')
         return render(
             request, 'forms/case_info.html',

@@ -38,6 +38,7 @@ list_satisfied_level = get_list('satisfied_level_ids')
 list_feeling_level = get_list('feeling_level_ids')
 list_referral_reasons = get_list('referral_reasons_ids', 'Please Select')
 list_referral_documents = get_list('referral_documents_ids')
+list_case_plan_responsible = get_list('case_plan_responsible', 'Please Select')
 
 
 YESNO_CHOICES = get_list('yesno_id')
@@ -286,10 +287,10 @@ class AFCForm1A(forms.Form):
 
     qf1A25_rdo = forms.ChoiceField(
         choices=YESNO_CHOICES,
-        required=True,
+        required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
-            attrs={'data-parsley-required': 'true',
+            attrs={'data-parsley-required': 'false',
                    'data-parsley-errors-container': "#qf1A25_rdo_error"}))
 
     qf1A25A_txt = forms.CharField(widget=forms.TextInput(
@@ -304,18 +305,18 @@ class AFCForm1A(forms.Form):
 
     qf1A26_rdo = forms.ChoiceField(
         choices=YESNO_CHOICES,
-        required=True,
+        required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
-            attrs={'data-parsley-required': 'true',
+            attrs={'data-parsley-required': 'false',
                    'data-parsley-errors-container': "#qf1A26_rdo_error"}))
 
     qf1A27_rdo = forms.ChoiceField(
         choices=YESNO_CHOICES,
-        required=True,
+        required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
-            attrs={'data-parsley-required': 'true',
+            attrs={'data-parsley-required': 'false',
                    'data-parsley-errors-container': "#qf1A27_rdo_error"}))
 
     qf1A27A_txt = forms.CharField(widget=forms.TextInput(
@@ -653,9 +654,10 @@ class AFCForm2A(forms.Form):
 
     qf2A5_sdd = forms.ChoiceField(
         choices=list_items_count,
-        required=False,
+        required=True,
         widget=forms.Select(
-            attrs={'class': 'form-control'}))
+            attrs={'class': 'form-control',
+                   'data-parsley-required': "true"}))
 
     qf2A6_txt = forms.CharField(
         required=False,
@@ -846,10 +848,10 @@ class AFCForm2A(forms.Form):
 
     qf2A26B_rdo = forms.ChoiceField(
         choices=YESNO_CHOICES,
-        required=True,
+        required=False,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
-            attrs={'data-parsley-required': 'true',
+            attrs={'data-parsley-required': 'false',
                    'data-parsley-errors-container': "#qf2A26B_rdo_error"}))
 
     qf2A27_rdo = forms.ChoiceField(
@@ -1130,7 +1132,8 @@ class AFCForm2A(forms.Form):
         required=True,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
-            attrs={'data-parsley-errors-container': "#qf2A60_rdo_error"}))
+            attrs={'data-parsley-required': 'true',
+                   'data-parsley-errors-container': "#qf2A60_rdo_error"}))
 
     qf2A61_txt = forms.CharField(
         required=False,
@@ -1154,7 +1157,8 @@ class AFCForm2A(forms.Form):
         choices=list_range_level,
         required=True,
         widget=forms.Select(
-            attrs={'class': 'form-control'}))
+            attrs={'data-parsley-required': 'true',
+                   'class': 'form-control'}))
 
 
 class AFCForm4A(forms.Form):
@@ -1167,42 +1171,42 @@ class AFCForm4A(forms.Form):
                'data-parsley-required': "true"
                }))
 
-    qf4A1 = forms.ChoiceField(
+    qf4A1_sdd = forms.ChoiceField(
         choices=domain_list,
         initial='0',
         widget=forms.Select(
             attrs={'class': 'form-control', 'id': 'qf4A1',
                    'data-parsley-required': "true"}))
 
-    qf4A2 = forms.ChoiceField(
+    qf4A2_sdd = forms.ChoiceField(
         choices=(),
         initial='0',
         widget=forms.Select(
             attrs={'class': 'form-control', 'id': 'qf4A2',
                    'data-parsley-required': "true"}))
 
-    qf4A3 = forms.ChoiceField(
+    qf4A3_sdd = forms.ChoiceField(
         choices=(),
         initial='0',
         widget=forms.Select(
             attrs={'class': 'form-control', 'id': 'qf4A3',
                    'data-parsley-required': "true"}))
 
-    qf4A4 = forms.ChoiceField(
+    qf4A4_sdd = forms.ChoiceField(
         choices=(),
         initial='0',
         widget=forms.Select(
             attrs={'class': 'form-control', 'id': 'qf4A4',
                    'data-parsley-required': "true"}))
 
-    qf4A5 = forms.CharField(widget=forms.TextInput(
+    qf4A5_txt = forms.CharField(widget=forms.TextInput(
         attrs={'placeholder': _('Date'),
                'class': 'form-control event_date',
                'data-parsley-required': "true"
                }))
 
-    qf4A6 = forms.ChoiceField(
-        choices=(),
+    qf4A6_sdd = forms.ChoiceField(
+        choices=list_case_plan_responsible,
         initial='0',
         widget=forms.Select(
             attrs={'class': 'form-control', 'id': 'qf4A6',
@@ -1223,13 +1227,11 @@ class AFCForm4A(forms.Form):
             attrs={'placeholder': _("Explain"),
                    'class': 'form-control', 'rows': '2'}))
 
-    qf4A9 = forms.CharField(
+    qf4A9_txt = forms.CharField(
         required=False,
-        widget=forms.TextInput(
-            attrs={'placeholder': _(''),
-                   'class': 'form-control',
-                   'data-parsley-required': "true"
-                   }))
+        widget=forms.Textarea(
+            attrs={'placeholder': _("Explain"),
+                   'class': 'form-control', 'rows': '2'}))
 
 
 class AFCForm5A(forms.Form):

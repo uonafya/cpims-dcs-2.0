@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+h{% extends 'base.html' %}
 {% load staticfiles %}
 {% block page_title %} Alternative Care Forms - {{ form_name }}{% endblock %}
 
@@ -59,7 +59,7 @@ form#new-form-b ul {
                 <div class="invoice-company">
                     <span class="pull-right hidden-print">
                     <a href="javascript:;" class="btn btn-sm btn-danger m-b-10"><i class="fa fa-download m-r-5"></i> Export as PDF</a>
-                    <a href="{% url 'view_alt_care' case_id=case.case_id|stringformat:'s' %}" class="btn btn-sm btn-success m-b-10"><i class="fa fa-mail-reply-all m-r-5"></i> Back to Care details</a>
+                    <a href="{% url 'view_alt_care' care_id=case.care_id|stringformat:'s' %}" class="btn btn-sm btn-success m-b-10"><i class="fa fa-mail-reply-all m-r-5"></i> Back to Care details</a>
                     </span>
                     Case No: {{ case.case.case_serial }}
                 </div>
@@ -130,39 +130,39 @@ form#new-form-b ul {
                         <legend class="pull-left width-full">Goals By Domain</legend>
 
                         <div class="form-group">
-                            <label class="col-md-3 control-label">Case Plan Date</label>
+                            <label class="col-md-3 control-label">Case Plan Date <span class="asteriskField">*</span></label>
                             <div class="col-md-3">{{ form.event_date }}</div>
                             <div class="col-md-6"></div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-3 control-label">Domain</label>
-                            <div class="col-md-3">{{ form.qf4A1 }}</div>
+                            <label class="col-md-3 control-label">Domain <span class="asteriskField">*</span></label>
+                            <div class="col-md-3">{{ form.qf4A1_sdd }}</div>
                             <div class="col-md-6"></div>
                         </div>
 
                         <div class="form-group">
-                            <div class="col-md-3"><b>Goals</b></div>
-                            <div class="col-md-3"><b>Needs</b></div>
-                            <div class="col-md-3"><b>Proposed actions</b></div>
-                            <div class="col-md-3"><b>Deadline</b></div>
+                            <div class="col-md-3"><b>Goals <span class="asteriskField">*</span></b></div>
+                            <div class="col-md-3"><b>Needs <span class="asteriskField">*</span></b></div>
+                            <div class="col-md-3"><b>Proposed actions <span class="asteriskField">*</span></b></div>
+                            <div class="col-md-3"><b>Deadline <span class="asteriskField">*</span></b></div>
                         </div>
                         <div class="form-group">
-                            <div class="col-md-3">{{ form.qf4A2 }}</div>
-                            <div class="col-md-3">{{ form.qf4A3 }}</div>
-                            <div class="col-md-3">{{ form.qf4A4 }}</div>
-                            <div class="col-md-3">{{ form.qf4A5 }}</div>
+                            <div class="col-md-3">{{ form.qf4A2_sdd }}</div>
+                            <div class="col-md-3">{{ form.qf4A3_sdd }}</div>
+                            <div class="col-md-3">{{ form.qf4A4_sdd }}</div>
+                            <div class="col-md-3">{{ form.qf4A5_txt }}</div>
                         </div>
                         <div class="form-group">
-                            <div class="col-md-3"><b>Responsible</b></div>
-                            <div class="col-md-2"><b>Completed</b></div>
+                            <div class="col-md-3"><b>Responsible <span class="asteriskField">*</span></b></div>
+                            <div class="col-md-2"><b>Completed <span class="asteriskField">*</span></b></div>
                             <div class="col-md-4"><b>Not Completed(explain)</b></div>
-                            <div class="col-md-3"><b>New action identified</b></div>
+                            <div class="col-md-3"><b>New action identified </b></div>
                         </div>
                         <div class="form-group">
-                            <div class="col-md-3">{{ form.qf4A6 }}</div>
+                            <div class="col-md-3">{{ form.qf4A6_sdd }}</div>
                             <div class="col-md-2">{{ form.qf4A7_rdo }}<br><span id="qf4A7_rdo_error"></span></div>
                             <div class="col-md-4">{{ form.qf4A8_txt }}</div>
-                            <div class="col-md-3">{{ form.qf4A9 }}</div>
+                            <div class="col-md-3">{{ form.qf4A9_txt }}</div>
                         </div>
                     </fieldset>
                   
@@ -212,7 +212,20 @@ form#new-form-b ul {
 <script>
 $(document).ready(function() {
     $('#event_date, .event_date').datepicker({ endDate: '0y', format: 'dd-M-yyyy' });
+    var domain = $('#qf4A1').val();
+    loadOptions(domain);
+    $('#qf4A1').change(function() {
+        var domain = this.value;
+        // alert(domain);
+        loadOptions(domain);
+    });
 });
 
+function loadOptions(domain){
+    // Selects on qf4A2, qf4A3, qf4A4
+    $('#qf4A2').append('<option value="TST"> Test Goal A</option>');
+    $('#qf4A3').append('<option value="TST"> Test Need A</option>');
+    $('#qf4A4').append('<option value="TST"> Test Action A</option>');
+}
 </script>
 {% endblock %}

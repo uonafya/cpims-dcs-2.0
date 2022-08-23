@@ -44,7 +44,7 @@ from reportlab.pdfgen import canvas
 
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from .parameters import ORPTS, RPTS, GRPTS
+from .parameters import ORPTS, RPTS, GRPTS, ACRPTS
 
 from cpovc_forms.models import OVCGokBursary
 from .documents import search_child, generate_form, validate_case
@@ -315,6 +315,7 @@ def reports_caseload(request):
         form = CaseLoad(request.user)
         dates = {v: k for k, v in enumerate(calendar.month_abbr)}
         if request.method == 'POST':
+            print('shit 11111111111111111')
             sub_county_ids = request.POST.getlist('sub_county')
             sub_counties = request.POST.get('sub_county')
             county = request.POST.get('county')
@@ -960,7 +961,7 @@ def reports_ovc_rawdata(request):
         report_variables['archive'] = True
         report_variables['report_id'] = report_id
         xls_name, html = write_csv(data, csv_file, report_variables)
-        xls = ''
+        # xls = ''
         status = 9
         message = "No results matching your query."
         if len(results) > 0:
@@ -1092,6 +1093,7 @@ def raw_data(request, sql):
     """Method to generate raw data and zip the file."""
     try:
         res = my_custom_sql(sql)
+        tstmp = str(int(time.time()))
         fname = '%s.csv' % (tstmp)
         filename = '%s/csv/' % (DOC_ROOT, fname)
         final_file_name = '%s.zip' % (fname)
@@ -1166,6 +1168,11 @@ def get_docs(request, id=4):
         write_document(response, f_name, params)
     else:
         print('Write Register', rid)
+        start_date = request.GET.get('start_date', False)
+        end_date = request.GET.get('end_date', False)
+        if start_date and end_date:
+            params['start_date'] = start_date
+            params['end_date'] = end_date
         params['name'] = 'Register'
         report_name = 'Register'
         f_uname = 'National_%s' % (report_name.replace(' ', '-'))
@@ -1173,3 +1180,19 @@ def get_docs(request, id=4):
         write_register(response, f_name, params)
 
     return response
+
+
+@login_required
+def reports_afc(request, id=0):
+    """Method to do pivot reports."""
+    try:
+        rpt_id = int(id)
+        name = ACRPTS[rpt_id] if rpt_id in ACRPTS else ACRPTS[1]
+        form = CaseLoad(request.user)
+        return render(request, 'reports/pivot_afc.html',
+                      {'form': form, 'name': name,
+                       'report_id': rpt_id})
+    except Exception as e:
+        raise e
+    else:
+        pass

@@ -81,7 +81,7 @@ form#new-form-b ul {
                     <span class="pull-right hidden-print">
                     <a href="javascript:;" class="btn btn-sm btn-danger m-b-10"><i class="fa fa-download m-r-5"></i> Export as PDF</a>
                     <button type="button" id="map-print" class="btn btn-sm btn-danger m-b-10" onclick="printChart()"><i class="fa fa-print"></i> Print Form</button>
-                    <a href="{% url 'view_alt_care' case_id=case.case_id|stringformat:'s' %}" class="btn btn-sm btn-success m-b-10"><i class="fa fa-mail-reply-all m-r-5"></i> Back to Care details</a>
+                    <a href="{% url 'view_alt_care' care_id=case.care_id|stringformat:'s' %}" class="btn btn-sm btn-success m-b-10"><i class="fa fa-mail-reply-all m-r-5"></i> Back to Care details</a>
                     </span>
                     Case No: {{ case_num }} :: {{ case.case.case_serial }}
                 </div>
@@ -114,7 +114,7 @@ form#new-form-b ul {
                             <fieldset>
                                 <legend class="pull-left width-full">CHILD BIOGRAPHICAL INFORMATION</legend>
                                 <div class="form-group">
-                                    <label class="col-md-2 control-label">Date Assessment started</label>
+                                    <label class="col-md-2 control-label">Date Assessment started <span class="asteriskField">*</span></label>
                                     <div class="col-md-3">
                                         {{ form.event_date }}
                                     </div>
@@ -150,7 +150,7 @@ form#new-form-b ul {
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-md-2 control-label">Child Has Birth Certificate</label>
+                                    <label class="col-md-2 control-label">Child Has Birth Certificate <span class="asteriskField">*</span></label>
                                     <div class="col-md-3">
                                         {{ form.qf1A1_rdo }}
                                         <span id="qf1A1_rdo_error"></span>
@@ -201,7 +201,7 @@ form#new-form-b ul {
                                     <div class="col-md-4"></div>
                                 </div>
                                  <div class="form-group">
-                                    <label class="col-md-2 control-label">Has disability</label>
+                                    <label class="col-md-2 control-label">Has disability <span class="asteriskField">*</span></label>
                                     <div class="col-md-3">
                                         {{ form.qf1A10_rdo }}
                                         <span id="qf1A2_rdo_error"></span>
@@ -210,9 +210,9 @@ form#new-form-b ul {
                                     <div class="col-md-4"></div>
                                 </div>
                                 <div class="form-group" id="disability_details_div">
-                                    <label class="col-md-2 control-label">Type of Disability</label>
+                                    <label class="col-md-2 control-label">Type of Disability <span class="asteriskField">*</span></label>
                                     <div class="col-md-3">{{ form.qf1A11_sdd }}</div>
-                                    <label class="col-md-2 control-label">Disability severity</label>
+                                    <label class="col-md-2 control-label">Disability severity <span class="asteriskField">*</span></label>
                                     <div class="col-md-4">{{ form.qf1A12_sdd }}</div>
                                 </div>
                                 <p></p>
@@ -226,7 +226,7 @@ form#new-form-b ul {
                                 <legend class="pull-left width-full">DETAILS OF ADMISSION TO CARE</legend>
                                 <!-- begin row -->
                                 <div class="form-group">
-                                    <label class="col-md-2 control-label">Date of Admission</label>
+                                    <label class="col-md-2 control-label">Date of Admission <span class="asteriskField">*</span></label>
                                     <div class="col-md-3">
                                         {{ form.event_date }}
                                     </div>
@@ -236,7 +236,7 @@ form#new-form-b ul {
                                 <div class="form-group">
                                     <label class="col-md-2 control-label">Other forms of admission</label>
                                     <div class="col-md-3">{{ form.qf1A14_sdd }}</div>
-                                    <label class="col-md-2 control-label">Has Committal Order</label>
+                                    <label class="col-md-2 control-label">Has Committal Order <span class="asteriskField">*</span></label>
                                     <div class="col-md-4">
                                         {{ form.qf1A15_rdo }}
                                         <span id="qf1A15_rdo_error"></span>
@@ -290,7 +290,7 @@ form#new-form-b ul {
                                     <div class="col-md-1"></div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-5 control-label">Are there other sibling(s) living with the child now in this form of care?</label>
+                                    <label class="col-md-5 control-label">Are there other sibling(s) living with the child now in this form of care? <span class="asteriskField">*</span></label>
                                     <div class="col-md-6">
                                         {{ form.qf1A22_rdo }}
                                         <span id="qf1A22_rdo_error"></span>
@@ -298,7 +298,7 @@ form#new-form-b ul {
                                     <div class="col-md-1"></div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-5 control-label">Are there other sibling(s) admitted into care elsewhere?</label>
+                                    <label class="col-md-5 control-label">Are there other sibling(s) admitted into care elsewhere? <span class="asteriskField">*</span></label>
                                     <div class="col-md-6">
                                         {{ form.qf1A23_rdo }}
                                         <span id="qf1A23_rdo_error"></span>
@@ -332,7 +332,7 @@ form#new-form-b ul {
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-3 control-label">Are mother and father living together?</label>
+                                    <label class="col-md-3 control-label">Are mother and father living together? <span class="asteriskField">*</span></label>
                                     <div class="col-md-3">
                                         {{ form.qf1A24_rdo }}
                                         <span id="qf1A24_rdo_error"></span>
@@ -407,7 +407,7 @@ form#new-form-b ul {
                                     <div class="col-md-4">{{ form.qf1A27A_txt }}</div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-3 control-label">Does the child express a preference for a caregiver?</label>
+                                    <label class="col-md-3 control-label">Does the child express a preference for a caregiver? <span class="asteriskField">*</span></label>
                                     <div class="col-md-2">
                                         {{ form.qf1A28_rdo }}
                                         <span id="qf1A28_rdo_error"></span>

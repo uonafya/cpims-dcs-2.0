@@ -70,7 +70,8 @@ admin.site.register(RegOrgUnit, RegOrgUnitAdmin)
 class RegPersonGeoAdmin(admin.ModelAdmin):
     """Register persons admin."""
 
-    search_fields = ['person', 'area']
+    search_fields = ['person__id', 'person__surname',
+                     'person__first_name', 'area__area_name']
     list_display = ['id', 'person', 'area',
                     'area_type', 'date_linked', 'is_void']
     # readonly_fields = ['id']
@@ -109,7 +110,8 @@ admin.site.register(RegPersonsAuditTrail, PersonsAuditAdmin)
 class RegPersonOtherGeoAdmin(admin.ModelAdmin):
     """Register persons admin."""
 
-    search_fields = ['person', 'country_code', 'city']
+    search_fields = ['person__surname', 'person__first_name',
+                     'country_code', 'city']
     list_display = ['id', 'person', 'country_code',
                     'location', 'date_linked', 'is_void']
     # readonly_fields = ['id']

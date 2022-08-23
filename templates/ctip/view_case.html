@@ -54,10 +54,16 @@
             </tr>
             <tr>
                 <td class="p-t-10">
-                    <a href="{% url 'view_ctip_form' form_id='C' case_id=case.case_id|stringformat:'s' %}">
                     <i class="fa fa-level-up fa-2x pull-left fa-fw"></i>
                     <span class="badge pull-right">{% if events.C > 0 %}{{ events.C }}{% else %} 0 {% endif %}</span>
-                    <div class="m-t-4">Referrals (Form C)</div></a>
+                    <div class="m-t-4">Referrals (Form C)</div>
+                    <br>
+                    <ul>
+                        {% for ref in reffs %}
+                            <li><a href="{% url 'ctip_forms' form_id='C' case_id=case.case_id|stringformat:'s' id=ref.event_count %}"> <i class="fa fa-edit fa-1x"></i> View Referral Form - {{ ref.event_date }}</a></li>
+                        {% endfor %}
+                       <li><a href="{% url 'ctip_form' form_id='C' case_id=case.case_id|stringformat:'s' %}"> <i class="fa fa-file fa-1x"></i> New Referral Form</a></li>
+                    </ul>
                 </td>
             </tr>
             <tr>
@@ -123,7 +129,7 @@
                 <div class="invoice-company">
                     <span class="pull-right hidden-print">
                     <a href="#" class="btn btn-sm btn-danger m-b-10"><i class="fa fa-download m-r-5"></i> Export as PDF</a>
-                    <a href="#" class="btn  btn-sm btn-primary m-b-10"><i class="fa fa-edit m-r-5"> </i>Edit Case Details</a>
+                    <a href="{% url 'edit_ctip_case' case_id=case.case_id|stringformat:'s' %}" class="btn  btn-sm btn-primary m-b-10"><i class="fa fa-edit m-r-5"> </i>Edit Case Details</a>
                     <a href="{% url 'view_ctip_case' case_id=case.case_id|stringformat:'s' %}" class="btn btn-sm btn-success m-b-10"><i class="fa fa-mail-reply-all m-r-5"></i> Back to Case</a>
                     </span>
                     Case No: {{ case.case_number }}

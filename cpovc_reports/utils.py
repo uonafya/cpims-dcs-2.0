@@ -147,21 +147,31 @@ def run_rawsql_data(request, sql, cs=0):
         return data, desc
 
 
-def get_data(report_id):
+def get_data(report_id, params={}):
     """Method to get data from sql."""
     try:
-        # qs = RegOrgUnit.objects.filter(org_unit_type_id__in=ou_types)
-        sql = "SELECT ou.id, "
+        dtf = ''
+        if params and 'start_date' in params and 'end_date' in params:
+            s_date = params['start_date']
+            e_date = params['end_date']
+            dtf = "WHERE ocr.date_case_opened "
+            dtf += "between '%s' AND '%s' " % (s_date, e_date)
+        sql = "select rou.id, "
         sql += "concat(po.id, ' : ', po.org_unit_name) as parent_unit, "
-        sql += "concat(ou.id, ' : ', ou.org_unit_name) as org_unit_name, "
-        sql += "ou.org_unit_type_id, count(cr.report_orgunit_id) as cases, "
-        sql += "1 as ovccount, 0 as org_unit FROM reg_org_unit ou "
-        sql += "inner join reg_org_unit po on po.id=ou.parent_org_unit_id "
-        sql += "left outer join ovc_case_geo cr on cr.report_orgunit_id=ou.id "
-        sql += "where ou.is_void = False and ou.org_unit_type_id in "
+        sql += "concat(rou.id, ' : ', rou.org_unit_name) as org_unit_name, "
+        sql += "rou.org_unit_type_id, SUM(COALESCE(u.cases, 0)) as cases, "
+        sql += "1 as ovccount, 0 as org_unit "
+        sql += "from reg_org_unit rou "
+        sql += "inner join reg_org_unit po on po.id=rou.parent_org_unit_id "
+        sql += "left join ( select report_orgunit_id as unit_id, "
+        sql += "count(report_orgunit_id) as cases from ovc_case_geo "
+        sql += "inner join ovc_case_record ocr ON ocr.case_id=case_id_id "
+        sql += "%s" % (dtf)
+        sql += "group by report_orgunit_id) as u on u.unit_id = rou.id "
+        sql += "where rou.is_void = False and rou.org_unit_type_id in "
         sql += "('TNGD', 'TNGP', 'TNRH', 'TNAP', 'TNRS', 'TNRR', 'TNRB') "
-        sql += "group by report_orgunit_id, ou.id, po.id, po.org_unit_name "
-        sql += "order by ou.parent_org_unit_id ASC"
+        sql += "group by u.cases, rou.id, rou.org_unit_name, po.id, "
+        sql += "po.org_unit_name order by rou.parent_org_unit_id ASC"
         # df = pd.DataFrame(list(qs.values('parent_org_unit_id',
         # 'org_unit_name', 'ovccount')))
         data, cols = run_rawsql_data(None, sql)
@@ -233,9 +243,11 @@ def write_register(response, file_name, params={}):
         # col_size = len(df.columns)
         # dt_size = len(df.index)
         # Handle headers
-        address = '<b>MINISTRY OF LABOUR AND SOCIAL PROTECTION'
-        address += "<br />STATE DEPARTMENT FOR SOCIAL PROTECTION"
-        address += "<br />DEPARTMENT OF CHILDREN'S SERVICES</b>"
+        address = '<b>MINISTRY OF PUBLIC SERVICE, GENDER, SENIOR CITIZENS'
+        address += " AFFAIRS & SPECIAL PROGRAMMES"
+        address += "<br />STATE DEPARTMENT FOR SOCIAL PROTECTION,"
+        address += " SENIOR CITIZENS AFFAIRS & SPECIAL PROGRAMMES"
+        address += "<br />DIRECTORATE OF CHILDREN'S SERVICES</b>"
         report_number = '%s\n%s CPIMS Report\n%s' % (url, report_name, tarehe)
         # Work on the data
         start_date = ''
@@ -245,6 +257,9 @@ def write_register(response, file_name, params={}):
         fyear = year - 1 if mon < 7 else year
         if rid in [1, 2, 4]:
             start_date = '1, July %s to ' % (fyear)
+        if params and 'start_date' in params and 'end_date' in params:
+            start_date = params['start_date']
+            end_date = ' to %s' % params['end_date']
         dates = '%s%s' % (start_date, end_date)
         bar_code = BarCode(value='%s' % (report_number))
         # Logo
@@ -292,25 +307,19 @@ def write_register(response, file_name, params={}):
 
         element.append(Spacer(0.1 * cm, .6 * cm))
         # Get the data ready for reportlab
-        mdt = get_data(6)
-        # print(mdt)
+        mdt = get_data(6, params)
+        print('mdt', mdt)
         qdsize = 0
-        if qdsize > 0:
+        if mdt.empty:
             qa_values = []
             # print(qa_values)
             dtitle = "DQA Records for your action"
-            colw = (2.86 * cm, 4.0 * cm, 1.0 * cm, 5.0 * cm, 3.0 * cm,
-                    3.0 * cm, 3.0 * cm, 3.0 * cm, 3.0 * cm)
-            colw = (2.0 * cm, 4.0 * cm, 1.0 * cm, 3.5 * cm, 2.0 * cm,
-                    1.5 * cm, 1.5 * cm, 1.5 * cm, 2.5 * cm)
-            qdata = ["CPIMS ID", "Name / Initials", "Age",
-                     "Case Category", "DQA Sex", "DQA DoB",
-                     "DQA Age", "Case Status", "Case Date"]
-            dq_data = [[dtitle, "", "", "", "", "", "", "", ""], qdata]
+            colw = (2.86 * cm, 16.4 * cm)
+            qdata = ["", "No records Found matching your query. "]
+            dq_data = [[dtitle, ""], qdata]
             dq_data += qa_values
         else:
             colw = (6.86 * cm, 10.4 * cm, 2 * cm)
-            qdata = ["", "No data available from the System."]
             # dq_data = [["CPIMS Status Report", ""], qdata]
             # mdt_values = dq_data + mdt.reset_index().values.tolist()
             # mdt_values = dq_data + list(mdt.reset_index().columns.values)
@@ -405,9 +414,11 @@ def write_document(response, file_name, params={}):
         # col_size = len(df.columns)
         # dt_size = len(df.index)
         # Handle headers
-        address = '<b>MINISTRY OF LABOUR AND SOCIAL PROTECTION'
-        address += "<br />STATE DEPARTMENT FOR SOCIAL PROTECTION"
-        address += "<br />DEPARTMENT OF CHILDREN'S SERVICES</b>"
+        address = '<b>MINISTRY OF PUBLIC SERVICE, GENDER, SENIOR CITIZENS'
+        address += " AFFAIRS & SPECIAL PROGRAMMES"
+        address += "<br />STATE DEPARTMENT FOR SOCIAL PROTECTION,"
+        address += " SENIOR CITIZENS AFFAIRS & SPECIAL PROGRAMMES"
+        address += "<br />DIRECTORATE OF CHILDREN'S SERVICES</b>"
         report_number = '%s\n%s CPIMS Report\n%s' % (url, report_name, tarehe)
         # Work on the data
         start_date = ''

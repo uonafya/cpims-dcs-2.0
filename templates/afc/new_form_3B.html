@@ -59,7 +59,7 @@ form#new-form-b ul {
                 <div class="invoice-company">
                     <span class="pull-right hidden-print">
                     <a href="javascript:;" class="btn btn-sm btn-danger m-b-10"><i class="fa fa-download m-r-5"></i> Export as PDF</a>
-                    <a href="{% url 'view_alt_care' case_id=case.case_id|stringformat:'s' %}" class="btn btn-sm btn-success m-b-10"><i class="fa fa-mail-reply-all m-r-5"></i> Back to Care details</a>
+                    <a href="{% url 'view_alt_care' care_id=case.care_id|stringformat:'s' %}" class="btn btn-sm btn-success m-b-10"><i class="fa fa-mail-reply-all m-r-5"></i> Back to Care details</a>
                     </span>
                     Case No: {{ case.case.case_serial }}
                 </div>

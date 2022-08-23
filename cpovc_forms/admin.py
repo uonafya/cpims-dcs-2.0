@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from .models import (
     OVCCaseGeo, OVCCaseCategory, OVCBasicCRS, OVCBasicPerson, OVCBasicCategory,
     OVCPlacement, OVCDischargeFollowUp, OVCCaseRecord, OVCCaseLoadView,
-    OVCCaseEvents, OVCCaseLocation)
+    OVCCaseEvents, OVCCaseLocation, OvcCaseInformation)
 
 
 def dump_to_csv(modeladmin, request, qs):
@@ -389,3 +389,17 @@ class OVCCaseLocationAdmin(admin.ModelAdmin):
 
 
 admin.site.register(OVCCaseLocation, OVCCaseLocationAdmin)
+
+
+class OVCCaseInformationAdmin(admin.ModelAdmin):
+    """Admin back end for Geo data management."""
+
+    search_fields = ['case_id', 'person__first_name', 'person__surname']
+    list_display = ['case_id', 'person', 'info_type', 'info_item']
+    # readonly_fields = ['area_id']
+    list_filter = ['is_void']
+
+    actions = [dump_to_csv, export_xls, export_xlsx]
+
+
+admin.site.register(OvcCaseInformation, OVCCaseInformationAdmin)

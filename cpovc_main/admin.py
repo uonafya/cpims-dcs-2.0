@@ -3,7 +3,8 @@ import csv
 import time
 from django.contrib import admin
 from django.http import HttpResponse
-from .models import SetupGeography, SetupList, ListAnswers, SetupLocation
+from .models import (
+    SetupGeography, SetupList, ListAnswers, SetupLocation, ListQuestions)
 
 
 def dump_to_csv(modeladmin, request, qs):
@@ -181,3 +182,15 @@ class GeoLocationAdmin(admin.ModelAdmin):
 
 
 admin.site.register(SetupLocation, GeoLocationAdmin)
+
+
+class ListQuestionsAdmin(admin.ModelAdmin):
+    """ Questions model."""
+
+    search_fields = ['question_code', 'question_text']
+    list_display = ['form_type_id', 'question_code', 'question_text',
+                    'is_void']
+    list_filter = ['form_type_id']
+
+
+admin.site.register(ListQuestions, ListQuestionsAdmin)

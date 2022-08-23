@@ -99,8 +99,20 @@ def save_duplicates(params):
 def get_duplicates(request):
     """Method to get duplicates."""
     try:
-        duplicates = CaseDuplicates.objects.filter(
-            action_id=1).order_by('case_id', '-interventions')
+        ous = []
+        ous_p = int(request.session.get('ou_primary', 0))
+        if not request.user.is_superuser or ous_p > 2:
+            ous.append(ous_p)
+            ous_a = request.session.get('ou_attached', '0').split(',')
+            for ou in ous_a:
+                ou_id = int(ou)
+                if ou_id not in ous and ou_id > 2:
+                    ous.append(ou_id)
+            print('ous', ous, ous_p, ous_a)
+        dups = CaseDuplicates.objects.filter(action_id=1)
+        if ous:
+            dups = dups.filter(organization_unit__in=ous)
+        duplicates = dups.order_by('case_id', '-interventions')
     except Exception as e:
         raise e
     else:
@@ -119,7 +131,7 @@ def remove_duplicates(request):
         user_id = int(request.user.id)
         print(user_id, duplicate_id, case_id)
         duplicates = CaseDuplicates.objects.filter(
-            duplicate_id=duplicate_id).order_by('-interventions')
+            duplicate_id=duplicate_id, action_id=1).order_by('-interventions')
         for dups in duplicates:
             cnt += 1
             sys_case_id = str(dups.case_id)
@@ -168,3 +180,4 @@ def get_geo(area_code):
         return None
     else:
         return res.area_name
+

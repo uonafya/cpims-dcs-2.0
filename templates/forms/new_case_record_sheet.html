@@ -1827,7 +1827,9 @@ function getUserOrgUnits()
             },
             error: function(xhr, status, error)
             {
-                alert(error);
+                //alert(error);
+                $('#div_roles').show();
+                $('#div_roles p').html(error + " : Persmissions error because you are using admin account.");   
             }
         }); 
 }

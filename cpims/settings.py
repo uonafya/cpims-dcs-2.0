@@ -79,9 +79,9 @@ WSGI_APPLICATION = 'cpims.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'cpims_ctip',
-        'USER': 'username',
-        'PASSWORD': '123456',
+        'NAME': 'cpims_dcs',
+        'USER': 'cpimsdbuser',
+        'PASSWORD': 'Xaen!ee8',
         'HOST': '127.0.0.1',
         'PORT': '5432', }
 }
@@ -123,7 +123,8 @@ EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'cpimskenya@gmail.com'
-EMAIL_HOST_PASSWORD = 'syqvfmkcbfxjqsrv'
+EMAIL_HOST_PASSWORD = 'WHfJk5F4eKutLQ6'
+# syqvfmkcbfxjqsrv
 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 SERVER_EMAIL = EMAIL_HOST_USER

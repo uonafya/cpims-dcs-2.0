@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+h{% extends 'base.html' %}
 {% load staticfiles %}
 {% block page_title %} Alternative Care Forms - {{ form_name }}{% endblock %}
 
@@ -61,7 +61,7 @@ form#new-form-b ul {
                 <div class="invoice-company">
                     <span class="pull-right hidden-print">
                     <a href="javascript:;" class="btn btn-sm btn-danger m-b-10"><i class="fa fa-download m-r-5"></i> Export as PDF</a>
-                    <a href="{% url 'view_alt_care' case_id=case.case_id|stringformat:'s' %}" class="btn btn-sm btn-success m-b-10"><i class="fa fa-mail-reply-all m-r-5"></i> Back to Care details</a>
+                    <a href="{% url 'view_alt_care' care_id=case.care_id|stringformat:'s' %}" class="btn btn-sm btn-success m-b-10"><i class="fa fa-mail-reply-all m-r-5"></i> Back to Care details</a>
                     </span>
                     Case No: {{ case.case.case_serial }}
                 </div>
@@ -163,7 +163,7 @@ form#new-form-b ul {
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-4 control-label">Are mother and father (tick the responses that apply)</label>
+                                <label class="col-md-4 control-label">Are mother and father (select the responses that apply) <span class="asteriskField">*</span></label>
                                 <div class="col-md-7">
                                     {{ form.qf2A2_sdd }}
                                     <span id="qf2A2_sdd_error"></span>
@@ -196,7 +196,7 @@ form#new-form-b ul {
                             <h4 class="block">Nutrition</h4>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-5 control-label">Access to Food / Meals (Once, Twice, Thrice / day)</label>
+                            <label class="col-md-5 control-label">Access to Food / Meals <span class="asteriskField">*</span></label>
                             <div class="col-md-6">
                                 {{ form.qf2A5_sdd }}
                             </div>
@@ -266,7 +266,7 @@ form#new-form-b ul {
                         </div>
 
                         <div class="form-group">
-                            <label class="col-md-5 control-label">Does the family have access to health services?</label>
+                            <label class="col-md-5 control-label">Does the family have access to health services? <span class="asteriskField">*</span></label>
                             <div class="col-md-2">
                                 {{ form.qf2A14_rdo }}
                                 <span id="qf2A14_rdo_error"></span>
@@ -275,7 +275,7 @@ form#new-form-b ul {
                             <div class="col-md-1"></div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-5 control-label">Does the family have medical insurance?</label>
+                            <label class="col-md-5 control-label">Does the family have medical insurance? <span class="asteriskField">*</span></label>
                             <div class="col-md-2">
                                 {{ form.qf2A15_rdo }}
                                 <span id="qf2A15_rdo_error"></span>
@@ -284,7 +284,7 @@ form#new-form-b ul {
                             <div class="col-md-1"></div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-5 control-label">Is there any household member with a chronic illness (e.g. diabetes, hypertension)?</label>
+                            <label class="col-md-5 control-label">Is there any household member with a chronic illness (e.g. diabetes, hypertension)? <span class="asteriskField">*</span></label>
                             <div class="col-md-2">
                                 {{ form.qf2A16A_rdo }}
                                 <span id="qf2A16A_rdo_error"></span>
@@ -293,7 +293,7 @@ form#new-form-b ul {
                             <div class="col-md-1"></div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-5 control-label">Is there anyone in the family who has any disability?</label>
+                            <label class="col-md-5 control-label">Is there anyone in the family who has any disability? <span class="asteriskField">*</span></label>
                             <div class="col-md-2">
                                 {{ form.qf2A17A_rdo }}
                                 <span id="qf2A17A_rdo_error"></span>
@@ -312,7 +312,7 @@ form#new-form-b ul {
                             <div class="col-md-1"></div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-5 control-label">Are there religious/cultural practices that hinder/could hinder children from accessing health services?</label>
+                            <label class="col-md-5 control-label">Are there religious/cultural practices that hinder/could hinder children from accessing health services? <span class="asteriskField">*</span></label>
                             <div class="col-md-2">
                                 {{ form.qf2A19A_rdo }}
                                 <span id="qf2A19A_rdo_error"></span>
@@ -330,7 +330,7 @@ form#new-form-b ul {
                             <div class="col-md-1"></div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-5 control-label">Are these community services easily accessible?</label>
+                            <label class="col-md-5 control-label">Are these community services easily accessible? <span class="asteriskField">*</span></label>
                             <div class="col-md-2">
                                 {{ form.qf2A21_rdo }}
                                 <span id="qf2A21_rdo_error"></span>
@@ -347,7 +347,7 @@ form#new-form-b ul {
                     <legend class="pull-left width-full">B. EDUCATION</legend>
 
                         <div class="form-group">
-                            <label class="col-md-4 control-label">Is there access to education facilities?</label>
+                            <label class="col-md-4 control-label">Is there access to education facilities? <span class="asteriskField">*</span></label>
                             <div class="col-md-2">
                                 {{ form.qf2A22_rdo }}
                                 <span id="qf2A22_rdo_error"></span>
@@ -386,7 +386,7 @@ form#new-form-b ul {
                             <div class="col-md-1"></div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-4 control-label">Is the school inclusive and able to meet unique needs of child</label>
+                            <label class="col-md-4 control-label">Is the school inclusive and able to meet unique needs of child <span class="asteriskField">*</span></label>
                             <div class="col-md-2">
                                 {{ form.qf2A25A_rdo }}
                                 <span id="qf2A25A_rdo_error"></span>
@@ -395,12 +395,12 @@ form#new-form-b ul {
                             <div class="col-md-1"></div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-4 control-label">Are children in the household currently attending school?</label>
-                            <div class="col-md-1">
+                            <label class="col-md-4 control-label">Are children in the household currently attending school? <span class="asteriskField">*</span></label>
+                            <div class="col-md-2">
                                 {{ form.qf2A26A_rdo }}
                                 <span id="qf2A26A_rdo_error"></span>
                             </div>
-                            <label class="col-md-4 control-label">If yes, is their class appropriate for their age and evolving capacity?</label>
+                            <label class="col-md-3 control-label">If yes, is their class appropriate for their age and evolving capacity?</label>
                             <div class="col-md-2">
                                 {{ form.qf2A26B_rdo }}
                                 <span id="qf2A26B_rdo_error"></span>
@@ -408,7 +408,7 @@ form#new-form-b ul {
                             <div class="col-md-1"></div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-4 control-label">Do caregivers show interest in children’s education?</label>
+                            <label class="col-md-4 control-label">Do caregivers show interest in children’s education? <span class="asteriskField">*</span></label>
                             <div class="col-md-2">
                                 {{ form.qf2A27_rdo }}
                                 <span id="qf2A27_rdo_error"></span>
@@ -713,7 +713,7 @@ form#new-form-b ul {
                     <legend class="pull-left width-full">FAMILY'S PERSPECTIVE & RECOMMENDATIONS ON PLACEMENT / REINTEGRATION</legend>
 
                         <div class="form-group">
-                            <label class="col-md-5 control-label"> Families perception towards child's placement (Yes, No, Unsure)</label>
+                            <label class="col-md-5 control-label"> Families perception towards child's placement (Yes, No, Unsure) <span class="asteriskField">*</span></label>
                             <div class="col-md-2">
                                 {{ form.qf2A60_rdo }}
                                 <span id="qf2A60_rdo_error"></span>
@@ -742,27 +742,27 @@ form#new-form-b ul {
                             <div class="col-md-1"></div>
                         </div>
                         <div style="background-color: #f2f3f4;">
-                        <div class="form-group">
+                        <div class="form-group" style="border-bottom: 1px solid #fff;">
                             <label class="col-md-5 control-label"><b>High</b></label>
-                            <div class="col-md-6">Family expresses strong desire to reunify, visits child regularly; no known history of child abuse, domestic violence or substance abuse. Poverty may be an issue but there is good potential to improve their economic High condition. The family is able and motivated to access services necessary to raise the child
-                                <br></div>
+                            <div class="col-md-6"><p>Family expresses strong desire to reunify, visits child regularly; no known history of child abuse, domestic violence or substance abuse. Poverty may be an issue but there is good potential to improve their economic High condition. The family is able and motivated to access services necessary to raise the child
+                                </p></div>
                             <div class="col-md-1"></div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group"  style="border-bottom: 1px solid #fff;">
                             <label class="col-md-5 control-label"><b>Medium</b></label>
-                            <div class="col-md-6">Family expresses moderate desire to reunify, has visited child occasionally; there may be some concerns with domestic violence, mental health or substance abuse, but the family is amenable to treatment and is able and Medium motivated to access necessary services.
-                                <br></div>
+                            <div class="col-md-6"><p>Family expresses moderate desire to reunify, has visited child occasionally; there may be some concerns with domestic violence, mental health or substance abuse, but the family is amenable to treatment and is able and Medium motivated to access necessary services.</p>
+                                </div>
                             <div class="col-md-1"></div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-5 control-label"><b>Low</b></label>
-                            <div class="col-md-6">Family’s motivation to reunify is difficult to read or very low, has seldom visited the child; there may be significant issues of violence, neglect or substance abuse in the home. The family seems minimally motivated to Low address its vulnerabilities
-                                <br></div>
+                            <div class="col-md-6"><p>Family’s motivation to reunify is difficult to read or very low, has seldom visited the child; there may be significant issues of violence, neglect or substance abuse in the home. The family seems minimally motivated to Low address its vulnerabilities
+                                </p></div>
                             <div class="col-md-1"></div>
                         </div>
                     </div>
                         <div class="form-group">
-                            <label class="col-md-5 control-label">Select One</label>
+                            <label class="col-md-5 control-label">Select One <span class="asteriskField">*</span></label>
                             <div class="col-md-2">
                                 {{ form.qf2A64_sdd }}
                                 <span id="qf2A1_rdo_error"></span>
@@ -777,7 +777,7 @@ form#new-form-b ul {
                     <hr>
                     
                     <div class="form-group">
-                        <label class="col-md-4 control-label">Date of Assessment</label>
+                        <label class="col-md-4 control-label">Date of Assessment <span class="asteriskField">*</span></label>
                         <div class="col-md-2">
                             {{ form.event_date }}
                         </div>

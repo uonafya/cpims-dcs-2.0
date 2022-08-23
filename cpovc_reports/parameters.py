@@ -41,3 +41,6 @@ ADHC[4] = 'Excel Tool A'
 ADHC[5] = 'Missing Children'
 ADHC[6] = 'Violence Against Children (VAC)'
 ADHC[7] = 'Children in Emergencies'
+# AFC Reports
+ACRPTS = {}
+ACRPTS[1] = 'Alternative Care Summary'

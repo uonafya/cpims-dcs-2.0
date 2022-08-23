@@ -44,7 +44,7 @@ def alt_care_home(request):
         # Check if there is a filled AFC Form
         afcs = AFCMain.objects.filter(is_void=False, person_id__in=pids)
         for afc in afcs:
-            afc_ids[afc.person_id] = {'cid': afc.case_id,
+            afc_ids[afc.person_id] = {'cid': afc.care_id,
                                       'clv': 2, 'cdt': afc.case_date}
         for case in cases:
             pid = case.id
@@ -54,6 +54,7 @@ def alt_care_home(request):
             crs_id = case_ids[pid]['cid'] if pid in case_ids else None
             clv = afc_ids[pid]['clv'] if pid in afc_ids else clvf
             setattr(case, 'case_t', str(cid))
+            setattr(case, 'care_id', cid)
             setattr(case, 'case_date', cdt)
             setattr(case, 'case_level', clv)
             setattr(case, 'case_id', crs_id)
@@ -81,8 +82,8 @@ def new_alternative_care(request, case_id):
             person_id = case.person_id
             afc_params['case_id'] = case_id
             afc_params['person_id'] = person_id
-            handle_alt_care(request, 0, afc_params)
-            url = reverse(view_alternative_care, kwargs={'case_id': case_id})
+            care_id = handle_alt_care(request, 0, afc_params)
+            url = reverse(view_alternative_care, kwargs={'care_id': care_id})
             msg = 'Alternative Care details saved successfully'
             messages.add_message(request, messages.INFO, msg)
             return HttpResponseRedirect(url)
@@ -95,12 +96,12 @@ def new_alternative_care(request, case_id):
 
 
 @login_required
-def view_alternative_care(request, case_id):
+def view_alternative_care(request, care_id):
     '''
     View Alternative Care main page
     '''
     try:
-        case = AFCMain.objects.get(is_void=False, case_id=case_id)
+        case = AFCMain.objects.get(is_void=False, care_id=care_id)
         cid = str(case.care_type)[2:]
         cname = CTS[cid] if cid in CTS else 'Adoption'
         check_fields = ['sex_id', 'case_category_id',
@@ -109,7 +110,7 @@ def view_alternative_care(request, case_id):
         vals = get_dict(field_name=check_fields)
         # Events
         events = (AFCEvents.objects
-                  .filter(case_id=case_id)
+                  .filter(care_id=care_id)
                   .values('form_id')
                   .annotate(dcount=Count('form_id'))
                   .order_by()
@@ -128,20 +129,21 @@ def view_alternative_care(request, case_id):
 
 
 @login_required
-def edit_alternative_care(request, case_id):
+def edit_alternative_care(request, care_id):
     '''
     Edit Alternative Care main page
     '''
     try:
-        case = AFCMain.objects.get(is_void=False, case_id=case_id)
+        case = AFCMain.objects.get(is_void=False, care_id=care_id)
         cid = str(case.care_type)[2:]
+        case_id = case.case_id
         if request.method == 'POST':
             afc_params = {}
             person_id = case.person_id
-            afc_params['case_id'] = case_id
+            afc_params['care_id'] = care_id
             afc_params['person_id'] = person_id
             handle_alt_care(request, 0, afc_params)
-            url = reverse(view_alternative_care, kwargs={'case_id': case_id})
+            url = reverse(view_alternative_care, kwargs={'care_id': care_id})
             msg = 'Alternative Care details updated successfully'
             messages.add_message(request, messages.INFO, msg)
             return HttpResponseRedirect(url)
@@ -170,7 +172,7 @@ def edit_alternative_care(request, case_id):
 
 
 @login_required
-def alt_care_form(request, cid, form_id, case_id, ev_id=0):
+def alt_care_form(request, cid, form_id, care_id, ev_id=0):
     '''
     Some default page for CTiP forms home page
     '''
@@ -180,8 +182,8 @@ def alt_care_form(request, cid, form_id, case_id, ev_id=0):
         vals = get_dict(field_name=check_fields)
         # Handle saved items
         events = AFCEvents.objects.filter(
-            case_id=case_id, form_id=form_id)
-        print('Event', form_id, case_id, events)
+            care_id=care_id, form_id=form_id)
+        # print('Event', form_id, case_id, events)
         idata = {}
         if events:
             edate = events[0].event_date
@@ -203,8 +205,9 @@ def alt_care_form(request, cid, form_id, case_id, ev_id=0):
                     idata[qid].append(q_item)
             print('idata', idata)
         form_name = FMS[form_id] if form_id in FMS else 'Default'
-        case = AFCMain.objects.get(is_void=False, case_id=case_id)
+        case = AFCMain.objects.get(is_void=False, care_id=care_id)
         person_id = case.person_id
+        case_id = case.case_id
         afcs = AFCMain.objects.filter(person_id=person_id)
         print('afcs', afcs)
         # Get education
@@ -241,7 +244,7 @@ def alt_care_form(request, cid, form_id, case_id, ev_id=0):
             res = save_altcare_form(request, form_id)
             if res:
                 url = reverse(
-                    view_alternative_care, kwargs={'case_id': case_id})
+                    view_alternative_care, kwargs={'care_id': care_id})
             msg = 'Form - %s saved successfully' % (form_id)
             messages.add_message(request, messages.INFO, msg)
             return HttpResponseRedirect(url)

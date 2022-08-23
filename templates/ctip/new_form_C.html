@@ -9,6 +9,15 @@
 {% block style_code %}
 <link href="{% static 'plugins/parsley/src/parsley.css' %}" rel="stylesheet" />
 <link href="{% static 'plugins/bootstrap-datepicker/css/datepicker3.css' %}" rel="stylesheet" />
+<style type="text/css">
+form#new-form-c ul {
+      list-style-type: none;
+    }
+  form#new-form-c li {
+      padding-left: 1em;
+      text-indent: -2em;
+  }
+</style>
 {% endblock %}
 
 {% block primary %}
@@ -62,7 +71,7 @@
                         </div>
                         <label class="control-label col-md-1 col-sm-1">Self Referral</label>
                         <div class="col-md-2">
-                            {{ form.qfC2_txt }}
+                            {{ form.qfC2_rdo }}
                         </div>
                     </div>
                     <div class="form-group">

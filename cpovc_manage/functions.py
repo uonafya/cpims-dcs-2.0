@@ -27,6 +27,9 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from cpovc_reports.documents import (
     logo_path, checked_image_path, unchecked_image_path)
 
+from telegram import send_message
+from cpims.emails import send_email
+
 
 def get_travel(request, travel_id=0, params={}):
     """Method to get travels."""
@@ -288,13 +291,13 @@ def save_persons(request, params, person_type):
         today = timezone.now()
         designation = params['designation']
         first_name = params['first_name'].upper()
-        onames = params['other_names'] if 'other_names' in params else ''
+        onames = params['other_names']
         other_names = onames.upper() if onames else None
         surname = params['surname'].upper()
         sex_id = params['sex']
-        phone = params['phone'] if 'phone' in params else None
-        dob = params['dob'] if 'dob' in params else None
-        area_id = params['area_id'] if 'area_id' in params else None
+        phone = params['phone']
+        dob = params['dob']
+        area_id = params['area_id']
         phone_number = phone if phone else None
         person = RegPerson(
             designation=designation,
@@ -315,7 +318,6 @@ def save_persons(request, params, person_type):
             person_id=person_id, area_id=area_id,
             area_type='GLTL', date_linked=today)
         pgeo.save()
-        print('person saved')
     except Exception as e:
         print('Error saving persons - %s' % (e))
         return None
@@ -417,7 +419,7 @@ def create_crs(request, case, case_id):
         if case.account.username != 'vurugumapper':
             return response
         if case.case_params:
-            case_params = eval(str(case.case_params))
+            case_params = eval(case.case_params)
             print(case_params)
             # Save Index Child
             onames = get_param('child_other_names', case_params)
@@ -472,7 +474,7 @@ def create_crs(request, case, case_id):
         # Save Case Record Sheet
         serial_number = ''
         perp_first_name = ''
-        perp_onames = ''
+        perp_other_names = ''
         perp_surname = ''
         perp_relationship = ''
         court_name = ''
@@ -486,11 +488,10 @@ def create_crs(request, case, case_id):
         perpetrators = perps if perps else []
         if len(perpetrators) > 0:
             perps = perpetrators[0]
-            if 'first_name' in perps:
-                perp_first_name = perps['first_name']
-                perp_onames = get_param('other_names', perps)
-                perp_surname = perps['surname']
-                perp_relationship = perps['relationship']
+            perp_first_name = perps['first_name']
+            perp_other_names = perps['other_names']
+            perp_surname = perps['surname']
+            perp_relationship = perps['relationship']
         if len(perpetrators) > 1:
             pnt = 0
             for perp in perpetrators:
@@ -517,7 +518,7 @@ def create_crs(request, case, case_id):
                 case_serial=serial_number,
                 perpetrator_status=perpetrator_status,
                 perpetrator_first_name=perp_first_name,
-                perpetrator_other_names=perp_onames,
+                perpetrator_other_names=perp_other_names,
                 perpetrator_surname=perp_surname,
                 perpetrator_relationship_type=perp_relationship,
                 case_reporter=case_reporter,
@@ -779,8 +780,8 @@ def create_crs(request, case, case_id):
                     ovccaserecord.parent_case_id = parent_case_id
                     ovccaserecord.save(update_fields=['parent_case_id'])
     except Exception as e:
-        print('error saving CRS - %s' % (str(e)))
-        raise e
+        print('Error saving CRS - %s' % (str(e)))
+        return {}
     else:
         return response
 
@@ -998,3 +999,29 @@ def generate_document(request, response, params, case):
     else:
         pass
 
+
+def report_bug(request):
+    """Method to report bugs."""
+    try:
+        msg = ""
+        ititle = request.POST.get('issue-title')
+        idetail = request.POST.get('issue-details')
+        url = request.POST.get('issue-url')
+        msg += ititle + "\n" + "URL : %s\r" % (url) + idetail + "\n"
+        # Telegram Alert
+        # resp = send_message(msg)
+        # Email to Service Desk and copy logged in user
+        emails = ['nmugaya@gmail.com', 'help@cpims.on.spiceworks.com']
+        tmsg = "CPIMS bug reporting \n URL : %s\r" % (url) + idetail + "\n"
+        params = {'subject': ititle}
+        hmsg = None
+        for email in emails:
+           send_email(email, tmsg, hmsg, params)
+        resp = {'ok': True}
+        tmsg = ' and Telegram' if resp['ok'] else ''
+        print(msg, resp)
+        response = {"message": "Service Desk%s" % (tmsg)}
+    except Exception as e:
+        raise e
+    else:
+        return response

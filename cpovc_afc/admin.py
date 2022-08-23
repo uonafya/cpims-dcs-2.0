@@ -6,7 +6,7 @@ class AFCMainAdmin(admin.ModelAdmin):
     """Admin back end for Geo data management."""
 
     search_fields = ['case_number', 'person__surname', 'person__first_name']
-    list_display = ['case_id', 'case_number', 'person',
+    list_display = ['care_id', 'case_id', 'case_number', 'person',
                     'case_date', 'get_creator', 'case_status', 'case_stage']
     # readonly_fields = ['area_id']
     list_filter = ['is_void', 'case_status', 'case__created_by']

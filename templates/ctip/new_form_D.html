@@ -10,6 +10,15 @@
 <link href="{% static 'plugins/parsley/src/parsley.css' %}" rel="stylesheet" />
 <link href="{% static 'plugins/bootstrap-datepicker/css/datepicker3.css' %}" rel="stylesheet" />
 <link href="{% static 'plugins/bootstrap-wizard/css/bwizard.min.css' %}" rel="stylesheet" />
+<style type="text/css">
+form#new-form-d .form-body ul {
+      list-style-type: none;
+    }
+  form#new-form-d .form-body li {
+      padding-left: 1em;
+      text-indent: -2em;
+  }
+</style>
 {% endblock %}
 
 {% block primary %}
@@ -91,7 +100,7 @@
                             </li>
                         </ol>
                         <!-- begin wizard step-1 -->
-                        <div>
+                        <div class="form-body">
                             <fieldset>
                                 <legend class="pull-left width-full">Confidentiality Statement</legend>
                                  <div class="form-group row">
@@ -293,7 +302,7 @@
                         </div>
                         <!-- end wizard step-1 -->
                         <!-- begin wizard step-2 -->
-                        <div>
+                        <div class="form-body">
                             <fieldset>
                                 <!-- begin row -->
                                 <legend class="pull-left width-full">Case and Interview data</legend>
@@ -424,7 +433,7 @@
                         </div>
                         <!-- end wizard step-2 -->
                         <!-- start wizard step-3 -->
-                        <div>
+                        <div class="form-body">
                             <fieldset>
                                 <legend class="pull-left width-full">Recruitment</legend>
                                 <!-- begin row -->
@@ -496,6 +505,7 @@
                                     <label class="col-md-5 control-label">6.0 Minor at time of entry into the process?</label>
                                     <div class="col-md-3">
                                         {{ form.qfD60_rdo }}
+                                        <span id="id_qfD60_error"></span>
                                     </div>
                                 </div>
                                 <p></p>
@@ -517,7 +527,7 @@
                         </div>
                         <!-- end wizard step-3 -->
                         <!-- begin wizard step-4 -->
-                        <div>
+                        <div class="form-body">
                             <fieldset>
                                 <legend class="pull-left width-full">Transportation</legend>
                                 <!-- begin row -->
@@ -544,6 +554,7 @@
                                     <label class="col-md-5 control-label">10.0 Did the individual travel alone?</label>
                                     <div class="col-md-3">
                                         {{ form.qfD100_rdo }}
+                                        <span id="qfD100_rdo_error"></span>
                                     </div>
                                     <div class="col-md-4"></div>
                                 </div>
@@ -566,6 +577,7 @@
                                     <label class="col-md-5 control-label">11.0 Did the individual cross any border while in transit?</label>
                                     <div class="col-md-3">
                                         {{ form.qfD110_rdo }}
+                                        <span id="qfD110_rdo_error"></span>
                                     </div>
                                     <div class="col-md-4"></div>
                                 </div>
@@ -576,6 +588,7 @@
                                     <label class="col-md-5 control-label"> &nbsp; &nbsp; 11.1 Did the individual cross the border at an official point of entry?</label>
                                     <div class="col-md-3">
                                         {{ form.qfD111_rdo }}
+                                        <span id="qfD111_rdo_error"></span>
                                     </div>
                                     <div class="col-md-4"></div>
                                 </div>
@@ -595,6 +608,7 @@
                                     <label class="col-md-5 control-label"> &nbsp; &nbsp; 11.3 Did the individual use his or her own documents or were the documents forged?</label>
                                     <div class="col-md-3">
                                         {{ form.qfD113_rdo }}
+                                        <span id="qfD113_rdo_error"></span>
                                     </div>
                                     <div class="col-md-4"></div>
                                 </div>
@@ -605,6 +619,7 @@
                                     <label class="col-md-5 control-label">12.0 Did the individual spend any time in transit place(s)/ country(ies)?</label>
                                     <div class="col-md-3">
                                         {{ form.qfD120_rdo }}
+                                        <span id="qfD120_rdo_error"></span>
                                     </div>
                                     <div class="col-md-4"></div>
                                 </div>
@@ -623,7 +638,8 @@
                                 <div class="form-group row">
                                     <label class="col-md-5 control-label"> &nbsp; &nbsp; 12.2 Did s/he engage in any activity in this place(s) country(ies)?</label>
                                     <div class="col-md-3">
-                                        {{ form.qfD122_rdr }}
+                                        {{ form.qfD122_rdo }}
+                                        <span id="qfD122_rdo_error"></span>
                                     </div>
                                     <div class="col-md-4"></div>
                                 </div>
@@ -642,7 +658,7 @@
                         </div>
                         <!-- end wizard step-4 -->
                         <!-- begin wizard step-5 -->
-                        <div>
+                        <div class="form-body">
                             <fieldset>
                                 <legend class="pull-left width-full">The Exploitation Phase</legend>
                                 <!-- begin row -->
@@ -709,6 +725,7 @@
                                     <label class="col-md-5 control-label">15.0 Did the individual experience exploitation? (If NO, proceed to 16.0)</label>
                                     <div class="col-md-3">
                                         {{ form.qfD150_rdo }}
+                                        <span id="qfD150_rdo_error"></span>
                                     </div>
                                     <div class="col-md-4"></div>
                                 </div>
@@ -719,6 +736,7 @@
                                     <label class="col-md-5 control-label">16.0 If NO exploitation took place, was there any indication of a real and substantial threat of exploitation?</label>
                                     <div class="col-md-3">
                                         {{ form.qfD160_rdo }}
+                                        <span id="qfD160_rdo_error"></span>
                                     </div>
                                     <div class="col-md-4"></div>
                                 </div>
@@ -729,6 +747,7 @@
                                     <label class="col-md-5 control-label"> &nbsp; &nbsp; 16.1 If YES, what were the reasons that exploitation never took place?</label>
                                     <div class="col-md-3">
                                         {{ form.qfD161_rdo }}
+                                        <span id="qfD161_rdo_error"></span>
                                     </div>
                                     <div class="col-md-4">
                                         {{ form.qfD162_txt }}
@@ -740,6 +759,7 @@
                                     <label class="col-md-5 control-label">17.0 What degree of freedom did the individual have?</label>
                                     <div class="col-md-3">
                                         {{ form.qfD170_rdo }}
+                                        <span id="qfD170_rdo_error"></span>
                                     </div>
                                     <div class="col-md-4"></div>
                                 </div>
@@ -749,6 +769,7 @@
                                     <label class="col-md-5 control-label">18.0 What were the conditions of exploitation?</label>
                                     <div class="col-md-3">
                                         {{ form.qfD180_rdo }}
+                                        <span id="qfD180_rdo_error"></span>
                                     </div>
                                     <div class="col-md-4"></div>
                                 </div>
@@ -757,7 +778,7 @@
                         </div>
                         <!-- end wizard step-5 -->
                         <!-- begin wizard step-6 -->
-                        <div>
+                        <div class="form-body">
                             <fieldset>
                                 <legend class="pull-left width-full">Corroborative Materials</legend>
                                 <!-- begin row -->
@@ -860,7 +881,7 @@
                         </div>
                         <!-- end wizard step-6 -->
                         <!-- begin wizard step-7 -->
-                        <div>
+                        <div class="form-body">
                             <fieldset>
                                 <legend class="pull-left width-full">Decision Making</legend>
                                 <!-- begin row -->
@@ -868,6 +889,7 @@
                                     <label class="col-md-5 control-label">20.0 Is the individual a VICTIM of TRAFFICKING?</label>
                                     <div class="col-md-3">
                                         {{ form.qfD200_rdo }}
+                                        <span id="qfD200_rdo_error"></span>
                                     </div>
                                     <div class="col-md-4">
                                     </div>
@@ -897,6 +919,7 @@
                                     <label class="col-md-5 control-label">22.0 If the individual is a victim of trafficking, was the type of trafficking in-country or transnational?</label>
                                     <div class="col-md-3">
                                         {{ form.qfD220_rdo }}
+                                        <span id="qfD220_rdo_error"></span>
                                     </div>
                                     <div class="col-md-4">
                                     </div>
@@ -931,6 +954,7 @@
                                     <label class="col-md-5 control-label">24.0 If the individual is NOT a victim of trafficking, is s/he in need of assistance?</label>
                                     <div class="col-md-3">
                                         {{ form.qfD240_rdo }}
+                                        <span id="qfD240_rdo_error"></span>
                                     </div>
                                     <div class="col-md-4">
                                     </div>
@@ -960,7 +984,7 @@
                         </div>
                         <!-- end wizard step-7 -->
                     </div>
-                    <div class="row">
+                    <div  class="form-body row">
                         <div class="form-group">
                             <label class="col-md-5 control-label">Date of Screening</label>
                             <div class="col-md-3">

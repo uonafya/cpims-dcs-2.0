@@ -52,6 +52,7 @@ class CTIPEvents(models.Model):
     event_id = models.UUIDField(
         primary_key=True, default=uuid.uuid1, editable=False)
     case = models.ForeignKey(OVCCaseRecord, on_delete=models.CASCADE)
+    event_count = models.IntegerField(default=1)
     event_date = models.DateField()
     form_id = models.CharField(max_length=1, blank=True)
     person = models.ForeignKey(RegPerson)
@@ -87,4 +88,3 @@ class CTIPForms(models.Model):
     def __unicode__(self):
         """To be returned by admin actions."""
         return '%s' % (str(self.event))
-

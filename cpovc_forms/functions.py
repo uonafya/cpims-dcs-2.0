@@ -8,9 +8,9 @@ from cpovc_main.functions import get_general_list, convert_date
 from cpovc_forms.models import (
     FormsAuditTrail, OVCCareF1B, OVCCareEvents, OVCCaseGeo,
     OVCEducationFollowUp, OVCPlacement, OvcCaseInformation,
-    OVCCaseLocation, OVCCaseRecord)
+    OVCCaseLocation)
 from cpovc_ovc.functions import get_house_hold
-from cpovc_main.models import ListAnswers, SetupGeography
+from cpovc_main.models import ListAnswers
 
 
 def validate_serialnumber(person_id, subcounty, serial_number):
@@ -175,6 +175,7 @@ def get_person_ids(request, name):
             sql = "SELECT id FROM reg_person WHERE id = %s" % name
             sql += " AND is_void=False"
         else:
+            name = name.replace("'", "''")
             names = name.split()
             query = ("SELECT id FROM reg_person WHERE to_tsvector"
                      "(first_name || ' ' || surname || ' '"
@@ -484,8 +485,8 @@ def save_case_info(request, case, item_type, item_id, item_detail):
         person_id = case.person_id
         obj, created = OvcCaseInformation.objects.update_or_create(
             case_id=case_id, person_id=person_id, info_type=item_type,
-            is_void=False,
-            defaults={'info_item': item_id, 'info_detail': item_detail},
+            info_item=item_id, is_void=False,
+            defaults={'info_detail': item_detail},
         )
         print('Saved', obj, created)
     except Exception as e:

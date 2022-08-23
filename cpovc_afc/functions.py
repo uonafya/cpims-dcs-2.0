@@ -12,19 +12,20 @@ def handle_alt_care(request, action, params={}):
     """Method to handle Alt Care"""
     try:
         if action == 0:
-            save_alt_care(request, params)
+            care_id = save_alt_care(request, params)
         else:
             # This is to handle edits / deletion
             case_id = params['case_id']
             case = get_object_or_404(AFCMain, case_id=case_id)
             if case:
                 # Void this record and delete case_info data
+                care_id = case.pk
                 case.is_void = True
                 case.save(update_fields=["is_void"])
     except Exception as e:
         print('Error saving AFC %s' % (str(e)))
     else:
-        return True
+        return care_id
 
 
 def get_alt_care(request, case_id):
@@ -40,7 +41,7 @@ def get_alt_care(request, case_id):
 def save_alt_care(request, params):
     """Method to save Main case data."""
     try:
-        case_id = params['case_id']
+        care_id = params['care_id']
         person_id = params['person_id']
         case_date = request.POST.get('case_date')
         care_type = request.POST.get('care_option')
@@ -50,7 +51,7 @@ def save_alt_care(request, params):
         org_unit_id = 1 if not ou_id else ou_id
         user_id = request.user.id
         obj, created = AFCMain.objects.update_or_create(
-            case_id=case_id, is_void=False,
+            care_id=care_id, is_void=False,
             defaults={'case_date': event_date, 'care_type': care_type,
                       'person_id': person_id, 'org_unit_id': org_unit_id,
                       'created_by_id': user_id},
@@ -82,7 +83,7 @@ def save_alt_care(request, params):
     except Exception as e:
         print('Error saving AFC %s' % (str(e)))
     else:
-        return True
+        return care_id
 
 
 def save_altcare_form(request, form_id, ev_id=0):

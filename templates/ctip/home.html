@@ -71,14 +71,24 @@
                 <hr>
                 <table class="table" id="data-table">
                     <thead>
-                        <tr><th>#</th><th>Case ID</th><th>Case Date</th><th></th></tr>
+                        <tr><th>#</th><th>CPIMS ID</th><th>Names</th><th>Case ID</th><th>Case Date</th><th></th></tr>
                     </thead>
                 {% for case in cases %}
                    <tr>
                        <td>{{ forloop.counter }}</td>
-                       <td>{{ case.case }}</td>
+                       <td>{{ case.id }}</td>
+                       <td>{{ case.first_name }} {{ case.surname }}</td>
+                       <td>{{ case.case_serial }}</td>
                        <td>{{ case.case_date }}</td>
-                       <td><a href="{% url 'view_ctip_case' case_id=case.case_id|stringformat:'s' %}" class="btn  btn-sm btn-primary m-r-5">View Case</a></td>
+                       <td>
+                            {% if case.case_level == 2 %}
+                                <a href="{% url 'view_ctip_case' case_id=case.case_id|stringformat:'s' %}" class="btn  btn-sm btn-primary m-r-5">View Case</a>
+                            {% elif case.case_level == 1 %}
+                                <a href="{% url 'new_ctip_case' case_id=case.case_cid|stringformat:'s' %}" class="btn  btn-sm btn-primary m-r-5">New CTiP Case details</a>
+                            {% else %}
+                                <a href="#" class="btn  btn-sm btn-danger m-r-5">New Case Record Sheet</a>
+                            {% endif %}
+                        </td>
                    </tr>
                 {% endfor %}
                 </table>

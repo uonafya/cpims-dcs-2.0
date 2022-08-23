@@ -60,7 +60,7 @@ form#new-form-b ul {
                 <div class="invoice-company">
                     <span class="pull-right hidden-print">
                     <a href="javascript:;" class="btn btn-sm btn-danger m-b-10"><i class="fa fa-download m-r-5"></i> Export as PDF</a>
-                    <a href="{% url 'view_alt_care' case_id=case.case_id|stringformat:'s' %}" class="btn btn-sm btn-success m-b-10"><i class="fa fa-mail-reply-all m-r-5"></i> Back to Care details</a>
+                    <a href="{% url 'view_alt_care' care_id=case.care_id|stringformat:'s' %}" class="btn btn-sm btn-success m-b-10"><i class="fa fa-mail-reply-all m-r-5"></i> Back to Care details</a>
                     </span>
                     Case No: {{ case.case.case_serial }}
                 </div>
@@ -120,7 +120,7 @@ form#new-form-b ul {
                             <legend class="pull-left width-full">A. HEALTH AND DEVELOPMENT</legend>
 
                                 <div class="form-group">
-                                    <label class="col-md-5 control-label">Is the child growing appropriately for his/her age? For example, is he/she walking, speaking, developing self-help skills? (Describe physical skills and needs, intellectual skills and needs, social skills and needs.)</label>
+                                    <label class="col-md-5 control-label">Is the child growing appropriately for his/her age? For example, is he/she walking, speaking, developing self-help skills? (Describe physical skills and needs, intellectual skills and needs, social skills and needs.) <span class="asteriskField">*</span></label>
                                     <div class="col-md-2">
                                         {{ form.qf1B1A_rdo }}
                                         <span id="qf1B1A_rdo_error"></span>
@@ -129,7 +129,7 @@ form#new-form-b ul {
                                     <div class="col-md-1"></div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-5 control-label">Any history of medical issues/hospitalization? Frequency?</label>
+                                    <label class="col-md-5 control-label">Any history of medical issues/hospitalization? Frequency? <span class="asteriskField">*</span></label>
                                     <div class="col-md-2">
                                         {{ form.qf1B2A_rdo }}
                                         <span id="qf1B2A_rdo_error"></span>
@@ -138,7 +138,7 @@ form#new-form-b ul {
                                     <div class="col-md-1"></div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-5 control-label">Any current health conditions?</label>
+                                    <label class="col-md-5 control-label">Any current health conditions? <span class="asteriskField">*</span></label>
                                     <div class="col-md-2">
                                         {{ form.qf1B3A_rdo }}
                                         <span id="qf1B3A_rdo_error"></span>
@@ -147,7 +147,7 @@ form#new-form-b ul {
                                     <div class="col-md-1"></div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-5 control-label">Any chronic health conditions</label>
+                                    <label class="col-md-5 control-label">Any chronic health conditions <span class="asteriskField">*</span></label>
                                     <div class="col-md-2">
                                        {{ form.qf1B4A_rdo }}
                                         <span id="qf1B4A_rdo_error"></span>
@@ -156,7 +156,7 @@ form#new-form-b ul {
                                     <div class="col-md-1"></div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-5 control-label">Currently on any medication?</label>
+                                    <label class="col-md-5 control-label">Currently on any medication? <span class="asteriskField">*</span></label>
                                     <div class="col-md-2">
                                         {{ form.qf1B5A_rdo }}
                                         <span id="qf1B5A_rdo_error"></span>
@@ -165,7 +165,7 @@ form#new-form-b ul {
                                     <div class="col-md-1"></div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-5 control-label">Immunization status</label>
+                                    <label class="col-md-5 control-label">Immunization status <span class="asteriskField">*</span></label>
                                     <div class="col-md-2">
                                         {{ form.qf1B6A_sdd }}
                                         <span id="qf1B6A_rdo_error"></span>
@@ -174,7 +174,7 @@ form#new-form-b ul {
                                     <div class="col-md-1"></div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-5 control-label">Any allergy</label>
+                                    <label class="col-md-5 control-label">Any allergy <span class="asteriskField">*</span></label>
                                     <div class="col-md-2">
                                         {{ form.qf1B7A_rdo }}
                                         <span id="qf1B7A_rdo_error"></span>
@@ -197,7 +197,7 @@ form#new-form-b ul {
                             <legend class="pull-left width-full">B. EDUCATION</legend>
 
                                 <div class="form-group">
-                                    <label class="col-md-3 control-label">Previously attended any School?</label>
+                                    <label class="col-md-3 control-label">Previously attended any School? <span class="asteriskField">*</span></label>
                                     <div class="col-md-3">
                                         {{ form.qf1B9A_rdo }}
                                         <span id="qf1B9A_rdo_error"></span>
@@ -206,7 +206,7 @@ form#new-form-b ul {
                                     <div class="col-md-1"></div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-3 control-label">School Level</label>
+                                    <label class="col-md-3 control-label">School Level <span class="asteriskField">*</span></label>
                                     <div class="col-md-3">
                                         {{ form.school_level }}
                                     </div>
@@ -214,21 +214,21 @@ form#new-form-b ul {
                                     <div class="col-md-4"></div>
                                 </div>
                                 <div class="form-group" id="school_details_div">
-                                    <label class="col-md-3 control-label">School ID</label>
+                                    <label class="col-md-3 control-label">School ID <span class="asteriskField">*</span></label>
                                     <div class="col-md-3">{{ form.school }}</div>
-                                    <label class="col-md-1 control-label">School Name</label>
+                                    <label class="col-md-1 control-label">School Name <span class="asteriskField">*</span></label>
                                     <div class="col-md-4">{{ form.school_name }}</div>
                                 </div>
                                 <div class="form-group" id="class_details_div">
-                                    <label class="col-md-3 control-label">Class Level</label>
+                                    <label class="col-md-3 control-label">Class Level <span class="asteriskField">*</span></label>
                                     <div class="col-md-3">
                                         {{ form.school_class }}
                                     </div>
-                                    <label class="col-md-1 control-label">Admission Type</label>
+                                    <label class="col-md-1 control-label">Admission Type <span class="asteriskField">*</span></label>
                                     <div class="col-md-4">{{ form.admission_type }}</div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-3 control-label">Access to scholastic materials</label>
+                                    <label class="col-md-3 control-label">Access to scholastic materials <span class="asteriskField">*</span></label>
                                     <div class="col-md-3">
                                         {{ form.qf1B10_rdo }}
                                         <span id="qf1B10_rdo_error"></span>
@@ -237,7 +237,7 @@ form#new-form-b ul {
                                     <div class="col-md-1"></div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-3 control-label">School attendance</label>
+                                    <label class="col-md-3 control-label">School attendance <span class="asteriskField">*</span></label>
                                     <div class="col-md-3">
                                         {{ form.qf1B11_rdo }}
                                         <span id="qf1B11_rdo_error"></span>
@@ -246,12 +246,11 @@ form#new-form-b ul {
                                     <div class="col-md-1"></div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-3 control-label">Academic perfomance</label>
-                                    <div class="col-md-3">
+                                    <label class="col-md-3 control-label">Academic perfomance <span class="asteriskField">*</span></label>
+                                    <div class="col-md-8">
                                         {{ form.qf1B12_rdo }}
-                                        <span id="qf1B12A_rdo_error"></span>
+                                        <span id="qf1B12_rdo_error"></span>
                                     </div>
-                                    <div class="col-md-5"></div>
                                     <div class="col-md-1"></div>
                                 </div>
                                 <div class="form-group">
@@ -310,7 +309,7 @@ form#new-form-b ul {
                                     <div class="col-md-1"></div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-5 control-label">Level of attachment between the child and current caregiver:</label>
+                                    <label class="col-md-5 control-label">Level of attachment between the child and current caregiver: <span class="asteriskField">*</span></label>
                                     <div class="col-md-2">
                                         {{ form.qf1B18A_rdo }}
                                         <span id="qf1B18A_rdo_error"></span>
@@ -319,7 +318,7 @@ form#new-form-b ul {
                                     <div class="col-md-1"></div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-5 control-label">Level of attachment to previous primary caregiver</label>
+                                    <label class="col-md-5 control-label">Level of attachment to previous primary caregiver <span class="asteriskField">*</span></label>
                                     <div class="col-md-2">
                                         {{ form.qf1B19A_rdo }}
                                         <span id="qf1B19A_rdo_error"></span>
@@ -328,7 +327,7 @@ form#new-form-b ul {
                                     <div class="col-md-1"></div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-5 control-label">Does the child exhibit any of the following? (tick all that apply)</label>
+                                    <label class="col-md-5 control-label">Does the child exhibit any of the following? (tick all that apply) <span class="asteriskField">*</span></label>
                                     <div class="col-md-6">
                                         {{ form.qf1B20 }}
                                         <span id="qf1B20_rdo_error"></span>
@@ -377,7 +376,7 @@ form#new-form-b ul {
                             <fieldset>
                             <legend class="pull-left width-full"> CHILD PERSPECTIVE ON REINTEGRATION</legend>
                                 <div class="form-group">
-                                    <label class="col-md-4 control-label">Does the child express a preference for reunification/placement?</label>
+                                    <label class="col-md-4 control-label">Does the child express a preference for reunification/placement? <span class="asteriskField">*</span></label>
                                     <div class="col-md-2">
                                         {{ form.qf1B27A_rdo }}
                                         <span id="qf1B27A_rdo_error"></span>
@@ -386,7 +385,7 @@ form#new-form-b ul {
                                     <div class="col-md-1"></div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-4 control-label">Does the child express concerns about reunification/placement?</label>
+                                    <label class="col-md-4 control-label">Does the child express concerns about reunification/placement? <span class="asteriskField">*</span></label>
                                     <div class="col-md-2">
                                         {{ form.qf1B28A_rdo }}
                                         <span id="qf1B28A_rdo_error"></span>
@@ -434,7 +433,7 @@ form#new-form-b ul {
                     </div>
                     <hr>                    
                     <div class="form-group">
-                        <label class="col-md-5 control-label">Date of Assessment</label>
+                        <label class="col-md-5 control-label">Date of Assessment <span class="asteriskField">*</span></label>
                         <div class="col-md-2">
                             {{ form.event_date }}
                         </div>

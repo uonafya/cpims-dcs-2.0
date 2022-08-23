@@ -931,7 +931,7 @@ def get_list_of_persons(search_string,
             query = ("SELECT rp.id, rp.first_name, rp.surname, rp.other_names,"
                      " rp.sex_id, rp.date_of_birth FROM reg_person rp "
                      "INNER JOIN reg_persons_types pt ON pt.person_id = rp.id "
-                     "WHERE rp.id = '%s' AND pt.person_type_id = '%s'")
+                     "WHERE rp.id = %s AND pt.person_type_id = '%s'")
             vals = search_string.strip()
         elif search_criteria == 'PSOG':
             query = ("SELECT rp.id, rp.first_name, rp.surname, rp.other_names,"
@@ -944,6 +944,7 @@ def get_list_of_persons(search_string,
                      "wHERE to_tsvector (rou.org_unit_name) "
                      "@@ to_tsquery('english', '%s') AND rpou.is_void = False "
                      "AND rp.is_void = False and pt.person_type_id = '%s'")
+            search_string = search_string.replace("'", "''")
             names = search_string.strip().split()
             vals = ' & '.join(names)
         elif search_criteria == 'PSRE':
@@ -955,9 +956,11 @@ def get_list_of_persons(search_string,
                      "WHERE to_tsvector (lg.area_name) "
                      "@@ to_tsquery('english', '%s') AND rpg.is_void = False "
                      "AND rp.is_void = false and pt.person_type_id = '%s'")
+            search_string = search_string.replace("'", "''")
             names = search_string.strip().split()
             vals = ' & '.join(names)
         else:
+            search_string = search_string.replace("'", "''")
             names = search_string.strip().split()
             query = ("SELECT rp.id, rp.first_name, rp.surname, rp.other_names,"
                      " rp.sex_id, rp.date_of_birth FROM reg_person rp "
@@ -970,7 +973,7 @@ def get_list_of_persons(search_string,
                      "ORDER BY rp.date_of_birth DESC ")
             vals = ' & '.join(names)
         sql = query % (vals, person_type)
-        # print(sql)
+        print(sql)
         with connection.cursor() as cursor:
             cursor.execute(sql)
             row = cursor.fetchall()

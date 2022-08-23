@@ -67,7 +67,7 @@ def settings_reports(request):
                 cdate = os.stat(rname)
                 (md, ino, dev, nnk, uid, gid, size, atm, mtime, ctime) = cdate
                 create_date = time.ctime(mtime)
-                report_name = rname.split('-')[-1]
+                report_name = rname.split('/xlsx/')[-1]
                 report = [report_name, create_date, filename]
                 reports.append(report)
         return render(request, 'settings/reports.html', {'reports': reports})

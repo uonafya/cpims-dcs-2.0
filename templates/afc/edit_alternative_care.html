@@ -48,7 +48,7 @@
         <table class="text-inverse m-b-20 width-full">
             <tr>
                 <td>
-                    <a href="{% url 'alt_care_form' cid=cid form_id='1A' case_id=case.case_id|stringformat:'s' %}">
+                    <a href="{% url 'alt_care_form' cid=cid form_id='1A' care_id=case.care_id|stringformat:'s' %}">
                     <i class="fa fa-file-o fa-1x pull-left fa-fw m-t-4"></i>
                     <span class="badge pull-right">{% if events.1A > 0 %}Y{% else %}N{% endif %}</span>
                     <div class="m-t-4">F1 - Child Identification Form</div></a>
@@ -56,7 +56,7 @@
             </tr>
             <tr>
                 <td>
-                    <a href="{% url 'alt_care_form' cid=cid form_id='1B' case_id=case.case_id|stringformat:'s' %}">
+                    <a href="{% url 'alt_care_form' cid=cid form_id='1B' care_id=case.care_id|stringformat:'s' %}">
                     <i class="fa fa-file-o fa-1x pull-left fa-fw m-t-4"></i>
                     <span class="badge pull-right">{% if events.1B > 0 %}Y{% else %}N{% endif %}</span>
                     <div class="m-t-4">F1 - Child Assessment Form</div></a>
@@ -64,7 +64,7 @@
             </tr>
             <tr>
                 <td>
-                    <a href="{% url 'alt_care_form' cid=cid form_id='2A' case_id=case.case_id|stringformat:'s' %}">
+                    <a href="{% url 'alt_care_form' cid=cid form_id='2A' care_id=case.care_id|stringformat:'s' %}">
                     <i class="fa fa-file-o fa-1x pull-left fa-fw m-t-4"></i>
                     <span class="badge pull-right">{% if events.2A > 0 %}Y{% else %}N{% endif %}</span>
                     <div class="m-t-4">F2 - Family Assessment Form</div></a>
@@ -73,7 +73,7 @@
             
             <tr>
                 <td>
-                    <a href="{% url 'alt_care_form' cid=cid form_id='4A' case_id=case.case_id|stringformat:'s' %}">
+                    <a href="{% url 'alt_care_form' cid=cid form_id='4A' care_id=case.care_id|stringformat:'s' %}">
                     <i class="fa fa-file-o fa-1x pull-left fa-fw m-t-4"></i>
                     <span class="badge pull-right">{% if events.4A > 0 %}Y{% else %}N{% endif %}</span>
                     <div class="m-t-4">F4 - Case Plan</div></a>
@@ -81,7 +81,7 @@
             </tr>
             <tr>
                 <td>
-                    <a href="{% url 'alt_care_form' cid=cid form_id='5A' case_id=case.case_id|stringformat:'s' %}">
+                    <a href="{% url 'alt_care_form' cid=cid form_id='5A' care_id=case.care_id|stringformat:'s' %}">
                     <i class="fa fa-file-o fa-1x pull-left fa-fw m-t-4"></i>
                     <span class="badge pull-right">{% if events.5A > 0 %}Y{% else %}N{% endif %}</span>
                     <div class="m-t-4">F5 - Placement Form</div></a>
@@ -89,7 +89,7 @@
             </tr>
             <tr>
                 <td>
-                    <a href="{% url 'alt_care_form' cid=cid form_id='6A' case_id=case.case_id|stringformat:'s' %}">
+                    <a href="{% url 'alt_care_form' cid=cid form_id='6A' care_id=case.care_id|stringformat:'s' %}">
                     <i class="fa fa-file-o fa-1x pull-left fa-fw m-t-4"></i>
                     <span class="badge pull-right">{% if events.6A > 0 %}Y{% else %}N{% endif %}</span>
                     <div class="m-t-4">F6 : Monitoring Form</div></a>
@@ -98,7 +98,7 @@
             {% if case.person.years < 14 %}            
             <tr>
                 <td>
-                    <a href="{% url 'alt_care_form' cid=cid form_id='7A' case_id=case.case_id|stringformat:'s' %}">
+                    <a href="{% url 'alt_care_form' cid=cid form_id='7A' care_id=case.care_id|stringformat:'s' %}">
                     <i class="fa fa-file-o fa-1x pull-left fa-fw m-t-4"></i>
                     <span class="badge pull-right">{% if events.7A > 0 %}Y{% else %}N{% endif %}</span>
                     <div class="m-t-4">F7 : Child and Caregiver Case Review Form</div></a>
@@ -107,7 +107,7 @@
             {% else %}
             <tr>
                 <td>
-                    <a href="{% url 'alt_care_form' cid=cid form_id='8A' case_id=case.case_id|stringformat:'s' %}">
+                    <a href="{% url 'alt_care_form' cid=cid form_id='8A' care_id=case.care_id|stringformat:'s' %}">
                     <i class="fa fa-file-o fa-1x pull-left fa-fw m-t-4"></i>
                     <span class="badge pull-right">{% if events.8A > 0 %}Y{% else %}N{% endif %}</span>
                     <div class="m-t-4">F8 : Young Adult Case Review Form</div></a>
@@ -116,7 +116,7 @@
             {% endif %}
             <tr>
                 <td>
-                    <a href="{% url 'alt_care_form' cid=cid form_id='9A' case_id=case.case_id|stringformat:'s' %}">
+                    <a href="{% url 'alt_care_form' cid=cid form_id='9A' care_id=case.care_id|stringformat:'s' %}">
                     <i class="fa fa-file fa-1x pull-left fa-fw m-t-4"></i>
                     <span class="badge pull-right">{% if events.9A > 0 %}Y{% else %}N{% endif %}</span>
                     <div class="m-t-4">F9 : Case closure</div></a>
@@ -129,7 +129,7 @@
             </tr>
             <tr>
                 <td>
-                    <a href="{% url 'alt_care_form' cid=cid form_id='3A' case_id=case.case_id|stringformat:'s' %}">
+                    <a href="{% url 'alt_care_form' cid=cid form_id='3A' care_id=case.care_id|stringformat:'s' %}">
                     <i class="fa fa-file-o fa-1x pull-left fa-fw m-t-4"></i>
                     <span class="badge pull-right">{% if events.3A > 0 %}Y{% else %}N{% endif %}</span>
                     <div class="m-t-4">F3 - Consent Forms</div></a>
@@ -138,7 +138,7 @@
             {% if case.person.years >= 14 %}
             <tr>
                 <td>
-                    <a href="{% url 'alt_care_form' cid=cid form_id='3B' case_id=case.case_id|stringformat:'s' %}">
+                    <a href="{% url 'alt_care_form' cid=cid form_id='3B' care_id=case.care_id|stringformat:'s' %}">
                     <i class="fa fa-file-o fa-1x pull-left fa-fw m-t-4"></i>
                     <span class="badge pull-right">{% if events.3B > 0 %}Y{% else %}N{% endif %}</span>
                     <div class="m-t-4">F3 - Child Assent Forms</div></a>
@@ -147,7 +147,7 @@
             {% endif %}
             <tr>
                 <td>
-                    <a href="{% url 'alt_care_form' cid=cid form_id='10A' case_id=case.case_id|stringformat:'s' %}">
+                    <a href="{% url 'alt_care_form' cid=cid form_id='10A' care_id=case.care_id|stringformat:'s' %}">
                     <i class="fa fa-file fa-1x pull-left fa-fw m-t-4"></i>
                     <span class="badge pull-right">{% if events.10A > 0 %}Y{% else %}N{% endif %}</span>
                     <div class="m-t-4">F10 - Case Transfer Form</div></a>
@@ -155,7 +155,7 @@
             </tr>
             <tr>
                 <td>
-                    <a href="{% url 'alt_care_form' cid=cid form_id='12A' case_id=case.case_id|stringformat:'s' %}">
+                    <a href="{% url 'alt_care_form' cid=cid form_id='12A' care_id=case.care_id|stringformat:'s' %}">
                     <i class="fa fa-file fa-1x pull-left fa-fw m-t-4"></i>
                     <span class="badge pull-right">{% if events.12A > 0 %}Y{% else %}N{% endif %}</span>
                     <div class="m-t-4">F12 - Referral Form</div></a>
@@ -163,7 +163,7 @@
             </tr>
             <tr>
                 <td>
-                    <a href="{% url 'alt_care_form' cid=cid form_id='14A' case_id=case.case_id|stringformat:'s' %}">
+                    <a href="{% url 'alt_care_form' cid=cid form_id='14A' care_id=case.care_id|stringformat:'s' %}">
                     <i class="fa fa-file fa-1x pull-left fa-fw m-t-4"></i>
                     <span class="badge pull-right">{% if events.14A > 0 %}Y{% else %}N{% endif %}</span>
                     <div class="m-t-4">F14 - Disability Assessment Form</div></a>
@@ -171,7 +171,7 @@
             </tr>
             <tr>
                 <td>
-                    <a href="{% url 'alt_care_form' cid=cid form_id='15A' case_id=case.case_id|stringformat:'s' %}">
+                    <a href="{% url 'alt_care_form' cid=cid form_id='15A' care_id=case.care_id|stringformat:'s' %}">
                     <i class="fa fa-file-o fa-1x pull-left fa-fw m-t-4"></i>
                     <span class="badge pull-right">{% if events.15A > 0 %}Y{% else %}N{% endif %}</span>
                     <div class="m-t-4">F15 - Caregiver Feedback Form</div></a>
@@ -179,7 +179,7 @@
             </tr>
             <tr>
                 <td>
-                    <a href="{% url 'alt_care_form' cid=cid form_id='16A' case_id=case.case_id|stringformat:'s' %}">
+                    <a href="{% url 'alt_care_form' cid=cid form_id='16A' care_id=case.care_id|stringformat:'s' %}">
                     <i class="fa fa-file-o fa-1x pull-left fa-fw m-t-4"></i>
                     <span class="badge pull-right">{% if events.16A > 0 %}Y{% else %}N{% endif %}</span>
                     <div class="m-t-4">F16 - Child and Young Adult Feedback Form</div></a>
@@ -207,7 +207,7 @@
                 <div class="invoice-company">
                     <span class="pull-right hidden-print">
                     <a href="#" class="btn btn-sm btn-danger m-b-10"><i class="fa fa-download m-r-5"></i> Export as PDF</a>
-                    <a href="{% url 'view_alt_care' case_id=case.case_id|stringformat:'s' %}" class="btn btn-sm btn-success m-b-10"><i class="fa fa-mail-reply-all m-r-5"></i> Back to Care details</a>
+                    <a href="{% url 'view_alt_care' care_id=case.care_id|stringformat:'s' %}" class="btn btn-sm btn-success m-b-10"><i class="fa fa-mail-reply-all m-r-5"></i> Back to Care details</a>
                     </span>
                     Case No: {{ case.case_number }}
                 </div>

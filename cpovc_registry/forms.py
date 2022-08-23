@@ -21,7 +21,8 @@ my_list = []
 for country in OCOUNTRIES:
     my_list.append((country, OCOUNTRIES[country]))
 my_list_sorted = sorted(my_list, key=lambda x: x[1])
-country_list = list(my_list_sorted)
+clist = list(my_list_sorted)
+country_list = [('', 'Please Select')] + clist
 
 
 person_type_list = get_list('person_type_id', 'Please Select')
@@ -170,7 +171,7 @@ class RegistrationForm(forms.Form):
     ward_list_wb = get_geo_list(all_list, 'GWRD', True)
 
     REGION_CHOICES = ((0, 'National'), (1, 'County'), (2, 'Sub County'))
-    NATIONALITY_CHOICES = ((0, 'Kenyan'), (1, 'Foreigner'))
+    NATIONALITY_CHOICES = ((0, 'Kenyan'), (1, 'Non Kenyan'))
 
     working_in_region = forms.ChoiceField(
         choices=REGION_CHOICES,

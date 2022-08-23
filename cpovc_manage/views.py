@@ -20,7 +20,7 @@ from cpovc_reports.forms import CaseLoad
 from cpovc_reports.models import RPTCaseLoad
 from .functions import (
     travel_pdf, handle_integration, get_geo, get_person_geo,
-    get_person_orgs, generate_document)
+    get_person_orgs, generate_document, report_bug)
 from cpovc_main.models import SetupGeography
 
 from .params import PARAMS
@@ -301,16 +301,12 @@ def integration_home(request):
             return JsonResponse(results, content_type='application/json',
                                 safe=False)
         cases = OVCBasicCRS.objects.filter(
-            is_void=False).order_by('-timestamp_created')
-        # if cases.count() > 100:
-        #    cases = cases[:100]
+            is_void=False).order_by('-timestamp_created')[:100]
         if not request.user.is_superuser:
             if request.user.username == 'vurugumapper':
                 cases = cases.filter(account_id=user_id)
             else:
                 cases = cases.filter(county__in=user_counties)
-        else:
-            cases = cases[:1000]
         # Get filters from the URL
         case_source = request.GET.get('case_source', None)
         case_status = request.GET.get('case_status', None)
@@ -324,8 +320,7 @@ def integration_home(request):
             cases = cases.filter(case_date__range=(sdate, edate))
         if case_source:
             cases = cases.filter(account_id=case_source)
-        for cs in cases:
-            # [:1000]:
+        for cs in cases[:1000]:
             case_ids.append(cs.case_id)
         case_cats = OVCBasicCategory.objects.filter(
             is_void=False, case_id__in=case_ids)
@@ -581,8 +576,11 @@ def se_data(request):
         ou_ids = []
         org_unit = request.GET.get('org_unit')
         county = request.GET.get('county')
+
         persons = RegPersonsOrgUnits.objects.filter(
-            is_void=False, date_delinked__isnull=True)
+            is_void=False, date_delinked__isnull=True).exclude(
+            person__designation__isnull=True, person__designation='',
+            person__designation__in=['CCGV', 'COVC'])
         check_fields = ['wdn_cadre_type_id', 'vol_cadre_type',
                         'sw_cadre_type_id', 'scc_cadre_type_id',
                         'po_cadre_type_id', 'pm_cadre_type_id',

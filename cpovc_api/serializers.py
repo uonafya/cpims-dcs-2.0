@@ -36,7 +36,8 @@ class SettingsSerializer(serializers.HyperlinkedModelSerializer):
         """Overrride parameters."""
 
         model = SetupList
-        fields = ('item_id', 'item_description', 'the_order')
+        fields = ('item_id', 'item_description',
+                  'item_sub_category', 'the_order')
 
 
 class GeoSerializer(serializers.HyperlinkedModelSerializer):

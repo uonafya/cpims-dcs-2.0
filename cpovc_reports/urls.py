@@ -43,4 +43,6 @@ urlpatterns = patterns(
     url(r'^cluster/$', 'cluster',
         name='cluster'),
     url(r'^docs/(?P<id>\d+)/$', 'get_docs',
-        name='get_docs'),)
+        name='get_docs'),
+    url(r'^afc/(?P<id>\d+)/$', 'reports_afc',
+        name='reports_afc'),)

@@ -3,7 +3,7 @@ from django.contrib import admin
 
 from .models import (
     OVCAggregate, OVCFacility, OVCSchool, OVCCluster,
-    OVCClusterCBO)
+    OVCClusterCBO, OVCEducation)
 
 
 class OVCAggregateAdmin(admin.ModelAdmin):
@@ -74,3 +74,15 @@ class OVCClusterCBOAdmin(admin.ModelAdmin):
 
 
 admin.site.register(OVCClusterCBO, OVCClusterCBOAdmin)
+
+
+class OVCEducationAdmin(admin.ModelAdmin):
+    """Aggregate data admin."""
+
+    search_fields = ['person', 'school']
+    list_display = ['id', 'person', 'school', 'school_level']
+    # readonly_fields = ['id']
+    list_filter = ['is_void']
+
+
+admin.site.register(OVCEducation, OVCEducationAdmin)

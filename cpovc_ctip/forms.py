@@ -8,9 +8,9 @@ from cpovc_main.functions import get_list
 
 
 YESNO_CHOICES = get_list('yesno_id')
-activity_list = get_list('ctip_activity_id', 'Please Select')
-means_list = get_list('ctip_means_id', 'Please Select')
-purpose_list = get_list('ctip_purpose_id', 'Please Select')
+activity_list = get_list('ctip_activity_id')
+means_list = get_list('ctip_means_id')
+purpose_list = get_list('ctip_purpose_id')
 form_b1_list = get_list('ctip_form_b1')
 form_b2_list = get_list('ctip_form_b2')
 form_b3_list = get_list('ctip_form_b3')
@@ -54,7 +54,7 @@ class CTIPForm(forms.Form):
                    'data-parsley-required': 'true',
                    'data-parsley-errors-container': "#trafficking_error"}))
 
-    ctip_activity = forms.ChoiceField(
+    ctip_activity_old = forms.ChoiceField(
         choices=activity_list,
         initial='0',
         required=True,
@@ -63,7 +63,13 @@ class CTIPForm(forms.Form):
                    'id': 'ctip_activity',
                    'data-parsley-required': 'true'}))
 
-    ctip_means = forms.ChoiceField(
+    ctip_activity = forms.MultipleChoiceField(
+        choices=activity_list,
+        widget=forms.CheckboxSelectMultiple(
+            attrs={'id': 'ctip_activity',
+                   'data-parsley-errors-container': "#activity_error"}))
+
+    ctip_means_old = forms.ChoiceField(
         choices=means_list,
         initial='0',
         required=True,
@@ -72,7 +78,13 @@ class CTIPForm(forms.Form):
                    'id': 'ctip_means',
                    'data-parsley-required': 'true'}))
 
-    ctip_purpose = forms.ChoiceField(
+    ctip_means = forms.MultipleChoiceField(
+        choices=means_list,
+        widget=forms.CheckboxSelectMultiple(
+            attrs={'data-parsley-required': 'false',
+                   'id': 'ctip_means'}))
+
+    ctip_purpose_old = forms.ChoiceField(
         choices=purpose_list,
         initial='0',
         required=True,
@@ -80,6 +92,13 @@ class CTIPForm(forms.Form):
             attrs={'class': 'form-control',
                    'id': 'ctip_purpose',
                    'data-parsley-required': 'true'}))
+
+    ctip_purpose = forms.MultipleChoiceField(
+        choices=purpose_list,
+        widget=forms.CheckboxSelectMultiple(
+            attrs={'data-parsley-required': 'false',
+                   'id': 'ctip_purpose',
+                   'data-parsley-errors-container': "#purpose_error"}))
 
 
 class CTIPFormA(forms.Form):
@@ -171,11 +190,15 @@ class CTIPFormC(forms.Form):
                'data-parsley-required': "true"
                }))
 
-    qfC2_txt = forms.CharField(widget=forms.TextInput(
-        attrs={'class': 'form-control',
-               'id': 'qfC2_txt',
-               'data-parsley-required': "true"
-               }))
+    qfC2_rdo = forms.ChoiceField(
+        choices=YESNO_CHOICES,
+        initial='AYES',
+        required=True,
+        widget=forms.RadioSelect(
+            renderer=RadioCustomRenderer,
+            attrs={'id': 'qfC2',
+                   'data-parsley-required': 'true',
+                   'data-parsley-errors-container': "#trafficking_error"}))
 
     qfC3_txt = forms.CharField(widget=forms.TextInput(
         attrs={'class': 'form-control',
@@ -204,25 +227,25 @@ class CTIPFormC(forms.Form):
     qfC7_txt = forms.CharField(widget=forms.Textarea(
         attrs={'placeholder': _('Notes'),
                'class': 'form-control',
-               'id': 'qfC7_txt',
+               'id': 'qfC7_txt', 'data-parsley-required': "true",
                'rows': '3'}))
 
     qfC8_txt = forms.CharField(widget=forms.Textarea(
         attrs={'placeholder': _('Notes'),
                'class': 'form-control',
-               'id': 'qfC8_txt',
+               'id': 'qfC8_txt', 'data-parsley-required': "true",
                'rows': '3'}))
 
     qfC9_txt = forms.CharField(widget=forms.Textarea(
         attrs={'placeholder': _('Notes'),
                'class': 'form-control',
-               'id': 'qfC9_txt',
+               'id': 'qfC9_txt', 'data-parsley-required': "true",
                'rows': '3'}))
 
     qfC10_txt = forms.CharField(widget=forms.Textarea(
         attrs={'placeholder': _('Notes'),
                'class': 'form-control',
-               'id': 'qfC10_txt',
+               'id': 'qfC10_txt', 'data-parsley-required': "true",
                'rows': '3'}))
 
     qfC11_txt = forms.CharField(widget=forms.Textarea(
@@ -371,7 +394,7 @@ class CTIPFormD(forms.Form):
         choices=YESNO_CHOICES,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
-            attrs={'id': 'qfD10'}))
+            attrs={'id': 'qfD20', 'data-parsley-required': 'true'}))
 
     qfD21 = forms.MultipleChoiceField(
         choices=form_d21_list,
@@ -388,8 +411,7 @@ class CTIPFormD(forms.Form):
     qfD30 = forms.MultipleChoiceField(
         choices=form_labour_list,
         widget=forms.CheckboxSelectMultiple(
-            attrs={'data-parsley-required': 'true',
-                   'data-parsley-errors-container': "#id_qfD30"}))
+            attrs={'data-parsley-errors-container': "#id_qfD30"}))
 
     qfD31_txt = forms.CharField(widget=forms.Textarea(
         attrs={'placeholder': _('Other details'),
@@ -429,16 +451,17 @@ class CTIPFormD(forms.Form):
         choices=YESNO_CHOICES,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
-            attrs={'id': 'qfD60_rdo'}))
+            attrs={'id': 'qfD60_rdo', 'data-parsley-required': 'true',
+                   'data-parsley-errors-container': "#id_qfD60_error"}))
 
     qfD70_txt = forms.CharField(widget=forms.TextInput(
         attrs={'placeholder': _('Specify'),
-               'class': 'form-control'
+               'class': 'form-control', 'data-parsley-required': 'true'
                }))
 
     qfD80_txt = forms.CharField(widget=forms.TextInput(
         attrs={'placeholder': _('Specify'),
-               'class': 'form-control'
+               'class': 'form-control', 'data-parsley-required': 'true'
                }))
 
     qfD90 = forms.MultipleChoiceField(
@@ -450,6 +473,7 @@ class CTIPFormD(forms.Form):
     qfD91_txt = forms.CharField(widget=forms.TextInput(
         attrs={'placeholder': _('Name'),
                'class': 'form-control',
+               'data-parsley-required': 'true',
                'id': 'qfD91_txt',
                }))
 
@@ -457,7 +481,8 @@ class CTIPFormD(forms.Form):
         choices=YESNO_CHOICES,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
-            attrs={'id': 'qfD100_rdo'}))
+            attrs={'id': 'qfD100_rdo', 'data-parsley-required': 'true',
+                   'data-parsley-errors-container': "#qfD100_rdo_error"}))
 
     qfD101 = forms.MultipleChoiceField(
         choices=form_companion_list,
@@ -475,13 +500,15 @@ class CTIPFormD(forms.Form):
         choices=YESNO_CHOICES,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
-            attrs={'id': 'qfD110_rdo'}))
+            attrs={'id': 'qfD110_rdo', 'data-parsley-required': 'true',
+                   'data-parsley-errors-container': "#qfD110_rdo_error"}))
 
     qfD111_rdo = forms.MultipleChoiceField(
         choices=YESNO_CHOICES,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
-            attrs={'id': 'qfD111_rdo'}))
+            attrs={'id': 'qfD111_rdo', 'data-parsley-required': 'true',
+                   'data-parsley-errors-container': "#qfD111_rdo_error"}))
 
     qfD112_txt = forms.CharField(widget=forms.Textarea(
         attrs={'placeholder': _('Where and how?'),
@@ -493,31 +520,33 @@ class CTIPFormD(forms.Form):
         choices=form_doc_type_list,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
-            attrs={'id': 'qfD113_rdo'}))
+            attrs={'id': 'qfD113_rdo', 'data-parsley-required': 'true',
+                   'data-parsley-errors-container': "#qfD113_rdo_error"}))
 
     qfD120_rdo = forms.MultipleChoiceField(
         choices=YESNO_CHOICES,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
-            attrs={'id': 'qfD120_rdo'}))
+            attrs={'id': 'qfD120_rdo', 'data-parsley-required': 'true',
+                   'data-parsley-errors-container': "#qfD120_rdo_error"}))
 
     qfD121_txt = forms.CharField(widget=forms.Textarea(
         attrs={'placeholder': _('Chronological order'),
                'class': 'form-control',
-               'id': 'qfD121_txt',
+               'id': 'qfD121_txt', 'data-parsley-required': 'true',
                'rows': '3'}))
 
     qfD122_rdo = forms.MultipleChoiceField(
         choices=YESNO_CHOICES,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
-            attrs={'id': 'qfD122_rdo'}))
+            attrs={'id': 'qfD122_rdo', 'data-parsley-required': 'true',
+                   'data-parsley-errors-container': "#qfD122_rdo_error"}))
 
     qfD123 = forms.MultipleChoiceField(
         choices=form_labour_list,
         widget=forms.CheckboxSelectMultiple(
-            attrs={'data-parsley-required': 'true',
-                   'data-parsley-errors-container': "#id_qfD123"}))
+            attrs={'data-parsley-errors-container': "#id_qfD123"}))
 
     qfD123_txt = forms.CharField(widget=forms.Textarea(
         attrs={'placeholder': _('Other'),
@@ -572,18 +601,21 @@ class CTIPFormD(forms.Form):
         choices=YESNO_CHOICES,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
-            attrs={'id': 'qfD150_rdo'}))
+            attrs={'id': 'qfD150_rdo', 'data-parsley-required': 'true',
+                   'data-parsley-errors-container': "#qfD150_rdo_error"}))
 
     qfD160_rdo = forms.MultipleChoiceField(
         choices=YESNO_CHOICES,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
-            attrs={'id': 'qfD160_rdo'}))
+            attrs={'id': 'qfD160_rdo', 'data-parsley-required': 'true',
+                   'data-parsley-errors-container': "#qfD160_rdo_error"}))
 
     qfD161_rdo = forms.MultipleChoiceField(
         choices=form_no_exploit_list,
         widget=forms.RadioSelect(
-            attrs={'id': 'qfD161_rdo'}))
+            attrs={'id': 'qfD161_rdo', 'data-parsley-required': 'true',
+                   'data-parsley-errors-container': "#qfD161_rdo_error"}))
 
     qfD162_txt = forms.CharField(widget=forms.Textarea(
         attrs={'placeholder': _('Other'),
@@ -594,12 +626,14 @@ class CTIPFormD(forms.Form):
     qfD170_rdo = forms.MultipleChoiceField(
         choices=form_freedom_list,
         widget=forms.RadioSelect(
-            attrs={'id': 'qfD170_rdo'}))
+            attrs={'id': 'qfD170_rdo', 'data-parsley-required': 'true',
+                   'data-parsley-errors-container': "#qfD170_rdo_error"}))
 
     qfD180_rdo = forms.MultipleChoiceField(
         choices=form_exploit_cond_list,
         widget=forms.RadioSelect(
-            attrs={'id': 'qfD180_rdo'}))
+            attrs={'id': 'qfD180_rdo', 'data-parsley-required': 'true',
+                   'data-parsley-errors-container': "#qfD180_rdo_error"}))
 
     # Corroborative Materials
     qfD190A_rdo = forms.MultipleChoiceField(
@@ -661,25 +695,27 @@ class CTIPFormD(forms.Form):
         choices=YESNO_CHOICES,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
-            attrs={'id': 'qfD200_rdo'}))
+            attrs={'id': 'qfD200_rdo', 'data-parsley-required': 'true',
+                   'data-parsley-errors-container': "#qfD200_rdo_error"}))
 
     qfD201_txt = forms.CharField(widget=forms.Textarea(
         attrs={'placeholder': _('Other'),
                'class': 'form-control',
-               'id': 'qfD201_txt',
+               'id': 'qfD201_txt', 'data-parsley-required': 'true',
                'rows': '3'}))
 
     qfD210_txt = forms.CharField(widget=forms.TextInput(
         attrs={'placeholder': _('By whom?'),
                'class': 'form-control',
-               'id': 'qfD210_txt',
+               'id': 'qfD210_txt', 'data-parsley-required': 'true'
                }))
 
     qfD220_rdo = forms.MultipleChoiceField(
         choices=trafficking_type,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
-            attrs={'id': 'qfD220_rdo'}))
+            attrs={'id': 'qfD220_rdo', 'data-parsley-required': 'true',
+                   'data-parsley-errors-container': "#qfD220_rdo_error"}))
 
     qfD230_rdo = forms.MultipleChoiceField(
         choices=YESNO_CHOICES,
@@ -702,7 +738,8 @@ class CTIPFormD(forms.Form):
         choices=YESNO_CHOICES,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
-            attrs={'id': 'qfD240_rdo'}))
+            attrs={'id': 'qfD240_rdo', 'data-parsley-required': 'true',
+                   'data-parsley-errors-container': "#qfD240_rdo_error"}))
 
     qfD241 = forms.MultipleChoiceField(
         choices=form_situation_list,
@@ -727,11 +764,14 @@ class CTIPFormD(forms.Form):
 class CTIPFormE(forms.Form):
     """Counter Trafficking form D."""
 
-    qfE1_txt = forms.CharField(widget=forms.Textarea(
-        attrs={'placeholder': _('Explain'),
-               'class': 'form-control',
-               'id': 'qfE1_txt',
-               'rows': '3'}))
+    qfE1_txt = forms.CharField(
+        required=True,
+        widget=forms.Textarea(
+            attrs={'placeholder': _('Explain'),
+                   'class': 'form-control',
+                   'data-parsley-required': "true",
+                   'id': 'qfE1_txt',
+                   'rows': '3'}))
 
     qfE1b_txt = forms.CharField(widget=forms.Textarea(
         attrs={'placeholder': _('Intervention'),
@@ -742,6 +782,7 @@ class CTIPFormE(forms.Form):
     qfE2_txt = forms.CharField(widget=forms.Textarea(
         attrs={'placeholder': _('Explain'),
                'class': 'form-control',
+               'data-parsley-required': "true",
                'id': 'qfE2_txt',
                'rows': '3'}))
 
@@ -754,6 +795,7 @@ class CTIPFormE(forms.Form):
     qfE3_txt = forms.CharField(widget=forms.Textarea(
         attrs={'placeholder': _('Explain'),
                'class': 'form-control',
+               'data-parsley-required': "true",
                'id': 'qfE3_txt',
                'rows': '3'}))
 
@@ -766,6 +808,7 @@ class CTIPFormE(forms.Form):
     qfE4_txt = forms.CharField(widget=forms.Textarea(
         attrs={'placeholder': _('Explain'),
                'class': 'form-control',
+               'data-parsley-required': "true",
                'id': 'qfE4_txt',
                'rows': '3'}))
 
@@ -778,6 +821,7 @@ class CTIPFormE(forms.Form):
     qfE5_txt = forms.CharField(widget=forms.Textarea(
         attrs={'placeholder': _('Explain'),
                'class': 'form-control',
+               'data-parsley-required': "true",
                'id': 'qfE5_txt',
                'rows': '3'}))
 
@@ -790,6 +834,7 @@ class CTIPFormE(forms.Form):
     qfE6_txt = forms.CharField(widget=forms.Textarea(
         attrs={'placeholder': _('Explain'),
                'class': 'form-control',
+               'data-parsley-required': "true",
                'id': 'qfE6_txt',
                'rows': '3'}))
 
@@ -802,6 +847,7 @@ class CTIPFormE(forms.Form):
     qfE7_txt = forms.CharField(widget=forms.Textarea(
         attrs={'placeholder': _('Explain'),
                'class': 'form-control',
+               'data-parsley-required': "true",
                'id': 'qfE7_txt',
                'rows': '3'}))
 
@@ -814,6 +860,7 @@ class CTIPFormE(forms.Form):
     qfE8_txt = forms.CharField(widget=forms.Textarea(
         attrs={'placeholder': _('Explain'),
                'class': 'form-control',
+               'data-parsley-required': "true",
                'id': 'qfE8_txt',
                'rows': '3'}))
 
@@ -826,6 +873,7 @@ class CTIPFormE(forms.Form):
     qfE9_txt = forms.CharField(widget=forms.Textarea(
         attrs={'placeholder': _('Explain'),
                'class': 'form-control',
+               'data-parsley-required': "true",
                'id': 'qfE9_txt',
                'rows': '3'}))
 
@@ -838,6 +886,7 @@ class CTIPFormE(forms.Form):
     qfE10_txt = forms.CharField(widget=forms.Textarea(
         attrs={'placeholder': _('Explain'),
                'class': 'form-control',
+               'data-parsley-required': "true",
                'id': 'qfE10_txt',
                'rows': '3'}))
 
@@ -850,6 +899,7 @@ class CTIPFormE(forms.Form):
     qfE11_txt = forms.CharField(widget=forms.Textarea(
         attrs={'placeholder': _('Explain'),
                'class': 'form-control',
+               'data-parsley-required': "true",
                'id': 'qfE11_txt',
                'rows': '3'}))
 
@@ -862,6 +912,7 @@ class CTIPFormE(forms.Form):
     qfE12_txt = forms.CharField(widget=forms.Textarea(
         attrs={'placeholder': _('Explain'),
                'class': 'form-control',
+               'data-parsley-required': "true",
                'id': 'qfE12_txt',
                'rows': '3'}))
 
@@ -874,6 +925,7 @@ class CTIPFormE(forms.Form):
     qfE13_txt = forms.CharField(widget=forms.Textarea(
         attrs={'placeholder': _('Explain'),
                'class': 'form-control',
+               'data-parsley-required': "true",
                'id': 'qfE13_txt',
                'rows': '3'}))
 
@@ -899,7 +951,8 @@ class CTIPFormF(forms.Form):
         required=True,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
-            attrs={'id': 'qfF1_rdo'}))
+            attrs={'id': 'qfF1_rdo', 'data-parsley-required': 'true',
+                   'data-parsley-errors-container': "#qfF1_rdo_error"}))
 
     qfF1_txt = forms.CharField(widget=forms.Textarea(
         attrs={'placeholder': _('Explain'),
@@ -912,7 +965,8 @@ class CTIPFormF(forms.Form):
         required=True,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
-            attrs={'id': 'qfF2_rdo'}))
+            attrs={'id': 'qfF2_rdo', 'data-parsley-required': 'true',
+                   'data-parsley-errors-container': "#qfF2_rdo_error"}))
 
     qfF2_txt = forms.CharField(widget=forms.Textarea(
         attrs={'placeholder': _('Explain'),
@@ -925,7 +979,7 @@ class CTIPFormF(forms.Form):
         required=True,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
-            attrs={'id': 'qfF3_rdo',
+            attrs={'id': 'qfF3_rdo', 'data-parsley-required': "true",
                    'data-parsley-errors-container': "#qfF3_rdo_error"}))
 
     qfF3_txt = forms.CharField(widget=forms.Textarea(
@@ -939,7 +993,7 @@ class CTIPFormF(forms.Form):
         required=True,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
-            attrs={'id': 'qfF4_rdo',
+            attrs={'id': 'qfF4_rdo', 'data-parsley-required': "true",
                    'data-parsley-errors-container': "#qfF4_rdo_error"}))
 
     qfF4_txt = forms.CharField(widget=forms.Textarea(
@@ -953,7 +1007,7 @@ class CTIPFormF(forms.Form):
         required=True,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
-            attrs={'id': 'qfF5_rdo',
+            attrs={'id': 'qfF5_rdo', 'data-parsley-required': "true",
                    'data-parsley-errors-container': "#qfF5_rdo_error"}))
 
     qfF5_txt = forms.CharField(widget=forms.Textarea(
@@ -967,7 +1021,7 @@ class CTIPFormF(forms.Form):
         required=True,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
-            attrs={'id': 'qfF6_rdo',
+            attrs={'id': 'qfF6_rdo', 'data-parsley-required': "true",
                    'data-parsley-errors-container': "#qfF6_rdo_error"}))
 
     qfF6_txt = forms.CharField(widget=forms.Textarea(
@@ -981,7 +1035,7 @@ class CTIPFormF(forms.Form):
         required=True,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
-            attrs={'id': 'qfF7_rdo',
+            attrs={'id': 'qfF7_rdo', 'data-parsley-required': "true",
                    'data-parsley-errors-container': "#qfF7_rdo_error"}))
 
     qfF7_txt = forms.CharField(widget=forms.Textarea(
@@ -995,7 +1049,7 @@ class CTIPFormF(forms.Form):
         required=True,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
-            attrs={'id': 'qfF8_rdo',
+            attrs={'id': 'qfF8_rdo', 'data-parsley-required': "true",
                    'data-parsley-errors-container': "#qfF8_rdo_error"}))
 
     qfF8_txt = forms.CharField(widget=forms.Textarea(
@@ -1009,7 +1063,7 @@ class CTIPFormF(forms.Form):
         required=True,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
-            attrs={'id': 'qfF9_rdo',
+            attrs={'id': 'qfF9_rdo', 'data-parsley-required': "true",
                    'data-parsley-errors-container': "#qfF9_rdo_error"}))
 
     qfF9_txt = forms.CharField(widget=forms.Textarea(
@@ -1023,8 +1077,8 @@ class CTIPFormF(forms.Form):
         required=True,
         widget=forms.RadioSelect(
             renderer=RadioCustomRenderer,
-            attrs={'id': 'qfF10_rdo',
-                   'data-parsley-errors-container': "#qfF10_error"}))
+            attrs={'id': 'qfF10_rdo', 'data-parsley-required': "true",
+                   'data-parsley-errors-container': "#qfF10_rdo_error"}))
 
     qfF10_txt = forms.CharField(widget=forms.Textarea(
         attrs={'placeholder': _('Explain'),

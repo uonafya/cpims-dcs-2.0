@@ -19,6 +19,17 @@
 <!-- begin page-header -->
 <h1 class="page-header"><i class="fa fa-child"></i> OVC Care <small>Home</small></h1>
 <!-- end page-header -->
+{% if messages %}
+<div id="messages" class="alert alert-danger fade in">
+    <span class="close" data-dismiss="alert">×</span>
+    <i class="fa fa-check fa-2x pull-left"></i>
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.info %} class="{{ message.info }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
 <div id="messages" class="alert alert-danger fade in" style="display: none;" tabindex="1">
     <span class="close" data-dismiss="alert">×</span>
     <i class="fa fa-check fa-2x pull-left"></i>

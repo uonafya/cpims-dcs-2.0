@@ -82,7 +82,7 @@
                        <td>{{ case.case_date }}</td>
                        <td>
                         {% if case.case_level == 2 %}
-                           <a href="{% url 'view_alt_care' case_id=case.case_id %}" class="btn btn-sm btn-primary m-r-5">View Care details</a>
+                           <a href="{% url 'view_alt_care' care_id=case.care_id %}" class="btn btn-sm btn-primary m-r-5">View Care details</a>
                         {% elif case.case_level == 1 %}
                            <a href="{% url 'new_alt_care' case_id=case.case_id %}" class="btn btn-sm btn-primary m-r-5">New Alternative Care</a>
                         {% else %}

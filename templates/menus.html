@@ -64,7 +64,7 @@
 				    <span>Alternative Care Reports</span>
 				</a>
 				<ul class="sub-menu">
-					<li><a href="#">Summary Report</a></li>
+					<li><a href="{% url 'reports_afc' id=1 %}">Summary Report</a></li>
 				</ul>
 			</li>
 		    <li class="has-sub">
@@ -105,6 +105,7 @@
 			<li><a href="{% url 'dq_home' %}" >Data Quality</a></li>
 			<li><a href="{% url 'se_home' %}" >Staff Establishment</a></li>
             <li><a href="{% url 'settings_duplicates' %}" >De-duplication</a></li>
+            <li><a href="{% url 'settings_reports' %}" >Archived Reports</a></li>
 		</ul>
 	</li>
 	

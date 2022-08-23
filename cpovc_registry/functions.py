@@ -59,6 +59,8 @@ def dashboard(request):
             # Workforce members
             workforce_members = RegPersonsExternalIds.objects.filter(
                 identifier_type_id='IWKF', is_void=False).count()
+            workforce_members = AppUser.objects.distinct(
+                'reg_person_id').count()
             dash['workforce_members'] = workforce_members
             # Get pending
             cases = case_records.filter(case_stage=0).values_list(
@@ -2122,7 +2124,7 @@ def get_admin_regs(request, did, start_date):
             boys = cts[mon]['boys']
             bgs = girls + boys
             bgs_fmt = '{:20,.0f}'.format(bgs)
-            year = cts[mon]['year']
+            # year = cts[mon]['year']
             name = '%s - %s' % (mon, year)
             tts.append("'%s - %s'" % (mon, year))
             gts.append(str(girls))

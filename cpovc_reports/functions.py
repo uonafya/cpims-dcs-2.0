@@ -58,7 +58,7 @@ from cpovc_auth.models import AppUser
 from django.conf import settings
 from django.db.models import Count
 from .queries import QUERIES, REPORTS
-from .parameters import ORPTS, RPTS, GRPTS, ADHC
+from .parameters import ORPTS, RPTS, GRPTS, ADHC, ACRPTS
 from .security import BarCode
 
 from reportlab.lib import colors
@@ -1474,6 +1474,7 @@ def get_raw_values(params, data_type=1):
                 params['org_unit'] = cbo_ids
             rpt_name = REPORTS[adhoc_name]
             sql = QUERIES[rpt_name].format(**params)
+            print(sql)
             results, desc = run_sql_data(None, sql)
             # print datas, desc
             msg = 'Data Rendering Not available for this report.'
@@ -2038,7 +2039,9 @@ def get_variables(request):
             report_type = request.POST.get('report_type_other')
         rpt_ovc = int(report_ovc) if report_ovc else 1
         rpt_ovc_id = int(report_ovc_id) if report_ovc_id else 1
-        if rpt_ovc == 6:
+        if rpt_ovc == 7:
+            report_ovc_name = ACRPTS[rpt_ovc_id]
+        elif rpt_ovc == 6:
             report_ovc_name = ORPTS[rpt_ovc_id]
         else:
             report_ovc_name = RPTS[rpt_ovc]
@@ -2103,7 +2106,7 @@ def get_variables(request):
         # Handle calendars
         rpt_dt = request.POST.get('report_period')
         year = 2019
-        print('jinga here', rpt_dt, year, month)
+        # print('jinga here', rpt_dt, year, month)
         if rpt_dt == 'Other':
             report_from_date = request.POST.get('report_from_date')
             report_to_date = request.POST.get('report_to_date')
@@ -2821,8 +2824,8 @@ def get_sql_data(request, params):
     """Method to write data."""
     datas = []
     cbo = request.POST.get('org_unit')
-    rpt_id = request.POST.get('report_region')
-    report_ovc = request.POST.get('rpt_ovc_id')
+    rpt_id = request.POST.get('rpt_ovc_id')
+    report_ovc = request.POST.get('report_ovc')
     report_id = int(rpt_id) if rpt_id else 0
     rpt_ovc = int(report_ovc) if report_ovc else 1
     cluster = request.POST.get('cluster')
@@ -2830,9 +2833,12 @@ def get_sql_data(request, params):
     if report_id == 5:
         cbo_id = get_cbo_cluster(cluster)
     params['cbos'] = cbo_id
-    print params
+    print('newton', params, report_ovc)
     df_rpt = REPORTS[1]
     qname = REPORTS[rpt_ovc] if rpt_ovc in REPORTS else df_rpt
+    if rpt_ovc == 7:
+        qid = 'AFC_%s' % (rpt_id)
+        qname = REPORTS[qid] if qid in REPORTS else df_rpt
     sql = QUERIES[qname]
     sql = sql.format(**params)
     print 'nnnnn'

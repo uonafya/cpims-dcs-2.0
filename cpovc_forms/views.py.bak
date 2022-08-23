@@ -17,8 +17,7 @@ from cpovc_forms.forms import (
     ResidentialForm, OVC_FT3hForm, SearchForm, OVCCareSearchForm,
     OVC_CaseEventForm, DocumentsManager, OVCSchoolForm,
     OVCBursaryForm, BackgroundDetailsForm, OVC_FTFCForm,
-    OVCCsiForm, OVCF1AForm, OVCHHVAForm, GOKBursaryForm,
-    CaseInfoForm)
+    OVCCsiForm, OVCF1AForm, OVCHHVAForm, GOKBursaryForm)
 from cpovc_forms.models import (
     OVCEconomicStatus, OVCFamilyStatus, OVCReferral, OVCHobbies,
     OVCFriends, OVCDocuments, OVCMedical, OVCCaseRecord, OVCNeeds,
@@ -29,8 +28,7 @@ from cpovc_forms.models import (
     OVCAdverseEventsOtherFollowUp, OVCCaseEventClosure,
     OVCCaseGeo, OVCMedicalSubconditions, OVCBursary, OVCFamilyCare,
     OVCCaseEventSummon, OVCCareEvents, OVCCarePriority,
-    OVCCareServices, OVCCareEAV, OVCCareAssessment, OvcCasePersons,
-    OVCCaseLocation)
+    OVCCareServices, OVCCareEAV, OVCCareAssessment, OvcCasePersons)
 from cpovc_ovc.models import OVCRegistration, OVCHouseHold
 from cpovc_main.functions import (
     get_list_of_org_units, get_dict, get_vgeo_list, get_vorg_list,
@@ -54,13 +52,8 @@ from cpovc_registry.functions import get_list_types, extract_post_params
 from cpovc_ovc.functions import get_ovcdetails
 from .functions import (
     create_fields, create_form_fields, save_form1b, get_case_geo,
-    get_person_ids, get_exit, get_stay, save_bursary,
-    get_placement, save_case_info, get_case_info, save_case_other_geos)
+    get_person_ids, get_exit, get_stay, save_bursary)
 from notifications.functions import send_notification
-# For CTiP
-from cpovc_ctip.settings import CATS
-from cpovc_ctip.forms import CTIPForm
-from cpovc_ctip.functions import handle_ctip
 
 
 def validate_serialnumber(person_id, subcounty, serial_number):
@@ -562,9 +555,8 @@ def forms_registry(request):
                         case_cats[cc_id] = [case_cat]
                 for cloc in case_locs_qs:
                     cc_id = cloc.case_id_id
-                    sc = cloc.occurence_subcounty
                     case_orgs[cc_id] = cloc.report_orgunit.org_unit_name
-                    case_locs[cc_id] = sc.area_name if sc else None
+                    case_locs[cc_id] = cloc.occurence_subcounty.area_name
 
                 # 4. Generate Case Status - TRANSFERRED/ACTIVE
                 print 'Next step'
@@ -654,7 +646,6 @@ def forms_registry(request):
                 person_ids, placement_ids = [], []
                 for person in personsets:
                     person_ids.append(int(person.id))
-                print('INST', person_ids)
 
                 # Get attached org units
                 ou_attached = request.session.get('ou_attached', 0)
@@ -1121,16 +1112,9 @@ def edit_case_record_sheet(request, id):
             occurence_ward = request.POST.get('occurence_ward')
             occurence_village = request.POST.get('occurence_village')
 
-            # Added for CTiP and Locations handling
-            occurence_nationality = request.POST.get('occurence_nationality')
-            occurence_country = request.POST.get('occurence_country')
-            occurence_city = request.POST.get('occurence_city')
-            occurence_location = request.POST.get('occurence_location')
-            occurence_sublocation = request.POST.get('occurence_sublocation')
-
             # OVC_Details
             person = request.POST.get('person')
-            hh_economic_status = request.POST.get('household_economics')
+            household_economic_status = request.POST.get('household_economics')
             family_status = request.POST.getlist('family_status')
             hobbies = request.POST.get('hobbies')
             friends = request.POST.get('friends')
@@ -1310,18 +1294,9 @@ def edit_case_record_sheet(request, id):
                             ovcexistingcasesubcategory.is_void = True
                             ovcexistingcasesubcategory.save(
                                 update_fields=['is_void'])
-            # Other case geos for CTiP - Country and locations
-            geo_params = {}
-            geo_params['country'] = occurence_country
-            geo_params['city'] = occurence_city
-            geo_params['location'] = occurence_location
-            geo_params['sub_location'] = occurence_sublocation
-            save_case_other_geos(id, pers_id, geo_params)
 
             # OVCCaseGeo
             ovcgeo = get_case_geo(request, id)
-            county_id = int(occurence_county) if occurence_county else None
-            sc_id = int(occurence_subcounty) if occurence_subcounty else None
             if ovcgeo:
                 # ovcgeo = OVCCaseGeo.objects.get(case_id=id)
                 print 'Update case Geo'
@@ -1331,8 +1306,10 @@ def edit_case_record_sheet(request, id):
                 ovcgeo.report_village = report_village
                 ovcgeo.report_orgunit = RegOrgUnit.objects.get(
                     pk=int(report_orgunit))
-                ovcgeo.occurence_county_id = county_id
-                ovcgeo.occurence_subcounty_id = sc_id
+                ovcgeo.occurence_county = SetupGeography.objects.get(
+                    pk=int(occurence_county))
+                ovcgeo.occurence_subcounty = SetupGeography.objects.get(
+                    pk=int(occurence_subcounty))
                 ovcgeo.occurence_ward = occurence_ward
                 ovcgeo.occurence_village = occurence_village
                 ovcgeo.save(update_fields=['report_subcounty',
@@ -1353,23 +1330,19 @@ def edit_case_record_sheet(request, id):
                     report_village=report_village,
                     report_orgunit=RegOrgUnit.objects.get(
                         pk=int(report_orgunit)),
-                    occurence_county_id=county_id,
-                    occurence_subcounty_id=sc_id,
+                    occurence_county=SetupGeography.objects.get(
+                        pk=int(occurence_county)),
+                    occurence_subcounty=SetupGeography.objects.get(
+                        pk=int(occurence_subcounty)),
                     occurence_ward=occurence_ward,
                     occurence_village=occurence_village,
                     timestamp_created=now,
-                    person_id=pers_id).save()
+                    person=RegPerson.objects.get(pk=int(person))).save()
 
             # OVCEconomicStatus
-            '''
             ovcd = OVCEconomicStatus.objects.get(case_id=id)
             ovcd.household_economic_status = household_economic_status
             ovcd.save(update_fields=['household_economic_status'])
-            '''
-            ovcd, created = OVCEconomicStatus.objects.update_or_create(
-                case_id_id=id, person_id=pers_id,
-                defaults={'household_economic_status': hh_economic_status,
-                          'is_void': False},)
 
             # OVCFamilyStatus
             existing_familystata = []
@@ -1380,8 +1353,7 @@ def edit_case_record_sheet(request, id):
             for i, efamilystatus in enumerate(existing_familystata):
                 if not(str(efamilystatus) in family_status):
                     OVCFamilyStatus.objects.filter(
-                        family_status=efamilystatus,
-                        case_id=id).update(is_void=True)
+                        case_id=id, family_status=efamilystatus).update(is_void=True)
             """ Cater for new selected refferals """
             for i, nfamily_status in enumerate(family_status):
                 if not (str(nfamily_status) in existing_familystata):
@@ -1433,7 +1405,6 @@ def edit_case_record_sheet(request, id):
                         timestamp_created=now,
                         person=RegPerson.objects.get(pk=int(person))).save()
             # OVCMedical
-            '''
             ovcmed = OVCMedical.objects.get(case_id=id)
             ovcmed.mental_condition = mental_condition
             ovcmed.physical_condition = physical_condition
@@ -1441,14 +1412,6 @@ def edit_case_record_sheet(request, id):
             ovcmed.save(update_fields=['mental_condition',
                                        'physical_condition',
                                        'other_condition'])
-
-            '''
-            ovcmed, created = OVCMedical.objects.update_or_create(
-                case_id_id=id, person_id=pers_id,
-                defaults={'mental_condition': mental_condition,
-                          'physical_condition': physical_condition,
-                          'other_condition': other_condition,
-                          'is_void': False},)
 
             # OVCMedicalSubconditions
             """ Delete SubConditions if Captured Erroniously """
@@ -1609,21 +1572,12 @@ def edit_case_record_sheet(request, id):
                     ).save()
 
             # FormsLog
-            '''
             f = FormsLog.objects.get(form_id=id)
             f.timestamp_modified = now
             f.save(update_fields=['timestamp_modified'])
-            '''
-            f, created = FormsLog.objects.update_or_create(
-                form_id=id, person_id=pers_id, form_type_id='FTPC',
-                defaults={'timestamp_modified': now,
-                          'app_user': request.user.id, 'is_void': False},)
         else:
             # Get PersonId/Init Data
-            try:
-                f = FormsLog.objects.get(form_id=id, is_void=False)
-            except Exception:
-                f = OVCCaseRecord.objects.get(case_id=id)
+            f = FormsLog.objects.get(form_id=id, is_void=False)
             person_id = int(f.person_id)
 
             # Get Siblings
@@ -1645,41 +1599,30 @@ def edit_case_record_sheet(request, id):
             vals = get_dict(field_name=check_fields)
 
             # Get OVCEconomicStatus
-            try:
-                results_details = OVCEconomicStatus.objects.get(
-                    case_id=id, is_void=False)
-            except Exception as e:
-                results_details = None
+            results_details = OVCEconomicStatus.objects.get(
+                case_id=id, is_void=False)
 
             # Get OVCMedical
-            try:
-                results_med = OVCMedical.objects.get(case_id=id, is_void=False)
-            except Exception as e:
-                results_med = Myobject()
-                results_med.other_condition = ''
-                results_med.physical_condition = ''
-                results_med.mental_condition = ''
-                results_med.medical_id = ''
+            results_med = OVCMedical.objects.get(case_id=id, is_void=False)
 
             # Get OVCMedicalSubconditions
             _physical_subconditions = []
             _mental_subconditions = []
             _other_subconditions = []
             medical_id = results_med.medical_id
-            if medical_id:
-                results_medsubs = OVCMedicalSubconditions.objects.filter(
-                    medical_id=medical_id)
-                if results_medsubs:
-                    for results_medsub in results_medsubs:
-                        if results_medsub.medical_condition == 'Physical':
-                            _physical_subconditions.append(
-                                results_medsub.medical_subcondition)
-                        if results_medsub.medical_condition == 'Mental':
-                            _mental_subconditions.append(
-                                results_medsub.medical_subcondition)
-                        if results_medsub.medical_condition == 'Other':
-                            _other_subconditions.append(
-                                results_medsub.medical_subcondition)
+            results_medsubs = OVCMedicalSubconditions.objects.filter(
+                medical_id=medical_id)
+            if results_medsubs:
+                for results_medsub in results_medsubs:
+                    if results_medsub.medical_condition == 'Physical':
+                        _physical_subconditions.append(
+                            results_medsub.medical_subcondition)
+                    if results_medsub.medical_condition == 'Mental':
+                        _mental_subconditions.append(
+                            results_medsub.medical_subcondition)
+                    if results_medsub.medical_condition == 'Other':
+                        _other_subconditions.append(
+                            results_medsub.medical_subcondition)
 
             # Get OVCCaseRecord
             results_case = OVCCaseRecord.objects.get(case_id=id, is_void=False)
@@ -1697,19 +1640,6 @@ def edit_case_record_sheet(request, id):
 
             # Get OVCCaseGeo
             results_geo = get_case_geo(request, id)
-
-            # CTiP - Get other geos
-            report_in_country = 'AYES'
-            occurence_country = ''
-            occurence_city = ''
-            try:
-                other_geos = OVCCaseLocation.objects.get(case_id=id)
-                occurence_country = other_geos.report_country_code
-                occurence_city = other_geos.report_city
-                if occurence_country != 'KE':
-                    report_in_country = 'ANNO'
-            except Exception as e:
-                print('get other geo error - %s' % (str(e)))
 
             # Get OVCFriends
             results_frnds = OVCFriends.objects.filter(
@@ -1773,7 +1703,7 @@ def edit_case_record_sheet(request, id):
             """ Get case_grouping_ids[] """
             for ovcccat in ovcccats:
                 case_grouping_id = str(ovcccat.case_grouping_id)
-                if case_grouping_id not in case_grouping_ids:
+                if not case_grouping_id in case_grouping_ids:
                     case_grouping_ids.append(str(case_grouping_id))
 
             """ Get Case Categories """
@@ -1846,14 +1776,12 @@ def edit_case_record_sheet(request, id):
             user_id = app_user.id
             # Missing Geo
             if results_geo:
-                oc = results_geo.occurence_county
-                osc = results_geo.occurence_subcounty
                 report_subcounty = results_geo.report_subcounty.area_id
                 report_ward = results_geo.report_ward
                 report_village = results_geo.report_village
                 report_orgunit = translate_reverse_org(results_geo.report_orgunit)
-                occurence_county = oc.area_id if oc else None
-                occurence_subcounty = osc.area_id if osc else None
+                occurence_county = results_geo.occurence_county.area_id
+                occurence_subcounty = results_geo.occurence_subcounty.area_id
                 occurence_ward = results_geo.occurence_ward
                 occurence_village = results_geo.occurence_village
             else:
@@ -1862,15 +1790,10 @@ def edit_case_record_sheet(request, id):
                 occurence_ward, occurence_village = '', ''
 
             # Initiaize OVC_FT3hForm()
-            hh_economic_status = ''
-            if results_details:
-                hh_economic_status = results_details.household_economic_status
             form = OVC_FT3hForm({
                 'person': person_id,
                 'user_id': user_id,
-                'occurence_nationality': report_in_country,
-                'occurence_country': occurence_country,
-                'occurence_city': occurence_city,
+
                 # Tab 1
                 'case_reporter': results_case.case_reporter,
                 'court_name': results_case.court_name,
@@ -1891,7 +1814,7 @@ def edit_case_record_sheet(request, id):
                 'occurence_ward': occurence_ward,
                 'occurence_village': occurence_village,
                 # Tab 2
-                'household_economics': hh_economic_status,
+                'household_economics': results_details.household_economic_status,
                 'family_status': results_family_status,
                 'friends': results_frnd,
                 'hobbies': results_hob,
@@ -1949,8 +1872,7 @@ def edit_case_record_sheet(request, id):
     msg = 'Case Record Sheet (%s %s) Update Succesfull' % (
         init_data.first_name, init_data.surname)
     messages.add_message(request, messages.INFO, msg)
-    # redirect_url = reverse(forms_registry)
-    redirect_url = reverse(case_info, kwargs={'case_id': id})
+    redirect_url = reverse(forms_registry)
     return HttpResponseRedirect(redirect_url)
 
 
@@ -1968,21 +1890,12 @@ def view_case_record_sheet(request, id):
         # Get Siblings
         init_data = RegPerson.objects.filter(pk=person_id)
         reg_personsiblings = []
-
-        regpersonsiblings = RegPersonsSiblings.objects.filter(
-            child_person_id=person_id)
-        for regpersonsibling in regpersonsiblings:
-            reg_personsiblings.append(regpersonsibling.sibling_person)
+        for data in init_data:
+            regpersonsiblings = RegPersonsSiblings.objects.filter(
+                child_person=data.id)
+            for regpersonsibling in regpersonsiblings:
+                reg_personsiblings.append(regpersonsibling.sibling_person)
         init_data.siblingpersons = reg_personsiblings
-
-        reg_caregivers = []
-        caregivers = RegPersonsGuardians.objects.filter(
-            child_person_id=person_id)
-        for caregiver in caregivers:
-            caregiver_details = caregiver.guardian_person
-            setattr(caregiver_details, 'relation', caregiver.relationship)
-            reg_caregivers.append(caregiver_details)
-        init_data.caregivers = reg_caregivers
 
         check_fields = ['sex_id',
                         'family_status_id',
@@ -1996,11 +1909,13 @@ def view_case_record_sheet(request, id):
                         'case_reporter_id',
                         'perpetrator_status_id',
                         'relationship_type_id',
-                        'perpetrator_id', 'risk_level_id',
+                        'perpetrator_id',
+                        'risk_level_id',
                         'referral_destination_id',
                         'intervention_id',
-                        'case_category_id', 'core_item_id',
-                        'yesno_id', 'relationship_type_id',
+                        'case_category_id',
+                        'core_item_id',
+                        'yesno_id',
                         'case_reporter_relationship_to_child',
                         'long_term_support_id',
                         'immediate_need_id']
@@ -2302,12 +2217,6 @@ def new_case_record_sheet(request, id):
             else:
                 date_of_summon = None
 
-            # Added for CTiP and Locations handling
-            occurence_country = request.POST.get('occurence_country')
-            occurence_city = request.POST.get('occurence_city')
-            occurence_location = request.POST.get('occurence_location')
-            occurence_sublocation = request.POST.get('occurence_sublocation')
-
             # 1. Setup persons
             # 2. Setup clone Ids
             persons = []
@@ -2576,13 +2485,6 @@ def new_case_record_sheet(request, id):
                                 timestamp_created=now,
                                 person=RegPerson.objects.get(pk=int(person))
                             ).save()
-                # Other case geos for CTiP - Country and locations
-                geo_params = {}
-                geo_params['country'] = occurence_country
-                geo_params['city'] = occurence_city
-                geo_params['location'] = occurence_location
-                geo_params['sub_location'] = occurence_sublocation
-                save_case_other_geos(case_id, pers_id, geo_params)
 
                 # FormsLog
                 FormsLog(
@@ -2592,11 +2494,11 @@ def new_case_record_sheet(request, id):
                     app_user=int(app_user.id),
                     person=RegPerson.objects.get(pk=int(person))).save()
 
-                # Collect CaseIds Used ##
+                ## Collect CaseIds Used ##
                 case_ids.append(str(case_id))
 
             if summon_issued == 'AYES':
-                # Save Summons in OVCCaseEventSummon ##
+                ## Save Summons in OVCCaseEventSummon ##
                 ovccaseevents = OVCCaseEvents(
                     # case_event_id=case_event_id,
                     case_event_type_id='SUMMON',
@@ -3436,13 +3338,13 @@ def case_events(request, id):
         date_case_opened = ovccrecord.date_case_opened
 
     form = OVC_CaseEventForm(
-        initial={'case_id': case_id,
-                 'reported_date': date_case_opened.strftime('%d-%b-%Y')})
+        initial={'case_id': case_id, 'reported_date': date_case_opened.strftime('%d-%b-%Y')})
     return render(request, 'forms/case_events.html',
                   {
-                      'form': form, 'vals': vals,
+                      'form': form,
+                      'vals': vals,
                       'resultsets': resultsets,
-                      'init_data': init_data, 'case_id': case_id,
+                      'init_data': init_data,
                       'summon_count': summon_count
                   })
 
@@ -5550,14 +5452,7 @@ def save_placement(request):
             person_id = request.POST.get('person_id')
             case_record_id = request.POST.get('case_record_id', None)
             now = timezone.now()
-            reg_person_pk = int(person_id)
-            ou_pk = int(residential_institution_name)
 
-            cur_placement = get_placement(request, ou_pk, reg_person_pk)
-            if cur_placement:
-                msg = 'Child Already Placed. Go to follow ups.'
-                messages.add_message(request, messages.INFO, msg)
-                return HttpResponseRedirect(reverse(forms_registry))
             # Convert dates
             if admission_date:
                 admission_date = convert_date(admission_date)
@@ -5585,6 +5480,7 @@ def save_placement(request):
                 pass
 
             # Save New
+            reg_person_pk = int(person_id)
             placement_id = new_guid_32()
             OVCPlacement(
                 placement_id=placement_id,
@@ -5609,7 +5505,7 @@ def save_placement(request):
                 placement_notes=placement_notes,
                 placement_type=placement_type,
                 created_by=int(app_user.id),
-                person_id=reg_person_pk
+                person=RegPerson.objects.get(pk=int(reg_person_pk))
             ).save()
 
             # FormsLog
@@ -8545,68 +8441,3 @@ def new_bursary(request, id):
         raise e
     else:
         pass
-
-
-def case_info(request, case_id):
-    """Method to save case information."""
-    try:
-        check_fields = ['sex_id', 'case_reporter_id']
-        tids = {0: "Case Details"}
-        tids[2] = "Case Emergency Details"
-        tids[5] = "Other Case Details"
-        # Trafficking cases
-        tr_case = False
-        tr_form = CTIPForm()
-        # End trafficking
-        vals = get_dict(field_name=check_fields)
-        case = OVCCaseRecord.objects.get(case_id=case_id)
-        person_id = case.person_id
-        case_date = case.date_case_opened
-        case_categories = OVCCaseCategory.objects.filter(case_id_id=case_id)
-        for ccat in case_categories:
-            if ccat.case_category in CATS:
-                tr_case = True
-        if request.method == 'POST':
-            tab_id = request.POST.get('tab-id', 'tab-0')
-            tid = int(tab_id.split('-')[1])
-            print('TAB', tid)
-            if tid == 5:
-                case_narration = request.POST.get('case_narration')
-                case.case_remarks = case_narration
-                case.save(update_fields=["case_remarks"])
-            elif tid == 2:
-                em = request.POST.get('emergency')
-                em_detail = request.POST.get('emergency_detail')
-                save_case_info(request, case, 'OIEM', em, em_detail)
-            elif tid == 1:
-                ctip_params = {}
-                ctip_params['case_id'] = case_id
-                ctip_params['person_id'] = person_id
-                ctip_params['case_date'] = case_date
-                handle_ctip(request, 0, ctip_params)
-            msg = tids[tid] if tid in tids else tids[0]
-            message = "%s Saved Successfully" % (msg)
-            result = {'code': 0, 'message': message}
-            return JsonResponse(result, content_type='application/json',
-                                safe=False)
-        initial_info = {'case_narration': case.case_remarks}
-        case_infos = get_case_info(request, case_id)
-        for cinfo in case_infos:
-            info_type = cinfo.info_type
-            if info_type == 'OIEM':
-                initial_info['emergency'] = cinfo.info_item
-                initial_info['emergency_detail'] = cinfo.info_detail
-        form = CaseInfoForm(initial=initial_info)
-        case_id = str(case.case_id).replace('-', '')
-        return render(
-            request, 'forms/case_info.html',
-            {'case': case, 'vals': vals, 'form': form, 'cats': case_categories,
-             'case_id': str(case_id), 'tr_case': tr_case, 'tr_form': tr_form})
-    except Exception as e:
-        raise e
-    else:
-        pass
-
-
-class Myobject(object):
-    pass

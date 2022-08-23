@@ -73,6 +73,7 @@
                     <span class="pull-right hidden-print">
                     <a href="javascript:;" class="btn btn-sm btn-danger m-b-10"><i class="fa fa-download m-r-5"></i> Export as PDF</a>
                     <a href="{% url 'ctip_form' form_id='C' case_id=case.case_id|stringformat:'s' %}" class="btn btn-sm btn-success m-b-10"><i class="fa fa-pencil m-r-5"></i> {% if events %} Edit {% else %} New {% endif %}Referral Form</a>
+                    <a href="{% url 'ctip_form' form_id='C' case_id=case.case_id|stringformat:'s' %}" class="btn btn-sm btn-success m-b-10"><i class="fa fa-pencil m-r-5"></i>New Referral Form</a>
                     <a href="{% url 'view_ctip_case' case_id=case.case_id|stringformat:'s' %}" class="btn btn-sm btn-success m-b-10"><i class="fa fa-mail-reply-all m-r-5"></i> Back to Case</a>
                     </span>
                     Case No: {{ case.case_number }}
@@ -89,7 +90,7 @@
                         </div>
                         <label class="control-label col-md-1 col-sm-1"><b>Self Referral</b></label>
                         <div class="col-md-2">
-                            {{ form.qfC2_txt }}
+                            {{ form.qfC2_rdo }}
                         </div>
                     </div>
                     <div class="form-group">
